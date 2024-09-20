@@ -31,6 +31,15 @@ PxScene*				gScene      = NULL;
 ContactReportCallback gContactReportCallback;
 
 
+RenderItem* xRenderItem = NULL;
+RenderItem* yRenderItem = NULL;
+RenderItem* zRenderItem = NULL;
+RenderItem* aRenderItem = NULL;
+
+
+PxTransform* x, y, z, origin;
+
+
 // Initialize physics engine
 void initPhysics(bool interactive)
 {
@@ -54,6 +63,11 @@ void initPhysics(bool interactive)
 	sceneDesc.filterShader = contactReportFilterShader;
 	sceneDesc.simulationEventCallback = &gContactReportCallback;
 	gScene = gPhysics->createScene(sceneDesc);
+
+	 xRenderItem = new RenderItem(CreateShape(PxSphereGeometry(1)), new PxTransform(0.0, 0.0, 0.0), Vector4(0.5, 0.9, 0.9, 1));
+	 yRenderItem = new RenderItem(CreateShape(PxSphereGeometry(1)), new PxTransform(0.0, 10.0, 0.0), Vector4(0.0, 0.0, 1, 1));
+	 zRenderItem = new RenderItem(CreateShape(PxSphereGeometry(1)), new PxTransform(10.0, -5.0, 0.0), Vector4(1.0, 1.0, 0.0, 1));
+	 aRenderItem = new RenderItem(CreateShape(PxSphereGeometry(1)), new PxTransform(0.0, -5.0, 10.0), Vector4(1, 0.0, 0.0, 1));
 	}
 
 
@@ -73,6 +87,8 @@ void stepPhysics(bool interactive, double t)
 void cleanupPhysics(bool interactive)
 {
 	PX_UNUSED(interactive);
+
+	DeregisterRenderItem(xRenderItem);
 
 	// Rigid Body ++++++++++++++++++++++++++++++++++++++++++
 	gScene->release();
