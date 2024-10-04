@@ -1,16 +1,31 @@
 #pragma once
+
+#include "Vector3D.h"
+#include "RenderUtils.hpp"
+#include "PxPhysicsAPI.h"
+#include <cmath>
+ 
+using namespace physx;
+using namespace std;
 class Particle
 {
 public:
-	Particle(Vector3D Pos, Vector3D Vel);
+	Particle(PxVec3 pos, PxVec3 velo, PxVec3 acel);
 	~Particle();
 
-	void integrate(double t);
+	void Integrate(double t);
 
 private:
-	Vector3D vel;
-	physx::PxTransform pose;
-	RenderItem* renderItem;
+	PxVec3 velo;
+	PxVec3 acele;
+	PxVec3 pose;
+
+	PxTransform* transform = nullptr;
+
+	double damping;
+
+	RenderItem* renderItem = nullptr;
+
 
 };
 
