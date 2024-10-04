@@ -38,7 +38,9 @@ RenderItem* yRenderItem = NULL;
 RenderItem* zRenderItem = NULL;
 RenderItem* aRenderItem = NULL;
 
-Particle* particle = nullptr;
+//Particle* particle = nullptr;
+
+vector<Particle*> particlesVector;
 
 PxTransform* x, y, z, origin;
 
@@ -72,7 +74,7 @@ void initPhysics(bool interactive)
 	 //zRenderItem = new RenderItem(CreateShape(PxSphereGeometry(1)), new PxTransform(10.0, -5.0, 0.0), Vector4(1.0, 1.0, 0.0, 1));
 	 //aRenderItem = new RenderItem(CreateShape(PxSphereGeometry(1)), new PxTransform(0.0, -5.0, 10.0), Vector4(1, 0.0, 0.0, 1));
 
-	 particle = new Particle(PxVec3(0, 0, 0), PxVec3(0, 0, 0), PxVec3(5, 0, 0));
+
 	}
 
 
@@ -82,7 +84,11 @@ void initPhysics(bool interactive)
 void stepPhysics(bool interactive, double t)
 {
 	PX_UNUSED(interactive);
-	particle->Integrate(t);
+	for each (Particle * particle in particlesVector)
+	{
+		particle->Integrate(t);
+
+	}
 	gScene->simulate(t);
 	gScene->fetchResults(true);
 }
@@ -118,6 +124,15 @@ void keyPress(unsigned char key, const PxTransform& camera)
 	//case ' ':	break;
 	case ' ':
 	{
+		break;
+	}
+	case 'F':
+	{
+		cout << "Particle" << endl;
+
+		Particle* particle = new Particle(PxVec3(GetCamera()->getTransform().p), PxVec3(-25, 3, -25), PxVec3(0, 0, 0));
+		particle->SetAccel(PxVec3(0, -2, 0));
+		particlesVector.push_back(particle);
 		break;
 	}
 	default:

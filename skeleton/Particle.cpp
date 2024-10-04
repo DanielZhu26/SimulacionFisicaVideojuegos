@@ -31,3 +31,8 @@ void Particle::Integrate(double t)
 	transform->p = transform->p + velo * t;
 }
 
+void Particle::SetAccel(PxVec3 newAcel) 
+{	
+	acele = newAcel;
+}
+

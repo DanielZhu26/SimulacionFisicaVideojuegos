@@ -15,6 +15,8 @@ public:
 
 	void Integrate(double t);
 
+	void SetAccel(PxVec3 newAcel);
+
 private:
 	PxVec3 velo;
 	PxVec3 acele;
