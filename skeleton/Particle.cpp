@@ -1,7 +1,7 @@
 #include "Particle.h"
 
 
-Particle::Particle(PxVec3 pos, PxVec3 vel, PxVec3 acel) : pose(pos), velo(vel), acele(acel)
+Particle::Particle(PxVec3 pos, PxVec3 vel, PxVec3 acel, double masa) : pose(pos), velo(vel), acele(acel), mass(masa)
 {
 	transform = new PxTransform(pose);
 	PxSphereGeometry geo(1);
@@ -34,5 +34,9 @@ void Particle::Integrate(double t)
 void Particle::SetAccel(PxVec3 newAcel) 
 {	
 	acele = newAcel;
+}
+
+void Particle::SetVel(PxVec3 newVel) {
+	velo = newVel;
 }
 

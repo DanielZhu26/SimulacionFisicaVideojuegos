@@ -33,10 +33,10 @@ PxScene*				gScene      = NULL;
 ContactReportCallback gContactReportCallback;
 
 
-RenderItem* xRenderItem = NULL;
-RenderItem* yRenderItem = NULL;
-RenderItem* zRenderItem = NULL;
-RenderItem* aRenderItem = NULL;
+//RenderItem* xRenderItem = NULL;
+//RenderItem* yRenderItem = NULL;
+//RenderItem* zRenderItem = NULL;
+//RenderItem* aRenderItem = NULL;
 
 //Particle* particle = nullptr;
 
@@ -130,7 +130,8 @@ void keyPress(unsigned char key, const PxTransform& camera)
 	{
 		cout << "Particle" << endl;
 
-		Particle* particle = new Particle(PxVec3(GetCamera()->getTransform().p), PxVec3(-25, 3, -25), PxVec3(0, 0, 0));
+		Particle* particle = new Particle(GetCamera()->getTransform().p, 20 * GetCamera()->getDir(), PxVec3(0, 0, 0), 1);
+		//Particle* particle = new Particle(PxVec3(GetCamera()->getTransform().p), PxVec3(-25, 3, -25), PxVec3(0, 0, 0));
 		particle->SetAccel(PxVec3(0, -2, 0));
 		particlesVector.push_back(particle);
 		break;
