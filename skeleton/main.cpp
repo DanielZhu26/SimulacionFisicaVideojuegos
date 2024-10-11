@@ -11,6 +11,7 @@
 #include <iostream>
 
 #include "Particle.h"
+#include "Fuente.h"
 
 std::string display_text = "This is a test";
 
@@ -44,6 +45,7 @@ vector<Particle*> particlesVector;
 
 PxTransform* x, y, z, origin;
 
+Fuente* fuente = nullptr;
 
 // Initialize physics engine
 void initPhysics(bool interactive)
@@ -74,7 +76,8 @@ void initPhysics(bool interactive)
 	 //zRenderItem = new RenderItem(CreateShape(PxSphereGeometry(1)), new PxTransform(10.0, -5.0, 0.0), Vector4(1.0, 1.0, 0.0, 1));
 	 //aRenderItem = new RenderItem(CreateShape(PxSphereGeometry(1)), new PxTransform(0.0, -5.0, 10.0), Vector4(1, 0.0, 0.0, 1));
 
-
+		fuente = new Fuente(Vector3(0, 0, 0), Vector3(0, 20, 0), 10);
+		fuente->ParticlesGen();
 	}
 
 
@@ -84,11 +87,14 @@ void initPhysics(bool interactive)
 void stepPhysics(bool interactive, double t)
 {
 	PX_UNUSED(interactive);
-	for each (Particle * particle in particlesVector)
+	for each (Particle* particle in particlesVector)
 	{
 		particle->Integrate(t);
 
 	}
+	
+	fuente->Update(t);
+
 	gScene->simulate(t);
 	gScene->fetchResults(true);
 }
