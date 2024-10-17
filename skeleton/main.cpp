@@ -76,8 +76,8 @@ void initPhysics(bool interactive)
 	 //zRenderItem = new RenderItem(CreateShape(PxSphereGeometry(1)), new PxTransform(10.0, -5.0, 0.0), Vector4(1.0, 1.0, 0.0, 1));
 	 //aRenderItem = new RenderItem(CreateShape(PxSphereGeometry(1)), new PxTransform(0.0, -5.0, 10.0), Vector4(1, 0.0, 0.0, 1));
 
-		fuente = new Fuente(Vector3(0, 0, 0), Vector3(0, 20, 0), 10);
-		fuente->ParticlesGen();
+		/*fuente = new Fuente(Vector3(0, 0, 0), Vector3(0, 20, 0), 10);
+		fuente->ParticlesGen();*/
 	}
 
 
@@ -90,10 +90,13 @@ void stepPhysics(bool interactive, double t)
 	for each (Particle* particle in particlesVector)
 	{
 		particle->Integrate(t);
+		
 
 	}
+
+
 	
-	fuente->Update(t);
+	//fuente->Update(t);
 
 	gScene->simulate(t);
 	gScene->fetchResults(true);
@@ -106,6 +109,37 @@ void cleanupPhysics(bool interactive)
 	PX_UNUSED(interactive);
 
 	//DeregisterRenderItem(xRenderItem);
+	//for each (Particle * particle in particlesVector)
+	//{
+	//	if (particle->getLifeTime() <= 0)
+	//	{
+	//		delete particle;
+	//		cout << "muelto";
+	//	}
+
+
+	//}
+
+
+	for (auto it = particlesVector.begin(); it != particlesVector.end(); )
+	{
+		Particle* particle = *it;
+
+
+		// Si la partícula ha agotado su vida, la eliminamos
+		if (particle->getLifeTime() <= 0)
+		{
+			delete particle;  // Llama automáticamente al destructor
+			it = particlesVector.erase(it);  // Eliminamos del vector y actualizamos el iterador
+		}
+		else
+		{
+			++it;  // Avanzamos el iterador si la partícula sigue activa
+		}
+	}
+
+
+
 
 	// Rigid Body ++++++++++++++++++++++++++++++++++++++++++
 	gScene->release();
@@ -117,6 +151,8 @@ void cleanupPhysics(bool interactive)
 	transport->release();
 	
 	gFoundation->release();
+
+
 	}
 
 // Function called when a key is pressed
@@ -136,7 +172,7 @@ void keyPress(unsigned char key, const PxTransform& camera)
 	{
 		cout << "Particle" << endl;
 
-		Particle* particle = new Particle(GetCamera()->getTransform().p, 20 * GetCamera()->getDir(), PxVec3(0, 0, 0), 1);
+		Particle* particle = new Particle(GetCamera()->getTransform().p, 20 * GetCamera()->getDir(), PxVec3(0, 0, 0), 1, 5);
 		//Particle* particle = new Particle(PxVec3(GetCamera()->getTransform().p), PxVec3(-25, 3, -25), PxVec3(0, 0, 0));
 		particle->SetAccel(PxVec3(0, -2, 0));
 		particlesVector.push_back(particle);

@@ -10,13 +10,16 @@ using namespace std;
 class Particle
 {
 public:
-	Particle(PxVec3 pos, PxVec3 velo, PxVec3 acel, double masa);
+	Particle(PxVec3 pos, PxVec3 velo, PxVec3 acel, double masa, double lifeT);
 	~Particle();
 
 	void Integrate(double t);
 
 	void SetAccel(PxVec3 newAcel);
 	void SetVel(PxVec3 newVel);
+	double getLifeTime() {
+		return lifeTime;
+	}
 
 private:
 	PxVec3 velo;
@@ -24,6 +27,7 @@ private:
 	PxVec3 pose;
 
 	double mass;
+	double lifeTime;
 
 	PxTransform* transform = nullptr;
 

@@ -11,7 +11,7 @@ Fuente::Fuente(PxVec3 pos, PxVec3 vel, int numP) : posIni(pos), velMedia(vel), n
 void Fuente::ParticlesGen() {
 
 	for (int i = 0; i < 20; i++) {
-		Particle* particle = new Particle(posIni, velMedia, Vector3(0, 0, 0), 1);
+		Particle* particle = new Particle(posIni, velMedia, Vector3(0, 0, 0), 1, 5);
 		particle->SetAccel(Vector3(0, -10, 0));
 		particlesVector.push_back(particle);
 	}

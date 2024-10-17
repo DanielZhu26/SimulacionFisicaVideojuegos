@@ -1,7 +1,7 @@
 #include "Particle.h"
 
 
-Particle::Particle(PxVec3 pos, PxVec3 vel, PxVec3 acel, double masa) : pose(pos), velo(vel), acele(acel), mass(masa)
+Particle::Particle(PxVec3 pos, PxVec3 vel, PxVec3 acel, double masa, double lifeT) : pose(pos), velo(vel), acele(acel), mass(masa), lifeTime(lifeT)
 {
 	transform = new PxTransform(pose);
 	PxSphereGeometry geo(1);
@@ -21,14 +21,21 @@ Particle::~Particle()
 
 void Particle::Integrate(double t)
 {
-	// Actualizamos la velocidad
-	velo = velo * pow(damping, t) + acele * t;
+	if (lifeTime <= 0) return;  
 
-	// ACtualizamos la aceleracion
+	// Actualizamos la velocidad con la aceleración
+	velo = velo + acele * t;
+
+	// Actualizamos la posición con la velocidad
 	pose = pose + velo * t;
 
 	// Actualizamos la posición del transform
-	transform->p = transform->p + velo * t;
+	transform->p = pose;
+
+	// Aplicamos el damping para amortiguar la velocidad
+	velo = velo * pow(damping, t);
+
+	lifeTime -= t;
 }
 
 void Particle::SetAccel(PxVec3 newAcel) 
