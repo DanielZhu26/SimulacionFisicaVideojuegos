@@ -12,6 +12,7 @@
 
 #include "Particle.h"
 #include "Fuente.h"
+#include "ParticleSystem.h"
 
 std::string display_text = "This is a test";
 
@@ -45,7 +46,7 @@ vector<Particle*> particlesVector;
 
 PxTransform* x, y, z, origin;
 
-Fuente* fuente = nullptr;
+ParticleSystem* partSys;
 
 // Initialize physics engine
 void initPhysics(bool interactive)
@@ -109,34 +110,35 @@ void cleanupPhysics(bool interactive)
 	PX_UNUSED(interactive);
 
 	//DeregisterRenderItem(xRenderItem);
-	//for each (Particle * particle in particlesVector)
-	//{
-	//	if (particle->getLifeTime() <= 0)
-	//	{
-	//		delete particle;
-	//		cout << "muelto";
-	//	}
-
-
-	//}
-
-
-	for (auto it = particlesVector.begin(); it != particlesVector.end(); )
+	/*for each (Particle * particle in particlesVector)
 	{
-		Particle* particle = *it;
-
-
-		// Si la partícula ha agotado su vida, la eliminamos
 		if (particle->getLifeTime() <= 0)
 		{
-			delete particle;  // Llama automáticamente al destructor
-			it = particlesVector.erase(it);  // Eliminamos del vector y actualizamos el iterador
+			delete particle;
+			particle = nullptr;
+			cout << "muelto";
 		}
-		else
-		{
-			++it;  // Avanzamos el iterador si la partícula sigue activa
-		}
-	}
+
+
+	}*/
+
+
+	//for (auto it = particlesVector.begin(); it != particlesVector.end(); )
+	//{
+	//	Particle* particle = *it;
+
+
+	//	// Si la partícula ha agotado su vida, la eliminamos
+	//	if (particle->getLifeTime() <= 0)
+	//	{
+	//		delete particle;  // Llama automáticamente al destructor
+	//		it = particlesVector.erase(it);  // Eliminamos del vector y actualizamos el iterador
+	//	}
+	//	else
+	//	{
+	//		++it;  //Avanzamos el iterador si la partícula sigue activa
+	//	}
+	//}
 
 
 

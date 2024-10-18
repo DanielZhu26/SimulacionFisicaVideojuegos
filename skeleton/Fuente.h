@@ -1,35 +1,27 @@
 #pragma once
-
-#include "Vector3D.h"
-#include "RenderUtils.hpp"
-#include "PxPhysicsAPI.h"
-#include <cmath>
 #include "Particle.h"
 
+#include <random>
+class ParticleSystem;
 class Fuente
 {
+protected:
+	std::mt19937 randm;
+	float genRate;
+	Vector3 pos;
+	Vector3 direction;
+    float counter = 0.0f;
+
 public:
-	Fuente(PxVec3 pos, PxVec3 vel, int numPart);
-	~Fuente();
+	Fuente(Vector3 pos, float rate): pos(pos), genRate(rate) {
+		std::random_device rd;
+		randm.seed(rd());
+	}
 
+	void update(double t, ParticleSystem& partSys);
 
-	void ParticlesGen();
-	void Update(double t);
+	virtual Particle* emitParticle() = 0;
 
-private:
-
-	vector<Particle*> particlesVector;
-	PxVec3 posIni;
-	PxVec3 velMedia;
-
-	int numParticles;
-
-	PxTransform* transform = nullptr;
-
-	double damping;
-
-	RenderItem* renderItem = nullptr;
-
+	float getGenRate() const { return genRate; }
 
 };
-

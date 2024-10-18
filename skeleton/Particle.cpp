@@ -21,7 +21,11 @@ Particle::~Particle()
 
 void Particle::Integrate(double t)
 {
-	if (lifeTime <= 0) return;  
+	if (lifeTime <= 0) {
+		delete this;
+	
+		return;
+	}
 
 	// Actualizamos la velocidad con la aceleración
 	velo = velo + acele * t;
@@ -36,6 +40,20 @@ void Particle::Integrate(double t)
 	velo = velo * pow(damping, t);
 
 	lifeTime -= t;
+
+	
+}
+
+void Particle::update(double t, ParticleSystem& sys)
+{
+	livedTime += t;
+	Integrate(t);
+	if (livedTime > lifeTime || !isInside(sys.getCenter(), sys.getRatius())) sys.killParticle(this);
+}
+
+bool Particle::isInside(Vector3 const& v, float radio)
+{
+	return (transform->p - v).magnitude() < radio;
 }
 
 void Particle::SetAccel(PxVec3 newAcel) 
