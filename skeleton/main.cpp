@@ -77,8 +77,10 @@ void initPhysics(bool interactive)
 	 //zRenderItem = new RenderItem(CreateShape(PxSphereGeometry(1)), new PxTransform(10.0, -5.0, 0.0), Vector4(1.0, 1.0, 0.0, 1));
 	 //aRenderItem = new RenderItem(CreateShape(PxSphereGeometry(1)), new PxTransform(0.0, -5.0, 10.0), Vector4(1, 0.0, 0.0, 1));
 
-		/*fuente = new Fuente(Vector3(0, 0, 0), Vector3(0, 20, 0), 10);
-		fuente->ParticlesGen();*/
+	partSys = new ParticleSystem();
+	partSys->setRatius(100.0f);
+	//partSys->addUniPartGen(Vector3(0, 0, 0), Vector3(0, 30, 0), 30 , 20.0f, 10.0f, spawnDist::UNIFORM_SD);
+	partSys->addNormalPartGen(Vector3(0, 0, 0), Vector3(0, 40, 0), 40, Vector3(10, 0.0001, 10), 5.0f, spawnDist::UNIFORM_SD);
 	}
 
 
@@ -88,19 +90,19 @@ void initPhysics(bool interactive)
 void stepPhysics(bool interactive, double t)
 {
 	PX_UNUSED(interactive);
-	for each (Particle* particle in particlesVector)
-	{
-		particle->Integrate(t);
-		
 
-	}
-
-
-	
-	//fuente->Update(t);
 
 	gScene->simulate(t);
 	gScene->fetchResults(true);
+
+	for each (Particle * particle in particlesVector)
+	{
+		particle->Integrate(t);
+
+
+	}
+
+	partSys->update(t);
 }
 
 // Function to clean data
@@ -108,38 +110,6 @@ void stepPhysics(bool interactive, double t)
 void cleanupPhysics(bool interactive)
 {
 	PX_UNUSED(interactive);
-
-	//DeregisterRenderItem(xRenderItem);
-	/*for each (Particle * particle in particlesVector)
-	{
-		if (particle->getLifeTime() <= 0)
-		{
-			delete particle;
-			particle = nullptr;
-			cout << "muelto";
-		}
-
-
-	}*/
-
-
-	//for (auto it = particlesVector.begin(); it != particlesVector.end(); )
-	//{
-	//	Particle* particle = *it;
-
-
-	//	// Si la partícula ha agotado su vida, la eliminamos
-	//	if (particle->getLifeTime() <= 0)
-	//	{
-	//		delete particle;  // Llama automáticamente al destructor
-	//		it = particlesVector.erase(it);  // Eliminamos del vector y actualizamos el iterador
-	//	}
-	//	else
-	//	{
-	//		++it;  //Avanzamos el iterador si la partícula sigue activa
-	//	}
-	//}
-
 
 
 

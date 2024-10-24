@@ -3,17 +3,28 @@
 
 #include <random>
 class ParticleSystem;
+
+enum spawnDist {
+	UNIFORM_SD,
+	NORMAL_SD
+};
+
+
 class Fuente
 {
 protected:
 	std::mt19937 randm;
-	float genRate;
-	Vector3 pos;
-	Vector3 direction;
+	float genRate; //Part. por segundo
+	float genRange;
+
     float counter = 0.0f;
 
+	Particle particle;
+	spawnDist sd;
+
 public:
-	Fuente(Vector3 pos, float rate): pos(pos), genRate(rate) {
+	Fuente(Particle* p, float rate, float range, spawnDist sd)
+		: particle(*p), genRate(rate), genRange(range), sd(sd) {
 		std::random_device rd;
 		randm.seed(rd());
 	}
@@ -23,5 +34,7 @@ public:
 	virtual Particle* emitParticle() = 0;
 
 	float getGenRate() const { return genRate; }
+
+	Vector3 calculatePosition();
 
 };

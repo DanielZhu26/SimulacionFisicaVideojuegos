@@ -1,15 +1,32 @@
 #include "ParticleSystem.h"
 
+
+ParticleSystem::~ParticleSystem()
+{
+	for (auto p : partList) {
+		delete p;
+		p = nullptr;
+	}
+	for (auto g : genList) {
+		delete g;
+		g = nullptr;
+	}
+
+	partList.clear();
+	genList.clear();
+
+}
+
 void ParticleSystem::update(double t) {
 
 	deleteVector.clear();
 
-	for (auto g : gList) {
+	for (auto g : genList) {
 		if (g != nullptr)
 			g->update(t, *this);
 	}
 
-	for (auto it = pList.begin(); it != pList.end(); ) {
+	for (auto it = partList.begin(); it != partList.end(); ) {
 		if (*it != nullptr) {
 			(*it)->update(t, *this);
 			++it;
@@ -17,35 +34,33 @@ void ParticleSystem::update(double t) {
 	}
 
 	for (auto p : deleteVector) {
-		auto it = std::find(pList.begin(), pList.end(), p);
-		if (it != pList.end()) {
-			pList.erase(it);
+		auto it = std::find(partList.begin(), partList.end(), p);
+		if (it != partList.end()) {
+			partList.erase(it);
 			delete p;
 		}
 	}
 }
 
-void ParticleSystem::killParticle(Particle* p) {
-	if (p != nullptr && p->getIterator() != pList.end())
+void ParticleSystem::deleteParticle(Particle* p) {
+	if (p != nullptr && p->getIterator() != partList.end())
 		deleteVector.push_back(p);
 }
 
 void ParticleSystem::addParticle(Particle* p) {
-	pList.push_back(p);
-	p->setIterator(--pList.end());
+	partList.push_back(p);
+	p->setIterator(--partList.end());
 }
 
-void ParticleSystem::addGenerator(Vector3 pos, float rate, generators_type type)
+void ParticleSystem::addUniPartGen(Vector3 pos, Vector3 direction, float rate, float range, float spawnR, spawnDist sd)
 {
-	switch (type)
-	{
-	case UNIFORM:
-		gList.push_back(new UniformGenerator(pos, rate, Vector3(-20, 20, 0), Vector3(20, 30, 0)));
-		break;
-	case NORMAL:
-		gList.push_back(new NormalGenerator(pos, rate, Vector3(0, 60, 0), Vector3(8, 0.5, 8)));
-		break;
-	default:
-		break;
-	}
+	Particle p = Particle(pos, direction);
+
+	genList.push_back(new UniPartGen(&p, rate, range, spawnR, sd));
+}
+
+void ParticleSystem::addNormalPartGen(Vector3 pos, Vector3 direction, float rate, Vector3 dev, float spawnR, spawnDist sd)
+{
+	Particle p = Particle(pos, direction);
+	genList.push_back(new NormalPartGen(&p, rate, dev, spawnR, sd));
 }

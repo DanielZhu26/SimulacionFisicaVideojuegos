@@ -4,18 +4,16 @@
 class NormalPartGen : public Fuente
 {
 private:
-	//	Velocidad media para distribucion
-	Vector3 meanVelocity;
-	//	Desviacion tipica para distribucion
-	Vector3 devVelocity;
+	
+	Vector3 meanVel; //Media
+	Vector3 dtVel; //Desviacion tipica
+
 
 public:
-	NormalPartGen(Vector3 pos, float rate, Vector3 meanV, Vector3 devV)
-		: Fuente(pos, rate), meanVelocity(meanV), devVelocity(devV) {}
+	NormalPartGen(Particle* p, float rate, Vector3 devV, float spawnRange, spawnDist sd)
+		: Fuente(p, rate, spawnRange, sd), meanVel(p->getVelocity()), dtVel(devV) {}
 
-	/**
-	*	Genera particulas a partir de una distribucion normal
-	*/
+
 	Particle* emitParticle() override;
 
 };

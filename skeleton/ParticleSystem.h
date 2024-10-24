@@ -3,19 +3,21 @@
 #include <list>
 #include "Particle.h"
 #include "Fuente.h"
-#include "UniformGenerator.h"
-//#include "NormalGenerator.h"
+#include "UniPartGen.h"
+#include "NormalPartGen.h"
 
 enum generators_type {
-	UNIFORM,
-	NORMAL
+
+	NORMAL,
+	UNIFORM
+	
 };
 
 class ParticleSystem
 {
 private:
-	std::list<Particle* > pList;
-	std::vector<Fuente* > gList; 
+	std::list<Particle*> partList;
+	std::vector<Fuente*> genList; 
 	std::vector<Particle*> deleteVector;
 
 	Vector3 mid = Vector3(0, 0, 0);
@@ -27,29 +29,17 @@ private:
 public:
 	ParticleSystem() {}
 
-	~ParticleSystem() {
-		for (auto p : pList) {
-			delete p;
-			p = nullptr;
-		}
-		for (auto g : gList) {
-			delete g;
-			g = nullptr;
-		}
-
-		pList.clear();
-		gList.clear();
-
-	}
+	~ParticleSystem();
 
 
 	void update(double t);
 
-	void killParticle(Particle* p);
+	void deleteParticle(Particle* p);
 
 	void addParticle(Particle* p);
 
-	void addGenerator(Vector3 pos, float rate, generators_type type);
+	void addUniPartGen(Vector3 pos, Vector3 direction, float rate, float range, float spawnR, spawnDist sd);
+	void addNormalPartGen(Vector3 pos, Vector3 direction, float rate, Vector3 dev, float spawnR, spawnDist sd);
 
 	void setCenter(Vector3 c) { mid = c; }
 	Vector3 getCenter() const { return mid; }

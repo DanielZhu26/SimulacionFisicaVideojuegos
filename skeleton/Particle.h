@@ -5,7 +5,7 @@
 #include "PxPhysicsAPI.h"
 #include <cmath>
 #include <list>
-#include "ParticleSystem.h"
+
  
 using namespace physx;
 using namespace std;
@@ -14,12 +14,30 @@ class Particle
 {
 public:
 	Particle(PxVec3 pos, PxVec3 velo, PxVec3 acel, double masa, double lifeT);
-	~Particle();
+	Particle(Vector3 pos, Vector3 vel, Vector3 acel = { 0,0,0 });
+	virtual ~Particle();
+
+	void Init(Vector3 pos, Vector3 vel, Vector3 acel = Vector3(0, -10, 0));
 
 	void Integrate(double t);
 
 	void SetAccel(PxVec3 newAcel);
+	
+
+	Vector3 getVelocity() const {
+		return velo;
+	}
+
 	void SetVel(PxVec3 newVel);
+
+
+	Vector3 getPosition() const {
+		return transform.p;
+	}
+
+	void setPosition(Vector3 p) {
+		transform.p = p;
+	}
 
 	void update(double t, ParticleSystem& sys);
 
@@ -46,7 +64,7 @@ private:
 	double livedTime;
 	double lifeTime;
 
-	PxTransform* transform = nullptr;
+	PxTransform transform;
 
 	double damping;
 
