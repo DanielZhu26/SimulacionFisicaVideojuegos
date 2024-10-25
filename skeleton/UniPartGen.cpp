@@ -3,13 +3,16 @@
 #include <array>
 #include <random>
 
-#define PI 3.14159265358979323846
+
+using namespace std;
+using namespace physx;
 
 
-UniPartGen::UniPartGen(Vector3D<> position, Vector3D<> direction, float speed, float angleDelta, float speedDelta, ParticleSystem* systemRef) :
-    Fuente(position, direction, speed, angleDelta, speedDelta, systemRef),
-    uniformDist(-1, 1)
-{}
+UniPartGen::UniPartGen(Vector3D<> pos, Vector3D<> dir, float vel, float deltAng, float deltVel, ParticleSystem* sys)
+    :Fuente(pos, dir, vel, deltAng, deltVel, sys)
+{
+
+}
 
 
 UniPartGen::~UniPartGen()
@@ -17,55 +20,34 @@ UniPartGen::~UniPartGen()
 
 }
 
-void UniPartGen::GenerateParticle()
+void UniPartGen::ParticleGen()
 {
-    systemRef->AddParticle(position,
-        RandomDir() * RandomSpeed(),
-        physx::PxGeometryType::Enum::eSPHERE,
-        0.5,
-        physx::PxVec4(0.0, 1.0, 0.0, 1.0));
+    systemRef->addParticle(position, CalculateRndDir() * CalcRndVel(), physx::PxGeometryType::Enum::eSPHERE, 0.5, physx::PxVec4(0.0, 1.0, 0.0, 1.0));
 }
 
-Vector3D<> UniPartGen::RandomDir()
+Vector3D<> UniPartGen::CalculateRndDir()
 {
-    // Genera un ángulo aleatorio entre -angleDelta y angleDelta (en radianes)
-    float randomAngle = angleDelta * (PI / 180) * uniformDist(randomGen); // Ángulo en radianes
+    float rndAngle = deltAngle * (3.14 / 180) * dist_uniforme(rnd); 
 
-    // Genera un ángulo aleatorio en el plano (-π, π)
-    float phi = uniformDist(randomGen) * PI;
+    float auxAngle = dist_uniforme(rnd) * 3.14;
 
     // Calcula las coordenadas del nuevo vector
-    float sinRandomAngle = std::sin(randomAngle);
-    float cosRandomAngle = std::cos(randomAngle);
+    float sinAngle = sin(rndAngle);
+    float cosAngle = cos(rndAngle);
 
-    // Vector en coordenadas esféricas
-    Vector3D<> randomVector = {
-        sinRandomAngle * std::cos(phi),
-        sinRandomAngle * std::sin(phi),
-        cosRandomAngle
-    };
+    Vector3D<> rndVec = {sinAngle * cos(auxAngle), sinAngle * sin(auxAngle), cosAngle};
 
-    // Combina el nuevo vector con la dirección
-    // Proyección en la dirección del vector
-    Vector3D<> result = {
-        direction.x * cosRandomAngle + randomVector.x,
-        direction.y * cosRandomAngle + randomVector.y,
-        direction.z * cosRandomAngle + randomVector.z
-    };
+    Vector3D<> rndDir = {direction.x * cosAngle + rndVec.x, direction.y * cosAngle + rndVec.y, direction.z * cosAngle + rndVec.z};
 
-    // Normaliza el resultado
-    result.Normalize();
+    rndDir.Normalize();
 
-    return result;
+    return rndDir;
 }
 
-float UniPartGen::RandomSpeed()
+float UniPartGen::CalcRndVel()
 {
-    // Genera una velocidad aleatoria entre -speedDelta y speedDelta
-    float randomSpeed = speedDelta * uniformDist(randomGen);
+    float randomSpeed = deltVel * dist_uniforme(rnd);
+    float rndVel = randomSpeed + vel;
 
-    // Añade la nueva velocidad aleatoria a la original
-    float result = randomSpeed + speed;
-
-    return result;
+    return rndVel;
 }

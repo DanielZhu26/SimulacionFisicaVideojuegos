@@ -4,11 +4,11 @@
 #include "Vector3D.h"
 #include <PxPhysicsAPI.h>
 
+
+using namespace std;
+using namespace physx;
 class Fuente;
 class Particle;
-
-#define MAX_DISTANCE 200
-#define MAX_LIFETIME 10
 
 class ParticleSystem
 {
@@ -16,23 +16,28 @@ public:
 	ParticleSystem();
 	~ParticleSystem();
 
-	int AddUniformGenerator(Vector3D<> position, Vector3D<> direction, float speed, float angleDelta, float speedDelta);
-	int AddGaussianGenerator(Vector3D<> position, Vector3D<> direction, float speed, float angleDelta, float speedDelta);
-	int AddRainGenerator(Vector3D<> position, float radius, int intensity);
 
-	void AddParticle(Vector3D<> position,
-					 Vector3D<> velocity,
-					 const physx::PxGeometryType::Enum& geoType = physx::PxGeometryType::Enum::eSPHERE,
-					 float size = 1,
-					 const physx::PxVec4& color = physx::PxVec4(1.0, 1.0, 0.0, 1.0));
+	void addParticle(Vector3D<> pos, Vector3D<> vel, const PxGeometryType::Enum& geoType = PxGeometryType::Enum::eSPHERE,
+		float size = 1, const PxVec4& color = PxVec4(1.0, 1.0, 0.0, 1.0));
+
+	int addUniPartGen(Vector3D<> pos, Vector3D<> dir, float vel, float deltAngle, float deltVel);
+	int addNormalPartGen(Vector3D<> pos, Vector3D<> dir, float vel, float deltAngle, float deltVel);
+	int addLluvia(Vector3D<> pos, float rad, int force);
+
 
 	void Update(double t);
 
 private:
-	std::list<Fuente*> generators;
-	std::list<Particle*> particles;
 
-	void GenerateParticles();
-	void KillParticles();
+	void ParticlesGen();
+	void DeleteParticles();
 	void UpdateParticles(double t);
+
+	list<Fuente*> genList;
+	list<Particle*> partList;
+
+	float max_lifeTime = 5;
+	float max_distance = 100;
+
+	
 };

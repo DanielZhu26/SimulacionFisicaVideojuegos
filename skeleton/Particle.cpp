@@ -7,9 +7,9 @@ using namespace physx;
 
 Particle::Particle(Vector3D<> pos, Vector3D<> vel, const PxGeometryType::Enum& geoType, float size, const PxVec4& color)
 {
-	tr = new PxTransform(PxVec3(pos.x, pos.y, pos.z));
-	velocity = vel;
-	aceleration = Vector3D<>();
+	trnasform = new PxTransform(PxVec3(pos.x, pos.y, pos.z));
+	velo = vel;
+	acele = Vector3D<>();
 	damping = 1;
 	PxShape* shape = nullptr;
 	lifeTime = 0;
@@ -32,28 +32,28 @@ Particle::Particle(Vector3D<> pos, Vector3D<> vel, const PxGeometryType::Enum& g
 		break;
 	}
 
-	item = new RenderItem(shape, tr, color);
+	renderItem = new RenderItem(shape, trnasform, color);
 }
 
 Particle::~Particle()
 {
-	DeregisterRenderItem(item);
-	delete item;
-	delete tr;
+	DeregisterRenderItem(renderItem);
+	delete renderItem;
+	delete trnasform;
 }
 
-void Particle::Integrate(double t)
+void Particle::integrate(double t)
 {
 	// Euler Semi-Implicito
 
-	velocity = velocity * std::pow(damping, t); // Damping
+	velo = velo * std::pow(damping, t); // Damping
 
-	velocity = velocity + aceleration * t; // Aceleraci�n
+	velo = velo + acele * t; // Aceleraci�n
 
-	tr->p += PxVec3(velocity.x, velocity.y, velocity.z) * t; // Seteamos posicion	
+	trnasform->p += PxVec3(velo.x, velo.y, velo.z) * t; // Seteamos posicion	
 }
 
-void Particle::UpdateState(double t)
+void Particle::decreaseLife(double t)
 {
 	lifeTime += t;
 }

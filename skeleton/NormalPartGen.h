@@ -7,9 +7,9 @@ public:
 	~NormalPartGen();
 
 private:
-	void GenerateParticle() override;
-	Vector3D<> RandomDir();
-	float RandomSpeed();
+	void ParticleGen() override;
+	Vector3D<> CalculateRndDir();
+	float CalcRndVel();
 
 
 	std::normal_distribution<> gaussianDistAngle;

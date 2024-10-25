@@ -1,19 +1,18 @@
 ﻿#include "NormalPartGen.h"
 #include <limits>
 
-#define PI 3.14159265358979323846
 
-NormalPartGen::NormalPartGen(Vector3D<> position, Vector3D<> direction, float speed, float angleDelta, float speedDelta, ParticleSystem* systemRef) :
-    Fuente(position, direction, speed, angleDelta, speedDelta, systemRef)
+NormalPartGen::NormalPartGen(Vector3D<> pos, Vector3D<> dir, float vel, float deltAngle, float deltVel, ParticleSystem* sysR) :
+    Fuente(pos, dir, vel, deltAngle, deltVel, sysR)
 {
-    if (angleDelta != 0.0)
-        gaussianDistAngle = std::normal_distribution<>(0, angleDelta * (PI / 180));
+    if (deltAngle != 0.0)
+        gaussianDistAngle = std::normal_distribution<>(0, deltAngle * (3.14 / 180));
     else
         gaussianDistAngle = std::normal_distribution<>(0, std::numeric_limits<float>::min());
 
 
-    if (speedDelta != 0.0)
-        gaussianDistSpeed = std::normal_distribution<>(0, speedDelta);
+    if (deltVel != 0.0)
+        gaussianDistSpeed = std::normal_distribution<>(0, deltVel);
     else
         gaussianDistSpeed = std::normal_distribution<>(0, std::numeric_limits<float>::min());
 }
@@ -24,22 +23,18 @@ NormalPartGen::~NormalPartGen()
 
 }
 
-void NormalPartGen::GenerateParticle()
+void NormalPartGen::ParticleGen()
 {
-    systemRef->AddParticle(position,
-        RandomDir() * RandomSpeed(),
-        physx::PxGeometryType::Enum::eSPHERE,
-        0.5,
-        physx::PxVec4(1.0, 1.0, 0.0, 1.0));
+    systemRef->addParticle(position, CalculateRndDir() * CalcRndVel(), PxGeometryType::Enum::eSPHERE, 0.5, PxVec4(1.0, 1.0, 0.0, 1.0));
 }
 
-Vector3D<> NormalPartGen::RandomDir()
+Vector3D<> NormalPartGen::CalculateRndDir()
 {
     // Genera un ángulo aleatorio entre -angleDelta y angleDelta (en radianes)
-    float randomAngle = gaussianDistAngle(randomGen); // Ángulo en radianes
+    float randomAngle = gaussianDistAngle(rnd); // Ángulo en radianes
 
     // Genera un ángulo aleatorio en el plano (-π, π)
-    float phi = gaussianDistAngle(randomGen) * PI;
+    float phi = gaussianDistAngle(rnd) * 3.14;
 
     // Calcula las coordenadas del nuevo vector
     float sinRandomAngle = std::sin(randomAngle);
@@ -66,13 +61,13 @@ Vector3D<> NormalPartGen::RandomDir()
     return result;
 }
 
-float NormalPartGen::RandomSpeed()
+float NormalPartGen::CalcRndVel()
 {
     // Genera una velocidad aleatoria entre -speedDelta y speedDelta
-    float randomSpeed = gaussianDistSpeed(randomGen);
+    float randomSpeed = gaussianDistSpeed(rnd);
 
     // Añade la nueva velocidad aleatoria a la original
-    float result = randomSpeed + speed;
+    float result = randomSpeed + vel;
 
     return result;
 }

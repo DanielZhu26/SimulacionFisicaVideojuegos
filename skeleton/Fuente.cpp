@@ -1,19 +1,19 @@
 #include "Fuente.h"
 #include <random>
 
-Fuente::Fuente(Vector3D<> position, Vector3D<> direction, float speed, float angleDelta, float speedDelta, ParticleSystem* systemRef) :
+Fuente::Fuente(Vector3D<> pos, Vector3D<> dir, float vel, float deltAngle, float deltVel, ParticleSystem* sysR) :
 	id(-1),
-	position(position),
-	direction(direction),
-	speed(speed),
-	angleDelta(angleDelta),
-	speedDelta(speedDelta),
-	systemRef(systemRef)
+	position(pos),
+	direction(dir),
+	vel(vel),
+	deltAngle(deltAngle),
+	deltVel(deltVel),
+	systemRef(sysR)
 {
-	particleModel = new Particle(position, direction * speed, physx::PxGeometryType::Enum::eSPHERE, 1, physx::PxVec4(1.0, 1.0, 0.0, 1.0));
+	partRef = new Particle(pos, dir * vel, PxGeometryType::Enum::eSPHERE, 1, PxVec4(0.0, 0.0, 27.0, 1.0));
 
 	std::random_device rd;
-	randomGen = std::mt19937(rd());
+	rnd = std::mt19937(rd());
 }
 
 Fuente::~Fuente()

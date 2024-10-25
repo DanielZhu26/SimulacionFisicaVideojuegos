@@ -11,21 +11,28 @@ ParticleSystem::~ParticleSystem()
 {
 }
 
-
-int ParticleSystem::AddUniformGenerator(Vector3D<> position, Vector3D<> direction, float speed, float angleDelta, float speedDelta)
+void ParticleSystem::addParticle(Vector3D<> pos, Vector3D<> vel, const PxGeometryType::Enum& geoType, float size, const PxVec4& color)
 {
-	Fuente* generator = new UniPartGen(position, direction, speed, angleDelta, speedDelta, this);
-	generator->SetID(generators.size());
-	generators.push_back(generator);
-	return generator->GetID();
+	Particle* p = new Particle(pos, vel, geoType, size, color);
+	p->setAccel(Vector3D<>(0, -9.8, 0));
+	partList.push_back(p);
 }
 
-int ParticleSystem::AddGaussianGenerator(Vector3D<> position, Vector3D<> direction, float speed, float angleDelta, float speedDelta)
+
+int ParticleSystem::addUniPartGen(Vector3D<> pos, Vector3D<> dir, float vel, float deltAngle, float deltVel)
 {
-	Fuente* generator = new NormalPartGen(position, direction, speed, angleDelta, speedDelta, this);
-	generator->SetID(generators.size());
-	generators.push_back(generator);
-	return generator->GetID();
+	Fuente* unifGen = new UniPartGen(pos, dir, vel, deltAngle, deltVel, this);
+	unifGen->setIndice(genList.size());
+	genList.push_back(unifGen);
+	return unifGen->getIndice();
+}
+
+int ParticleSystem::addNormalPartGen(Vector3D<> pos, Vector3D<> dir, float vel, float deltAngle, float deltVel)
+{
+	Fuente* generator = new NormalPartGen(pos, dir, vel, deltAngle, deltVel, this);
+	generator->setIndice(genList.size());
+	genList.push_back(generator);
+	return generator->getIndice();
 }
 //
 //int ParticleSystem::AddRainGenerator(Vector3D<> position, float radius, int intensity)
@@ -36,45 +43,37 @@ int ParticleSystem::AddGaussianGenerator(Vector3D<> position, Vector3D<> directi
 //	return generator->GetID();
 //}
 
-void ParticleSystem::AddParticle(Vector3D<> position, Vector3D<> velocity, const physx::PxGeometryType::Enum& geoType, float size, const physx::PxVec4& color)
-{
-	Particle* p = new Particle(position, velocity, geoType, size, color);
-	p->SetAceleration(Vector3D<>(0, -9.8, 0));
-	particles.push_back(p);
-}
-
 
 void ParticleSystem::Update(double t)
 {
-	GenerateParticles();
-	KillParticles();
+	ParticlesGen();
+	DeleteParticles();
 	UpdateParticles(t);
 }
 
-void ParticleSystem::GenerateParticles()
+void ParticleSystem::ParticlesGen()
 {
-	for (Fuente* gen : generators) {
-		gen->GenerateParticle();
+	for (Fuente* gen : genList) {
+		gen->ParticleGen();
 	}
 }
 
-void ParticleSystem::KillParticles()
+void ParticleSystem::DeleteParticles()
 {
-	for (auto it = particles.begin(); it != particles.end(); ) {
-		if ((*it)->GetPosition().GetMagnitude() > MAX_DISTANCE || (*it)->GetLifeTime() > MAX_LIFETIME) {
+	for (auto it = partList.begin(); it != partList.end(); ) {
+		if ((*it)->getPos().getMagnitude() > max_distance || (*it)->getLifeTime() > max_lifeTime) {
 			delete* it;
-			it = particles.erase(it); // borra y avanza el iterador
+			it = partList.erase(it); 
 		}
-		else {
-			++it; // solo avanza el iterador si no se borr� el elemento
-		}
+		else  
+			++it; 
 	}
 }
 
 void ParticleSystem::UpdateParticles(double t)
 {
-	for (Particle* p : particles) {
-		p->Integrate(t);
-		p->UpdateState(t);
+	for (Particle* p : partList) {
+		p->integrate(t);
+		p->decreaseLife(t);
 	}
 }

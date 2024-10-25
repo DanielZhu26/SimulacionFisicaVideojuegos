@@ -8,27 +8,27 @@
 class Fuente
 {
 public:
-	Fuente(Vector3D<> position, Vector3D<> direction, float speed, float angleDelta, float speedDelta, ParticleSystem* systemRef);
+	Fuente(Vector3D<> pos, Vector3D<> dir, float vel, float deltAngle, float deltVel, ParticleSystem* sysR);
 	~Fuente();
 
-	void SetID(int id) { this->id = id; };
-	int GetID() { return id; };
+	void setIndice(int id) { this->id = id; };
+	int getIndice() { return id; };
 
-	virtual void GenerateParticle() = 0;
+	virtual void ParticleGen() = 0;
 
-	void SetParticleModel(Particle* p) { particleModel = p; };
+	void SetParticleModel(Particle* p) { partRef = p; };
 
 protected:
+
 	int id;
 	Vector3D<> position;
 	Vector3D<> direction;
-	float speed;
-	float angleDelta;
-	float speedDelta;
+	float vel;
+	float deltAngle;
+	float deltVel;
 
-	Particle* particleModel;
-
+	Particle* partRef;
 	ParticleSystem* systemRef;
 
-	std::mt19937 randomGen;
+	std::mt19937 rnd;
 };

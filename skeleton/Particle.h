@@ -2,38 +2,41 @@
 #include "Vector3D.h"
 #include <PxPhysicsAPI.h>
 
+
+using namespace physx;
 class RenderItem;
 
 class Particle
 {
 public:
-	Particle::Particle(Vector3D<> position,
-		Vector3D<> velocity,
-		const physx::PxGeometryType::Enum& geoType = physx::PxGeometryType::Enum::eSPHERE,
-		float size = 1,
-		const physx::PxVec4& color = physx::PxVec4(1.0, 1.0, 0.0, 1.0));
+	Particle::Particle(Vector3D<> pos, Vector3D<> vel, const PxGeometryType::Enum& geoType = PxGeometryType::Enum::eSPHERE,
+		float size = 0.5, const PxVec4& color = PxVec4(1.0, 1.0, 0.0, 1.0));
 	~Particle();
 
-	void Integrate(double t);
-	void UpdateState(double t);
+	void integrate(double t);
+	void decreaseLife(double t);
 
-	double GetLifeTime() { return lifeTime; };
+	//Getters
+	double getLifeTime() { return lifeTime; };
 
-	Vector3D<> GetAceleration() const { return aceleration; }
-	Vector3D<> GetVelocity() const { return velocity; };
-	Vector3D<> GetPosition() const { return Vector3D<>(tr->p.x, tr->p.y, tr->p.z); };
-	void SetAceleration(Vector3D<> acel) { aceleration = acel; }
-	void SetVelocity(Vector3D<> vel) { velocity = vel; }
-	void SetPosition(Vector3D<> pos) { tr->p = physx::PxVec3(pos.x, pos.y, pos.z); }
+	Vector3D<> getAccel() const { return acele; }
+	Vector3D<> getVel() const { return velo; };
+	Vector3D<> getPos() const { return Vector3D<>(trnasform->p.x, trnasform->p.y, trnasform->p.z); };
 
-
+	//Setters
+	void setAccel(Vector3D<> acel) { acele = acel; }
+	void setVel(Vector3D<> vel) { velo = vel; }
+	void setPos(Vector3D<> pos) { trnasform->p = PxVec3(pos.x, pos.y, pos.z); }
 
 protected:
-	RenderItem* item;
-	Vector3D<> velocity;
-	physx::PxTransform* tr;
-	Vector3D<> aceleration;
-	double damping;
+
+	RenderItem* renderItem;
+	PxTransform* trnasform;
+
+	Vector3D<> velo;
+	Vector3D<> acele;
 
 	double lifeTime;
+	double damping;
+	
 };

@@ -6,15 +6,15 @@
 class UniPartGen : public Fuente
 {
 public:
-	UniPartGen(Vector3D<> position, Vector3D<> direction, float speed, float angleDelta, float speedDelta, ParticleSystem* systemRef);
+	UniPartGen(Vector3D<> pos, Vector3D<> direction, float speed, float angleDelta, float speedDelta, ParticleSystem* sysR);
 	~UniPartGen();
 
 private:
 
-	void GenerateParticle() override;
-	Vector3D<> RandomDir();
-	float RandomSpeed();
+	void ParticleGen() override;
+	Vector3D<> CalculateRndDir();
+	float CalcRndVel();
 
 
-	std::uniform_real_distribution<> uniformDist;
+	std::uniform_real_distribution<> dist_uniforme;
 };

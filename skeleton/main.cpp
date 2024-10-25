@@ -80,8 +80,8 @@ void initPhysics(bool interactive)
 	particleSystem = new ParticleSystem();
 
 
-	particleSystem->AddGaussianGenerator(Vector3D<>(20, -20, 10), Vector3D<>(-0.4, 1, 0), 30, 5, 1);
-	particleSystem->AddUniformGenerator(Vector3D<>(30, 10, 10), Vector3D<>(-0.4, 1, 0), 30, 5, 1);
+	particleSystem->addNormalPartGen(Vector3D<>(20, -20, 10), Vector3D<>(-0.4, 1, 0), 30, 5, 1);
+	particleSystem->addUniPartGen(Vector3D<>(30, 10, 10), Vector3D<>(-0.4, 1, 0), 30, 5, 1);
 
 	
 	}
@@ -100,7 +100,7 @@ void stepPhysics(bool interactive, double t)
 
 	for each (Particle * particle in particlesVector)
 	{
-		particle->Integrate(t);
+		particle->integrate(t);
 
 
 	}
