@@ -16,7 +16,7 @@
 
 std::string display_text = "This is a test";
 
-
+using namespace std;
 using namespace physx;
 
 PxDefaultAllocator		gAllocator;
@@ -46,7 +46,7 @@ vector<Particle*> particlesVector;
 
 PxTransform* x, y, z, origin;
 
-ParticleSystem* partSys;
+ParticleSystem* particleSystem = nullptr;
 
 // Initialize physics engine
 void initPhysics(bool interactive)
@@ -77,10 +77,13 @@ void initPhysics(bool interactive)
 	 //zRenderItem = new RenderItem(CreateShape(PxSphereGeometry(1)), new PxTransform(10.0, -5.0, 0.0), Vector4(1.0, 1.0, 0.0, 1));
 	 //aRenderItem = new RenderItem(CreateShape(PxSphereGeometry(1)), new PxTransform(0.0, -5.0, 10.0), Vector4(1, 0.0, 0.0, 1));
 
-	partSys = new ParticleSystem();
-	partSys->setRatius(100.0f);
-	//partSys->addUniPartGen(Vector3(0, 0, 0), Vector3(0, 30, 0), 30 , 20.0f, 10.0f, spawnDist::UNIFORM_SD);
-	partSys->addNormalPartGen(Vector3(0, 0, 0), Vector3(0, 40, 0), 40, Vector3(10, 0.0001, 10), 5.0f, spawnDist::UNIFORM_SD);
+	particleSystem = new ParticleSystem();
+
+
+	particleSystem->AddGaussianGenerator(Vector3D<>(20, -20, 10), Vector3D<>(-0.4, 1, 0), 30, 5, 1);
+	particleSystem->AddUniformGenerator(Vector3D<>(30, 10, 10), Vector3D<>(-0.4, 1, 0), 30, 5, 1);
+
+	
 	}
 
 
@@ -102,7 +105,9 @@ void stepPhysics(bool interactive, double t)
 
 	}
 
-	partSys->update(t);
+	particleSystem->Update(t);
+
+	
 }
 
 // Function to clean data
@@ -111,7 +116,7 @@ void cleanupPhysics(bool interactive)
 {
 	PX_UNUSED(interactive);
 
-
+	delete particleSystem;
 
 	// Rigid Body ++++++++++++++++++++++++++++++++++++++++++
 	gScene->release();
@@ -144,10 +149,10 @@ void keyPress(unsigned char key, const PxTransform& camera)
 	{
 		cout << "Particle" << endl;
 
-		Particle* particle = new Particle(GetCamera()->getTransform().p, 20 * GetCamera()->getDir(), PxVec3(0, 0, 0), 1, 5);
-		//Particle* particle = new Particle(PxVec3(GetCamera()->getTransform().p), PxVec3(-25, 3, -25), PxVec3(0, 0, 0));
-		particle->SetAccel(PxVec3(0, -2, 0));
-		particlesVector.push_back(particle);
+		//Particle* particle = new Particle(GetCamera()->getTransform().p, 20 * GetCamera()->getDir(), PxVec3(0, 0, 0), 1, 5);
+		////Particle* particle = new Particle(PxVec3(GetCamera()->getTransform().p), PxVec3(-25, 3, -25), PxVec3(0, 0, 0));
+		//particle->SetAceleration(Vector3D<>(0, -2, 0));
+		//particlesVector.push_back(particle);
 		break;
 	}
 	default:

@@ -1,79 +1,39 @@
 #pragma once
-
 #include "Vector3D.h"
-#include "RenderUtils.hpp"
-#include "PxPhysicsAPI.h"
-#include <cmath>
-#include <list>
+#include <PxPhysicsAPI.h>
 
- 
-using namespace physx;
-using namespace std;
-class ParticleSystem;
+class RenderItem;
+
 class Particle
 {
 public:
-	Particle(PxVec3 pos, PxVec3 velo, PxVec3 acel, double masa, double lifeT);
-	Particle(Vector3 pos, Vector3 vel, Vector3 acel = { 0,0,0 });
-	virtual ~Particle();
-
-	void Init(Vector3 pos, Vector3 vel, Vector3 acel = Vector3(0, -10, 0));
+	Particle::Particle(Vector3D<> position,
+		Vector3D<> velocity,
+		const physx::PxGeometryType::Enum& geoType = physx::PxGeometryType::Enum::eSPHERE,
+		float size = 1,
+		const physx::PxVec4& color = physx::PxVec4(1.0, 1.0, 0.0, 1.0));
+	~Particle();
 
 	void Integrate(double t);
+	void UpdateState(double t);
 
-	void SetAccel(PxVec3 newAcel);
-	
+	double GetLifeTime() { return lifeTime; };
 
-	Vector3 getVelocity() const {
-		return velo;
-	}
+	Vector3D<> GetAceleration() const { return aceleration; }
+	Vector3D<> GetVelocity() const { return velocity; };
+	Vector3D<> GetPosition() const { return Vector3D<>(tr->p.x, tr->p.y, tr->p.z); };
+	void SetAceleration(Vector3D<> acel) { aceleration = acel; }
+	void SetVelocity(Vector3D<> vel) { velocity = vel; }
+	void SetPosition(Vector3D<> pos) { tr->p = physx::PxVec3(pos.x, pos.y, pos.z); }
 
-	void SetVel(PxVec3 newVel);
 
 
-	Vector3 getPosition() const {
-		return transform.p;
-	}
-
-	void setPosition(Vector3 p) {
-		transform.p = p;
-	}
-
-	void update(double t, ParticleSystem& sys);
-
-	double getLifeTime() {
-		return lifeTime;
-	}
-	void setLifeTime(float t) { lifeTime = t; }
-
-	void setIterator(std::list<Particle*>::iterator it) {
-		part_it = it;
-	}
-	std::list<Particle*>::iterator getIterator() const {
-		return part_it;
-	}
-
-	bool isInside(Vector3 const& v, float radio);
-
-private:
-	PxVec3 velo;
-	PxVec3 acele;
-	PxVec3 pose;
-
-	double mass;
-	double livedTime;
-	double lifeTime;
-
-	PxTransform transform;
-
+protected:
+	RenderItem* item;
+	Vector3D<> velocity;
+	physx::PxTransform* tr;
+	Vector3D<> aceleration;
 	double damping;
 
-	RenderItem* renderItem = nullptr;
-
-	list<Particle*>::iterator part_it;
-
-
+	double lifeTime;
 };
-
-
-

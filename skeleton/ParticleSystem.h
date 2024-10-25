@@ -1,53 +1,38 @@
 #pragma once
-#include <vector>
+
 #include <list>
-#include "Particle.h"
-#include "Fuente.h"
-#include "UniPartGen.h"
-#include "NormalPartGen.h"
+#include "Vector3D.h"
+#include <PxPhysicsAPI.h>
 
-enum generators_type {
+class Fuente;
+class Particle;
 
-	NORMAL,
-	UNIFORM
-	
-};
+#define MAX_DISTANCE 200
+#define MAX_LIFETIME 10
 
 class ParticleSystem
 {
-private:
-	std::list<Particle*> partList;
-	std::vector<Fuente*> genList; 
-	std::vector<Particle*> deleteVector;
-
-	Vector3 mid = Vector3(0, 0, 0);
-
-	//Radio max donde se encuentran las particulas
-	float radioMax;
-	double partLifeTime = 5.0;
-
 public:
-	ParticleSystem() {}
-
+	ParticleSystem();
 	~ParticleSystem();
 
+	int AddUniformGenerator(Vector3D<> position, Vector3D<> direction, float speed, float angleDelta, float speedDelta);
+	int AddGaussianGenerator(Vector3D<> position, Vector3D<> direction, float speed, float angleDelta, float speedDelta);
+	int AddRainGenerator(Vector3D<> position, float radius, int intensity);
 
-	void update(double t);
+	void AddParticle(Vector3D<> position,
+					 Vector3D<> velocity,
+					 const physx::PxGeometryType::Enum& geoType = physx::PxGeometryType::Enum::eSPHERE,
+					 float size = 1,
+					 const physx::PxVec4& color = physx::PxVec4(1.0, 1.0, 0.0, 1.0));
 
-	void deleteParticle(Particle* p);
+	void Update(double t);
 
-	void addParticle(Particle* p);
+private:
+	std::list<Fuente*> generators;
+	std::list<Particle*> particles;
 
-	void addUniPartGen(Vector3 pos, Vector3 direction, float rate, float range, float spawnR, spawnDist sd);
-	void addNormalPartGen(Vector3 pos, Vector3 direction, float rate, Vector3 dev, float spawnR, spawnDist sd);
-
-	void setCenter(Vector3 c) { mid = c; }
-	Vector3 getCenter() const { return mid; }
-
-	void changeParticleLifeTime(float t) { partLifeTime = t; }
-	float getParticleLifeTime() const { return partLifeTime; }
-
-	void setRatius(float r) { radioMax = r; }
-	float getRatius() const { return radioMax; }
-	
+	void GenerateParticles();
+	void KillParticles();
+	void UpdateParticles(double t);
 };

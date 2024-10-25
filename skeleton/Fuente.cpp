@@ -1,43 +1,21 @@
 #include "Fuente.h"
-#include "ParticleSystem.h"
+#include <random>
 
-void Fuente::update(double t, ParticleSystem& partSys) {
-    // Acumula el tiempo
-    counter += t;
+Fuente::Fuente(Vector3D<> position, Vector3D<> direction, float speed, float angleDelta, float speedDelta, ParticleSystem* systemRef) :
+	id(-1),
+	position(position),
+	direction(direction),
+	speed(speed),
+	angleDelta(angleDelta),
+	speedDelta(speedDelta),
+	systemRef(systemRef)
+{
+	particleModel = new Particle(position, direction * speed, physx::PxGeometryType::Enum::eSPHERE, 1, physx::PxVec4(1.0, 1.0, 0.0, 1.0));
 
-    int particles = static_cast<int>(counter * genRate);
-
-    for (int i = 0; i < particles; ++i) {
-        Particle* newParticle = emitParticle();
-
-        if (newParticle) {
-            partSys.addParticle(newParticle);
-            newParticle->setLifeTime(partSys.getParticleLifeTime());
-        }
-    }
-
-    counter -= particles / genRate;
+	std::random_device rd;
+	randomGen = std::mt19937(rd());
 }
 
-Vector3 Fuente::calculatePosition()
+Fuente::~Fuente()
 {
-    Vector3 modPos = particle.getPosition();
-    Vector3 endPos;
-
-    if (sd == UNIFORM_SD) {
-
-        std::uniform_real_distribution<float> distX(modPos.x - genRange, modPos.x + genRange);
-        std::uniform_real_distribution<float> distY(modPos.y - genRange, modPos.y + genRange);
-        std::uniform_real_distribution<float> distZ(modPos.z - genRange, modPos.z + genRange);
-        endPos = Vector3(distX(randm), distY(randm), distZ(randm));
-    }
-    else if (sd == NORMAL_SD) {
-
-        Vector3 dev = { genRange, genRange, genRange };
-        std::normal_distribution<float> distX(modPos.x, genRange);
-        std::normal_distribution<float> distY(modPos.y, genRange);
-        std::normal_distribution<float> distZ(modPos.z, genRange);
-        endPos = Vector3(distX(randm), distY(randm), distZ(randm));
-    }
-    return endPos;
 }
