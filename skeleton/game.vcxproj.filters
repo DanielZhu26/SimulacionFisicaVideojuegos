@@ -16,6 +16,7 @@
     <ClCompile Include="ParticleSystem.cpp" />
     <ClCompile Include="NormalPartGen.cpp" />
     <ClCompile Include="UniPartGen.cpp" />
+    <ClCompile Include="RainGen.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="core.hpp" />
@@ -33,6 +34,7 @@
     <ClInclude Include="ParticleSystem.h" />
     <ClInclude Include="NormalPartGen.h" />
     <ClInclude Include="UniPartGen.h" />
+    <ClInclude Include="RainGen.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Render">

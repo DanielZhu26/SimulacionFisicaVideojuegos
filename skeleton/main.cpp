@@ -46,7 +46,7 @@ vector<Particle*> particlesVector;
 
 PxTransform* x, y, z, origin;
 
-ParticleSystem* particleSystem = nullptr;
+ParticleSystem* partSys = nullptr;
 
 // Initialize physics engine
 void initPhysics(bool interactive)
@@ -77,11 +77,13 @@ void initPhysics(bool interactive)
 	 //zRenderItem = new RenderItem(CreateShape(PxSphereGeometry(1)), new PxTransform(10.0, -5.0, 0.0), Vector4(1.0, 1.0, 0.0, 1));
 	 //aRenderItem = new RenderItem(CreateShape(PxSphereGeometry(1)), new PxTransform(0.0, -5.0, 10.0), Vector4(1, 0.0, 0.0, 1));
 
-	particleSystem = new ParticleSystem();
+	//Particle* particle = new Particle(PxVec3(0,0,0), PxVec3(-1, 10, 0), PxVec3(0, 0, 0));
+	//particlesVector.push_back(particle);
 
-
-	particleSystem->addNormalPartGen(Vector3D<>(20, -20, 10), Vector3D<>(-0.4, 1, 0), 30, 5, 1);
-	particleSystem->addUniPartGen(Vector3D<>(30, 10, 10), Vector3D<>(-0.4, 1, 0), 30, 5, 1);
+	partSys = new ParticleSystem();
+	//partSys->addNormalPartGen(Vector3D<>(20, -20, 10), Vector3D<>(-0.4, 1, 0), 30, 5, 1);
+	//partSys->addUniPartGen(Vector3D<>(30, 10, 10), Vector3D<>(-0.4, 1, 0), 30, 5, 1);
+	partSys->addLluvia(Vector3D<>(0, 70, 0), 40, 10);
 
 	
 	}
@@ -100,12 +102,12 @@ void stepPhysics(bool interactive, double t)
 
 	for each (Particle * particle in particlesVector)
 	{
-		particle->integrate(t);
+		particle->Integrate(t);
 
 
 	}
 
-	particleSystem->Update(t);
+	partSys->Update(t);
 
 	
 }
@@ -116,7 +118,7 @@ void cleanupPhysics(bool interactive)
 {
 	PX_UNUSED(interactive);
 
-	delete particleSystem;
+	delete partSys;
 
 	// Rigid Body ++++++++++++++++++++++++++++++++++++++++++
 	gScene->release();
@@ -149,10 +151,29 @@ void keyPress(unsigned char key, const PxTransform& camera)
 	{
 		cout << "Particle" << endl;
 
-		//Particle* particle = new Particle(GetCamera()->getTransform().p, 20 * GetCamera()->getDir(), PxVec3(0, 0, 0), 1, 5);
-		////Particle* particle = new Particle(PxVec3(GetCamera()->getTransform().p), PxVec3(-25, 3, -25), PxVec3(0, 0, 0));
-		//particle->SetAceleration(Vector3D<>(0, -2, 0));
-		//particlesVector.push_back(particle);
+		//Cannon
+		Particle* particle = new Particle(GetCamera()->getTransform().p, 20 * GetCamera()->getDir(), PxVec3(0, 0, 0));
+		particle->setAcel(PxVec3(0, -2, 0));
+		particlesVector.push_back(particle);
+		break;
+	}
+	case 'G':
+	{
+		cout << "Particle" << endl;
+		//Gun
+		Particle* particle = new Particle(GetCamera()->getTransform().p, 100 * GetCamera()->getDir(), PxVec3(0, 0, 0));
+		particle->setAcel(PxVec3(0, -2, 0));
+		particlesVector.push_back(particle);
+		break;
+	}
+	case 'H':
+	{
+		cout << "Particle" << endl;
+		//Laser?
+		Particle* particle = new Particle(GetCamera()->getTransform().p, 10000 * GetCamera()->getDir(), PxVec3(0, 0, 0));
+		
+		particle->setAcel(PxVec3(0, -2, 0));
+		particlesVector.push_back(particle);
 		break;
 	}
 	default:

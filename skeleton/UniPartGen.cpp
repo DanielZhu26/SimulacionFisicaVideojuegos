@@ -7,7 +7,6 @@
 using namespace std;
 using namespace physx;
 
-
 UniPartGen::UniPartGen(Vector3D<> pos, Vector3D<> dir, float vel, float deltAng, float deltVel, ParticleSystem* sys)
     :Fuente(pos, dir, vel, deltAng, deltVel, sys)
 {
@@ -46,8 +45,8 @@ Vector3D<> UniPartGen::CalculateRndDir()
 
 float UniPartGen::CalcRndVel()
 {
-    float randomSpeed = deltVel * dist_uniforme(rnd);
-    float rndVel = randomSpeed + vel;
+    float rndVel = deltVel * dist_uniforme(rnd);
+    float resVel = rndVel + vel;
 
-    return rndVel;
+    return resVel;
 }

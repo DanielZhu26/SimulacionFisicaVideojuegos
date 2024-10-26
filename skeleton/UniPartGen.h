@@ -6,7 +6,7 @@
 class UniPartGen : public Fuente
 {
 public:
-	UniPartGen(Vector3D<> pos, Vector3D<> direction, float speed, float angleDelta, float speedDelta, ParticleSystem* sysR);
+	UniPartGen(Vector3D<> pos, Vector3D<> dir, float vel, float deltAngle, float deltVel, ParticleSystem* sysR);
 	~UniPartGen();
 
 private:

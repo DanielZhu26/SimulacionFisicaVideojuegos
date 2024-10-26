@@ -1,6 +1,7 @@
 ﻿#include "NormalPartGen.h"
 #include <limits>
 
+using namespace std;
 
 NormalPartGen::NormalPartGen(Vector3D<> pos, Vector3D<> dir, float vel, float deltAngle, float deltVel, ParticleSystem* sysR) :
     Fuente(pos, dir, vel, deltAngle, deltVel, sysR)
@@ -30,44 +31,28 @@ void NormalPartGen::ParticleGen()
 
 Vector3D<> NormalPartGen::CalculateRndDir()
 {
-    // Genera un ángulo aleatorio entre -angleDelta y angleDelta (en radianes)
-    float randomAngle = gaussianDistAngle(rnd); // Ángulo en radianes
+    float rndAngle = gaussianDistAngle(rnd); 
 
-    // Genera un ángulo aleatorio en el plano (-π, π)
-    float phi = gaussianDistAngle(rnd) * 3.14;
+    float aunxAngle = gaussianDistAngle(rnd) * 3.14;
 
-    // Calcula las coordenadas del nuevo vector
-    float sinRandomAngle = std::sin(randomAngle);
-    float cosRandomAngle = std::cos(randomAngle);
+    float sinAngle = std::sin(rndAngle);
+    float cosAngle = std::cos(rndAngle);
 
-    // Vector en coordenadas esféricas
-    Vector3D<> randomVector = {
-        sinRandomAngle * std::cos(phi),
-        sinRandomAngle * std::sin(phi),
-        cosRandomAngle
+    Vector3D<> rndVec = {sinAngle * cos(aunxAngle), sinAngle * sin(aunxAngle), cosAngle
     };
 
-    // Combina el nuevo vector con la dirección
-    // Proyección en la dirección del vector
-    Vector3D<> result = {
-        direction.x * cosRandomAngle + randomVector.x,
-        direction.y * cosRandomAngle + randomVector.y,
-        direction.z * cosRandomAngle + randomVector.z
+    Vector3D<> rndDir = { direction.x * cosAngle + rndVec.x, direction.y * cosAngle + rndVec.y, direction.z * cosAngle + rndVec.z
     };
 
-    // Normaliza el resultado
-    result.Normalize();
+    rndDir.Normalize();
 
-    return result;
+    return rndDir;
 }
 
 float NormalPartGen::CalcRndVel()
 {
-    // Genera una velocidad aleatoria entre -speedDelta y speedDelta
-    float randomSpeed = gaussianDistSpeed(rnd);
+    float rndVel = gaussianDistSpeed(rnd);
+    float resVel = rndVel + vel;
 
-    // Añade la nueva velocidad aleatoria a la original
-    float result = randomSpeed + vel;
-
-    return result;
+    return resVel;
 }

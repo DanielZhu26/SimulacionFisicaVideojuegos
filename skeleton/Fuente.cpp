@@ -18,4 +18,5 @@ Fuente::Fuente(Vector3D<> pos, Vector3D<> dir, float vel, float deltAngle, float
 
 Fuente::~Fuente()
 {
+
 }

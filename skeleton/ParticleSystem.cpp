@@ -1,7 +1,7 @@
 ﻿#include "ParticleSystem.h"
 #include "NormalPartGen.h"
 #include "UniPartGen.h"
-//#include "RainGenerator.h"
+#include "RainGen.h"
 
 ParticleSystem::ParticleSystem()
 {
@@ -34,14 +34,14 @@ int ParticleSystem::addNormalPartGen(Vector3D<> pos, Vector3D<> dir, float vel, 
 	genList.push_back(generator);
 	return generator->getIndice();
 }
-//
-//int ParticleSystem::AddRainGenerator(Vector3D<> position, float radius, int intensity)
-//{
-//	ParticleGenerator* generator = new RainGenerator(position, radius, intensity, this);
-//	generator->SetID(generators.size());
-//	generators.push_back(generator);
-//	return generator->GetID();
-//}
+int ParticleSystem::addLluvia(Vector3D<> pos, float rad, int force)
+{
+	Fuente* rainGen = new RainGen(pos, rad, force, this);
+	rainGen->setIndice(genList.size());
+	genList.push_back(rainGen);
+	return rainGen->getIndice();
+}
+
 
 
 void ParticleSystem::Update(double t)
@@ -73,7 +73,7 @@ void ParticleSystem::DeleteParticles()
 void ParticleSystem::UpdateParticles(double t)
 {
 	for (Particle* p : partList) {
-		p->integrate(t);
+		p->semiIntegrate(t);
 		p->decreaseLife(t);
 	}
 }
