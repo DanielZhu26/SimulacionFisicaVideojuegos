@@ -263,6 +263,8 @@
     <ClCompile Include="RenderUtils.cpp" />
     <ClCompile Include="Render\Camera.cpp" />
     <ClCompile Include="Render\Render.cpp" />
+    <ClCompile Include="SmokeGen.cpp" />
+    <ClCompile Include="SparkGen.cpp" />
     <ClCompile Include="UniPartGen.cpp" />
     <ClCompile Include="Vector3D.cpp" />
   </ItemGroup>
@@ -277,6 +279,8 @@
     <ClInclude Include="RenderUtils.hpp" />
     <ClInclude Include="Render\Camera.h" />
     <ClInclude Include="Render\Render.h" />
+    <ClInclude Include="SmokeGen.h" />
+    <ClInclude Include="SparkGen.h" />
     <ClInclude Include="UniPartGen.h" />
     <ClInclude Include="Vector3D.h" />
   </ItemGroup>

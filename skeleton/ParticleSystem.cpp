@@ -2,6 +2,8 @@
 #include "NormalPartGen.h"
 #include "UniPartGen.h"
 #include "RainGen.h"
+#include "SmokeGen.h"
+#include "SparkGen.h"
 
 ParticleSystem::ParticleSystem()
 {
@@ -40,6 +42,21 @@ int ParticleSystem::addLluvia(Vector3D<> pos, float rad, int force)
 	rainGen->setIndice(genList.size());
 	genList.push_back(rainGen);
 	return rainGen->getIndice();
+}
+int ParticleSystem::addSmoke(Vector3D<> pos, int force)
+{
+	Fuente* smokeGen = new SmokeGen(pos, force, this);
+	smokeGen->setIndice(genList.size());
+	genList.push_back(smokeGen);
+	return smokeGen->getIndice();
+}
+
+int ParticleSystem::addSpark(Vector3D<> pos, int force)
+{
+	Fuente* sparkGen = new SparkGen(pos, force, this);
+	sparkGen->setIndice(genList.size());
+	genList.push_back(sparkGen);
+	return sparkGen->getIndice();
 }
 
 

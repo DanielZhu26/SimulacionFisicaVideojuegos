@@ -17,6 +17,8 @@
     <ClCompile Include="NormalPartGen.cpp" />
     <ClCompile Include="UniPartGen.cpp" />
     <ClCompile Include="RainGen.cpp" />
+    <ClCompile Include="SmokeGen.cpp" />
+    <ClCompile Include="SparkGen.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="core.hpp" />
@@ -35,6 +37,8 @@
     <ClInclude Include="NormalPartGen.h" />
     <ClInclude Include="UniPartGen.h" />
     <ClInclude Include="RainGen.h" />
+    <ClInclude Include="SmokeGen.h" />
+    <ClInclude Include="SparkGen.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Render">

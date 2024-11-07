@@ -83,7 +83,9 @@ void initPhysics(bool interactive)
 	partSys = new ParticleSystem();
 	//partSys->addNormalPartGen(Vector3D<>(20, -20, 10), Vector3D<>(-0.4, 1, 0), 30, 5, 1);
 	//partSys->addUniPartGen(Vector3D<>(30, 10, 10), Vector3D<>(-0.4, 1, 0), 30, 5, 1);
-	partSys->addLluvia(Vector3D<>(0, 70, 0), 40, 10);
+	//partSys->addLluvia(Vector3D<>(0, 70, 0), 40, 10);
+	//partSys->addSmoke(Vector3D<>(5, 0, 5), 10);
+	partSys->addSpark(Vector3D<>(10, 0, 10), 20);
 
 	
 	}

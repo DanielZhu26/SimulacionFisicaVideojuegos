@@ -23,6 +23,8 @@ public:
 	int addUniPartGen(Vector3D<> pos, Vector3D<> dir, float vel, float deltAngle, float deltVel);
 	int addNormalPartGen(Vector3D<> pos, Vector3D<> dir, float vel, float deltAngle, float deltVel);
 	int addLluvia(Vector3D<> pos, float rad, int force);
+	int addSmoke(Vector3D<> pos, int force);
+	int addSpark(Vector3D<> pos, int force);
 
 
 	void Update(double t);
