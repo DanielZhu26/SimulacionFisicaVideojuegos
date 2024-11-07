@@ -15,7 +15,20 @@ Particle::Particle(PxVec3 pos, PxVec3 vel, PxVec3 acel):posit(pos), speed(vel), 
 	RegisterRenderItem(renderItem);
 	damping = 0.99;
 }
+Particle::Particle(Vector3D<> pos, Vector3D<> vel, Vector3D<> acel, float mass)
+	: pose(pos), velo(vel), acele(acel), mass(mass), lifeTime(0), damping(0.99) 
+{
+	transform = new PxTransform(PxVec3(pos.x, pos.y, pos.z));
+	velo = vel;
+	PxShape* shape = nullptr;
+	lifeTime = 0;
 
+	shape = CreateShape(PxSphereGeometry(0.5));
+
+
+	renderItem = new RenderItem(shape, transform, Vector4(0, 0, 0, 1));
+
+}
 
 Particle::Particle(Vector3D<> pos, Vector3D<> vel, const PxGeometryType::Enum& geoType, float size, const PxVec4& color)
 {
@@ -24,23 +37,8 @@ Particle::Particle(Vector3D<> pos, Vector3D<> vel, const PxGeometryType::Enum& g
 	PxShape* shape = nullptr;
 	lifeTime = 0;
 
-	switch (geoType)
-	{
-	case PxGeometryType::Enum::eSPHERE:
-		shape = CreateShape(PxSphereGeometry(size));
-		break;
-	case PxGeometryType::Enum::ePLANE:
-		shape = CreateShape(PxPlaneGeometry());
-		break;
-	case PxGeometryType::Enum::eCAPSULE:
-		shape = CreateShape(PxCapsuleGeometry(size, size));
-		break;
-	case PxGeometryType::Enum::eBOX:
-		shape = CreateShape(PxBoxGeometry(size, size, size));
-		break;
-	default:
-		break;
-	}
+	shape = CreateShape(PxSphereGeometry(size));
+
 
 	renderItem = new RenderItem(shape, transform, color);
 }

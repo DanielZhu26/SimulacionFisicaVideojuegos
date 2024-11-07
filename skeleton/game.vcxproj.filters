@@ -19,6 +19,8 @@
     <ClCompile Include="RainGen.cpp" />
     <ClCompile Include="SmokeGen.cpp" />
     <ClCompile Include="SparkGen.cpp" />
+    <ClCompile Include="ForceGen.cpp" />
+    <ClCompile Include="GravityForceGenerator.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="core.hpp" />
@@ -39,6 +41,8 @@
     <ClInclude Include="RainGen.h" />
     <ClInclude Include="SmokeGen.h" />
     <ClInclude Include="SparkGen.h" />
+    <ClInclude Include="ForceGen.h" />
+    <ClInclude Include="GravityForceGenerator.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Render">

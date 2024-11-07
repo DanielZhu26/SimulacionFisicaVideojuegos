@@ -3,6 +3,7 @@
 #include <list>
 #include "Vector3D.h"
 #include <PxPhysicsAPI.h>
+#include "ForceGen.h"
 
 
 using namespace std;
@@ -26,6 +27,8 @@ public:
 	int addSmoke(Vector3D<> pos, int force);
 	int addSpark(Vector3D<> pos, int force);
 
+	void addForceGen(ForceGen* fg);
+
 
 	void Update(double t);
 
@@ -37,6 +40,7 @@ private:
 
 	list<Fuente*> genList;
 	list<Particle*> partList;
+	list<ForceGen*> forceGensList;
 
 	float max_lifeTime = 5;
 	float max_distance = 100;

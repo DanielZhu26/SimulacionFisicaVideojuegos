@@ -10,6 +10,7 @@ class Particle
 {
 public:
 	Particle(PxVec3 pos, PxVec3 vel, PxVec3 acel);
+	Particle(Vector3D<> pos, Vector3D<> vel, Vector3D<> acel, float mass = 1.0f);
 	Particle::Particle(Vector3D<> pos, Vector3D<> vel, const PxGeometryType::Enum& geoType = PxGeometryType::Enum::eSPHERE,
 		float size = 0.5, const PxVec4& color = PxVec4(1.0, 1.0, 0.0, 1.0));
 	~Particle();
@@ -24,6 +25,8 @@ public:
 	Vector3D<> getAccel() const { return acele; }
 	Vector3D<> getVel() const { return velo; }
 	Vector3D<> getPos() const { return Vector3D<>(transform->p.x, transform->p.y, transform->p.z); }
+
+	float getMass() const { return mass; }
 
 	//Setters
 	void setAccel(Vector3D<> acel) { acele = acel; }
@@ -46,5 +49,7 @@ protected:
 
 	double lifeTime;
 	double damping = 0.99;
+
+	float mass;
 	
 };
