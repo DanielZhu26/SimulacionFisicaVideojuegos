@@ -1,8 +1,13 @@
-#pragma once
-#include "Particle.h"
-
-class ForceGen {
-public:
-    virtual ~ForceGen();
-    virtual void applyForce(Particle& particle) = 0; // Método que se debe implementar en cada generador de fuerza
-};
+//#pragma once
+//
+//#include <list>
+//#include "Particle.h"
+//
+//class ForceGen {
+//public:
+//    ForceGen() {};
+//
+//    ~ForceGen() {};
+//
+//    virtual void updateF(Particle* p, double t) = 0;
+//};

@@ -29,10 +29,10 @@ public:
     }
 
     // Metodo que devuelve una version normalizada del vector
-    Vector3D<T> GetNormalized() const {
-        float magnitude = getMagnitude();
-        return (magnitude > 0) ? Vector3D<T>(x / magnitude, y / magnitude, z / magnitude) : Vector3D<T>();
-    }
+    //Vector3D<T> GetNormalized() const {
+    //    float magnitude = getMagnitude();
+    //    return (magnitude > 0) ? Vector3D<T>(x / magnitude, y / magnitude, z / magnitude) : Vector3D<T>();
+    //}
 
     // Normaliza el vector modificando sus componentes
     void Normalize() {

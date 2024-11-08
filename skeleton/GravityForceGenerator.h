@@ -1,11 +1,16 @@
-#pragma once
-#include "ForceGen.h"
-
-class GravityForceGenerator : public ForceGen {
-public:
-    GravityForceGenerator(const Vector3D<> gravity) : gravity(gravity) {}
-    virtual void applyForce(Particle& particle) override;
-
-private:
-    Vector3D<> gravity;  
-};
+//#pragma once
+//
+//#include "ForceGen.h"
+//#include "Vector3D.h"
+//
+//class GravityForceGenerator : public ForceGen
+//{
+//public:
+//    GravityForceGenerator(Vector3D<> gravityace);
+//    ~GravityForceGenerator();
+//
+//    void updateF(Particle* p, double t) override;
+//
+//private:
+//    Vector3D<> gravityAcel;
+//};

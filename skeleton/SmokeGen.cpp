@@ -14,7 +14,7 @@ void SmokeGen::ParticleGen()
     for (int i = 0; i < force; i++) {
         // Ajustamos la velocidad para que las partículas se eleven hacia arriba lentamente y se dispersan suavemente
         Vector3D<> rndVel = Vector3D<>(rnd() % 2 - 1, 50 , rnd() % 2 - 1); 
-        systemRef->addParticle(CalcRndPos(), rndVel , PxGeometryType::Enum::eSPHERE, 5, PxVec4(0.9, 0.9, 0.9, 1));
+        systemRef->addParticle(CalcRndPos(), rndVel , PxGeometryType::Enum::eSPHERE, 8, PxVec4(0.9, 0.9, 0.9, 1));
     }
 }
 

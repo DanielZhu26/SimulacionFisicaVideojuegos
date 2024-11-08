@@ -77,15 +77,25 @@ void initPhysics(bool interactive)
 	 //zRenderItem = new RenderItem(CreateShape(PxSphereGeometry(1)), new PxTransform(10.0, -5.0, 0.0), Vector4(1.0, 1.0, 0.0, 1));
 	 //aRenderItem = new RenderItem(CreateShape(PxSphereGeometry(1)), new PxTransform(0.0, -5.0, 10.0), Vector4(1, 0.0, 0.0, 1));
 
+	//Particula MRU
+	
 	//Particle* particle = new Particle(PxVec3(0,0,0), PxVec3(-1, 10, 0), PxVec3(0, 0, 0));
+	//particle->setAcel(PxVec3(0, 10, 0));
 	//particlesVector.push_back(particle);
 
+	//Sistemas de particulas
+
 	partSys = new ParticleSystem();
-	//partSys->addNormalPartGen(Vector3D<>(20, -20, 10), Vector3D<>(-0.4, 1, 0), 30, 5, 1);
-	//partSys->addUniPartGen(Vector3D<>(30, 10, 10), Vector3D<>(-0.4, 1, 0), 30, 5, 1);
+	//partSys->addNormalPartGen(Vector3D<>(0, 40, 10), Vector3D<>(-0.4, 1, 0), 30, 360, 1);
+	//partSys->addUniPartGen(Vector3D<>(0, 10, 0), Vector3D<>(-0.4, 1, 0), 30, 360, 1);
+	// LLuvia
 	//partSys->addLluvia(Vector3D<>(0, 70, 0), 40, 10);
+
+	// Humo
 	//partSys->addSmoke(Vector3D<>(5, 0, 5), 10);
-	partSys->addSpark(Vector3D<>(10, 0, 10), 20);
+	
+	// Chispas
+	//partSys->addSpark(Vector3D<>(10, 0, 10), 20);
 
 	
 	}
