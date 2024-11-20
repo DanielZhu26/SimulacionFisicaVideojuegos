@@ -16,7 +16,7 @@ public:
 
 	virtual void ParticleGen() = 0;
 
-	void SetParticleModel(Particle* p) { partRef = p; };
+	//void SetParticleModel(Particle* p) { partRef = p; };
 
 protected:
 

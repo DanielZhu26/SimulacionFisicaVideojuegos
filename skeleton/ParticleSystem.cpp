@@ -7,16 +7,27 @@
 
 ParticleSystem::ParticleSystem()
 {
+	gravityGen = new GravityForceGenerator(Vector3D<>(0, -9.8, 0));
+	windGen = new WindForceGen(Vector3D<>(1, 0, 0), 15, 0.5, Vector3D<>(0, 0, 0), 1000);
+	torbellinoGen = new TorbellinoGen(1.0, 0.5, Vector3D<>(0, 0, 0), 1000);
+	explosionGen = new ExplosionGen(500, 1000, Vector3D<>(0, 0, 10));
 }
 
 ParticleSystem::~ParticleSystem()
 {
 }
 
-void ParticleSystem::addParticle(Vector3D<> pos, Vector3D<> vel, const PxGeometryType::Enum& geoType, float size, const PxVec4& color)
+void ParticleSystem::addParticle(Vector3D<> pos, Vector3D<> vel, float mass, const PxGeometryType::Enum& geoType, float size, const PxVec4& color)
 {
-	Particle* p = new Particle(pos, vel, geoType, size, color);
-	p->setAccel(Vector3D<>(0, -9.8, 0));
+	Particle* p = new Particle(pos, vel, mass, geoType, size, color);
+	//p->setAccel(Vector3D<>(0, -9.8, 0));
+
+	//Generadores de fuerzas
+	p->AddForceGen(gravityGen);
+	//p->AddForceGen(windGen);
+	//p->AddForceGen(torbellinoGen);
+	p->AddForceGen(explosionGen);
+
 	partList.push_back(p);
 }
 
@@ -61,8 +72,16 @@ int ParticleSystem::addSpark(Vector3D<> pos, int force)
 
 
 
+void ParticleSystem::Explosion()
+{
+	explosionGen->addOnda(1000);
+}
+
 void ParticleSystem::Update(double t)
 {
+
+	explosionGen->updateGen(t);
+
 	ParticlesGen();
 	DeleteParticles();
 	UpdateParticles(t);
@@ -92,5 +111,6 @@ void ParticleSystem::UpdateParticles(double t)
 	for (Particle* p : partList) {
 		p->semiIntegrate(t);
 		p->decreaseLife(t);
+		p->updateForce(t);
 	}
 }

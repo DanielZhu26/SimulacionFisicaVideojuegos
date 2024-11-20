@@ -21,6 +21,9 @@
     <ClCompile Include="SparkGen.cpp" />
     <ClCompile Include="ForceGen.cpp" />
     <ClCompile Include="GravityForceGenerator.cpp" />
+    <ClCompile Include="WindForceGen.cpp" />
+    <ClCompile Include="TorbellinoGen.cpp" />
+    <ClCompile Include="ExplosionGen.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="core.hpp" />
@@ -43,6 +46,9 @@
     <ClInclude Include="SparkGen.h" />
     <ClInclude Include="ForceGen.h" />
     <ClInclude Include="GravityForceGenerator.h" />
+    <ClInclude Include="WindForceGen.h" />
+    <ClInclude Include="TorbellinoGen.h" />
+    <ClInclude Include="ExplosionGen.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Render">

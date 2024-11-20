@@ -21,7 +21,7 @@ UniPartGen::~UniPartGen()
 
 void UniPartGen::ParticleGen()
 {
-    systemRef->addParticle(position, CalculateRndDir() * CalcRndVel(), physx::PxGeometryType::Enum::eSPHERE, 0.3, physx::PxVec4(1.0, 0.5, 0.0, 1.0));
+    systemRef->addParticle(position, CalculateRndDir() * CalcRndVel(), 1, physx::PxGeometryType::Enum::eSPHERE, 0.3, physx::PxVec4(1.0, 0.5, 0.0, 1.0));
 }
 
 Vector3D<> UniPartGen::CalculateRndDir()

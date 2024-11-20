@@ -86,16 +86,18 @@ void initPhysics(bool interactive)
 	//Sistemas de particulas
 
 	partSys = new ParticleSystem();
-	//partSys->addNormalPartGen(Vector3D<>(0, 40, 10), Vector3D<>(-0.4, 1, 0), 30, 360, 1);
-	//partSys->addUniPartGen(Vector3D<>(0, 10, 0), Vector3D<>(-0.4, 1, 0), 30, 360, 1);
-	// LLuvia
-	//partSys->addLluvia(Vector3D<>(0, 70, 0), 40, 10);
+	//partSys->AddGaussianGenerator(Vector3D<>(20, -20, 10), Vector3D<>(1, 0, 0), 30, 5, 1);
+	//partSys->addUniPartGen(Vector3D<>(0, 20, 0), Vector3D<>(-0.4, 1, 0), 10, 5, 1);
+	// LLuvia viento y gravedad
+	//partSys->addLluvia(Vector3D<>(0, 40, 0), 40, 10);
 
 	// Humo
 	//partSys->addSmoke(Vector3D<>(5, 0, 5), 10);
 	
-	// Chispas
-	//partSys->addSpark(Vector3D<>(10, 0, 10), 20);
+	// Chispas torbellino
+	partSys->addSpark(Vector3D<>(10, 0, 10), 20);
+
+
 
 	
 	}
@@ -186,6 +188,12 @@ void keyPress(unsigned char key, const PxTransform& camera)
 		
 		particle->setAcel(PxVec3(0, -2, 0));
 		particlesVector.push_back(particle);
+		break;
+	}
+	case 'J':
+	{
+		
+		partSys->Explosion();
 		break;
 	}
 	default:

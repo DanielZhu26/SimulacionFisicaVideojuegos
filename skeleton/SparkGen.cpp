@@ -13,7 +13,7 @@ void SparkGen::ParticleGen()
 {
     for (int i = 0; i < force; i++) {
         Vector3D<> rndVel = Vector3D<>(rnd() % 2 - 1, rnd() % 2, rnd() % 2 - 1) * 2.0f;
-        systemRef->addParticle(CalcRndPos(), rndVel * 10, PxGeometryType::Enum::eSPHERE, 0.1, PxVec4(1.0, 0.5, 0.0, 1.0));
+        systemRef->addParticle(CalcRndPos(), rndVel * 10, 1, PxGeometryType::Enum::eSPHERE, 0.1, PxVec4(1.0, 0.5, 0.0, 1.0));
     }
 }
 

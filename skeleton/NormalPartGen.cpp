@@ -1,5 +1,6 @@
 ﻿#include "NormalPartGen.h"
 #include <limits>
+#include <cfloat>
 
 using namespace std;
 
@@ -9,13 +10,13 @@ NormalPartGen::NormalPartGen(Vector3D<> pos, Vector3D<> dir, float vel, float de
     if (deltAngle != 0.0)
         gaussianDistAngle = std::normal_distribution<>(0, deltAngle * (3.14 / 180));
     else
-        gaussianDistAngle = std::normal_distribution<>(0, std::numeric_limits<float>::min());
+        gaussianDistAngle = std::normal_distribution<>(0, FLT_MIN);
 
 
     if (deltVel != 0.0)
         gaussianDistSpeed = std::normal_distribution<>(0, deltVel);
     else
-        gaussianDistSpeed = std::normal_distribution<>(0, std::numeric_limits<float>::min());
+        gaussianDistSpeed = std::normal_distribution<>(0, FLT_MIN);
 }
 
 
@@ -26,7 +27,7 @@ NormalPartGen::~NormalPartGen()
 
 void NormalPartGen::ParticleGen()
 {
-    systemRef->addParticle(position, CalculateRndDir() * CalcRndVel(), PxGeometryType::Enum::eSPHERE, 0.5, PxVec4(1.0, 1.0, 0.0, 1.0));
+    systemRef->addParticle(position, CalculateRndDir() * CalcRndVel(), 1, PxGeometryType::Enum::eSPHERE, 0.5, PxVec4(1.0, 1.0, 0.0, 1.0));
 }
 
 Vector3D<> NormalPartGen::CalculateRndDir()

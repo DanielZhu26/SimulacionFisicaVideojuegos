@@ -1,6 +1,7 @@
 ﻿#include "Particle.h"
 
 #include "RenderUtils.hpp"
+#include "ForceGen.h"
 #include <cmath>
 
 using namespace physx;
@@ -17,12 +18,14 @@ Particle::Particle(PxVec3 pos, PxVec3 vel, PxVec3 acel):posit(pos), speed(vel), 
 }
 
 
-Particle::Particle(Vector3D<> pos, Vector3D<> vel, const PxGeometryType::Enum& geoType, float size, const PxVec4& color)
+Particle::Particle(Vector3D<> pos, Vector3D<> vel, float masa, const PxGeometryType::Enum& geoType, float size, const PxVec4& color)
 {
 	transform = new PxTransform(PxVec3(pos.x, pos.y, pos.z));
 	velo = vel;
 	PxShape* shape = nullptr;
 	lifeTime = 0;
+
+	mass = masa;
 
 	shape = CreateShape(PxSphereGeometry(size));
 
@@ -40,11 +43,13 @@ Particle::~Particle()
 void Particle::semiIntegrate(double t)
 {
 	// Semi-Implicito
-	velo = velo * std::pow(damping, t); 
+	velo = velo * std::pow(damping, t);
 
 	velo = velo + acele * t; 
 
 	transform->p += PxVec3(velo.x, velo.y, velo.z) * t; 
+
+	
 }
 
 void Particle::Integrate(double t)
@@ -62,4 +67,27 @@ void Particle::Integrate(double t)
 void Particle::decreaseLife(double t)
 {
 	lifeTime += t;
+}
+
+void Particle::AddForceGen(ForceGen* forceGen)
+{
+	forceGens.push_back(forceGen);
+}
+
+void Particle::updateForce(double t)
+{
+	for (auto forceGen : forceGens) {
+		forceGen->updateF(this, t);
+	}
+
+}
+
+void Particle::ApplyForce(Vector3D<> force)
+{
+	velo = velo + force / mass;
+}
+
+void Particle::ApplyForceCont(Vector3D<> force)
+{
+	acele = acele + force / mass;
 }

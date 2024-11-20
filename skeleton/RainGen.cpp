@@ -14,7 +14,7 @@ RainGen::~RainGen()
 void RainGen::ParticleGen()
 {
 	for (int i = 0; i < force; i++)
-		systemRef->addParticle(CalcRndPos(),Vector3D<>(0, -1, 0),
+		systemRef->addParticle(CalcRndPos(),Vector3D<>(0, -1, 0), 1, 
 		PxGeometryType::Enum::eSPHERE,0.2,physx::PxVec4(0.0, 0.0, 1.0, 1.0));
 }
 

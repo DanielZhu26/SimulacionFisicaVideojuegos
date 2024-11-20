@@ -3,7 +3,11 @@
 #include <list>
 #include "Vector3D.h"
 #include <PxPhysicsAPI.h>
-#include "ForceGen.h"
+
+#include "GravityForceGenerator.h"
+#include "WindForceGen.h"
+#include "TorbellinoGen.h"
+#include "ExplosionGen.h"
 
 
 using namespace std;
@@ -18,7 +22,7 @@ public:
 	~ParticleSystem();
 
 
-	void addParticle(Vector3D<> pos, Vector3D<> vel, const PxGeometryType::Enum& geoType = PxGeometryType::Enum::eSPHERE,
+	void addParticle(Vector3D<> pos, Vector3D<> vel, float mass, const PxGeometryType::Enum& geoType = PxGeometryType::Enum::eSPHERE,
 		float size = 1, const PxVec4& color = PxVec4(1.0, 1.0, 0.0, 1.0));
 
 	int addUniPartGen(Vector3D<> pos, Vector3D<> dir, float vel, float deltAngle, float deltVel);
@@ -28,7 +32,7 @@ public:
 	int addSpark(Vector3D<> pos, int force);
 
 
-
+	void Explosion();
 	void Update(double t);
 
 private:
@@ -40,8 +44,13 @@ private:
 	list<Fuente*> genList;
 	list<Particle*> partList;
 
-	float max_lifeTime = 5;
-	float max_distance = 100;
+	float max_lifeTime = 115;
+	float max_distance = 2000;
+
+	GravityForceGenerator* gravityGen;
+	WindForceGen* windGen;
+	TorbellinoGen* torbellinoGen;
+	ExplosionGen* explosionGen;
 
 	
 };
