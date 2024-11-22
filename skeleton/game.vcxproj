@@ -253,6 +253,8 @@
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="AnchoredSpringFG.cpp" />
+    <ClCompile Include="BuoyancyForceGenerator.cpp" />
     <ClCompile Include="callbacks.cpp" />
     <ClCompile Include="ExplosionGen.cpp" />
     <ClCompile Include="ForceGen.cpp" />
@@ -268,12 +270,15 @@
     <ClCompile Include="Render\Render.cpp" />
     <ClCompile Include="SmokeGen.cpp" />
     <ClCompile Include="SparkGen.cpp" />
+    <ClCompile Include="SpringForceGenerator.cpp" />
     <ClCompile Include="TorbellinoGen.cpp" />
     <ClCompile Include="UniPartGen.cpp" />
     <ClCompile Include="Vector3D.cpp" />
     <ClCompile Include="WindForceGen.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="AnchoredSpringFG.h" />
+    <ClInclude Include="BuoyancyForceGenerator.h" />
     <ClInclude Include="callbacks.hpp" />
     <ClInclude Include="core.hpp" />
     <ClInclude Include="ExplosionGen.h" />
@@ -289,6 +294,7 @@
     <ClInclude Include="Render\Render.h" />
     <ClInclude Include="SmokeGen.h" />
     <ClInclude Include="SparkGen.h" />
+    <ClInclude Include="SpringForceGenerator.h" />
     <ClInclude Include="TorbellinoGen.h" />
     <ClInclude Include="UniPartGen.h" />
     <ClInclude Include="Vector3D.h" />

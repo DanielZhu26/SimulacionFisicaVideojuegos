@@ -89,15 +89,17 @@ void initPhysics(bool interactive)
 	//partSys->AddGaussianGenerator(Vector3D<>(20, -20, 10), Vector3D<>(1, 0, 0), 30, 5, 1);
 	//partSys->addUniPartGen(Vector3D<>(0, 20, 0), Vector3D<>(-0.4, 1, 0), 10, 5, 1);
 	// LLuvia viento y gravedad
-	//partSys->addLluvia(Vector3D<>(0, 40, 0), 40, 10);
+	//partSys->addLluvia(Vector3D<>(0, 70, 0), 40, 10);
 
 	// Humo
 	//partSys->addSmoke(Vector3D<>(5, 0, 5), 10);
 	
 	// Chispas torbellino
-	partSys->addSpark(Vector3D<>(10, 0, 10), 20);
+	//partSys->addSpark(Vector3D<>(10, 0, 10), 20);
 
-
+	//Muelles
+	//partSys->GenerateParticleSpring();
+	partSys->GenerateAnchoredSpring();
 
 	
 	}

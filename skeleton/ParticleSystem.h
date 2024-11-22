@@ -9,6 +9,9 @@
 #include "TorbellinoGen.h"
 #include "ExplosionGen.h"
 
+#include "SpringForceGenerator.h"
+#include "AnchoredSpringFG.h"
+
 
 using namespace std;
 using namespace physx;
@@ -35,6 +38,9 @@ public:
 	void Explosion();
 	void Update(double t);
 
+	void GenerateParticleSpring();
+	void GenerateAnchoredSpring();
+
 private:
 
 	void ParticlesGen();
@@ -43,6 +49,7 @@ private:
 
 	list<Fuente*> genList;
 	list<Particle*> partList;
+	list<ForceGen*> forceGenList;
 
 	float max_lifeTime = 115;
 	float max_distance = 2000;

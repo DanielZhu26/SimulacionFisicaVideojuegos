@@ -25,8 +25,8 @@ void ParticleSystem::addParticle(Vector3D<> pos, Vector3D<> vel, float mass, con
 	//Generadores de fuerzas
 	p->AddForceGen(gravityGen);
 	//p->AddForceGen(windGen);
-	//p->AddForceGen(torbellinoGen);
-	p->AddForceGen(explosionGen);
+	p->AddForceGen(torbellinoGen);
+	//p->AddForceGen(explosionGen);
 
 	partList.push_back(p);
 }
@@ -86,6 +86,34 @@ void ParticleSystem::Update(double t)
 	DeleteParticles();
 	UpdateParticles(t);
 }
+
+void ParticleSystem::GenerateParticleSpring()
+{
+	Particle* part1 = new Particle(Vector3D<>(0, 20, 0), Vector3D<>(0, 0, 0), 1, physx::PxGeometryType::Enum::eSPHERE, 1, physx::PxVec4(0.5, 1.0, 0.5, 1.0));
+	Particle* part2 = new Particle(Vector3D<>(0, 0, 0), Vector3D<>(0, 0, 0), 1, physx::PxGeometryType::Enum::eSPHERE, 1, physx::PxVec4(1.0, 0.5, 1.0, 1.0));
+
+	SpringForceGenerator* fg1 = new SpringForceGenerator(1, 10, part2);
+	SpringForceGenerator* fg2 = new SpringForceGenerator(1, 10, part1);
+
+	part1->AddForceGen(fg1);
+	part2->AddForceGen(fg2);
+
+	partList.push_back(part1);
+	partList.push_back(part2);
+	forceGenList.push_back(fg1);
+	forceGenList.push_back(fg2);
+}
+
+void ParticleSystem::GenerateAnchoredSpring()
+{
+	Particle* part3 = new Particle(Vector3D<>(0, 40, 0), Vector3D<>(0, 0, 0), 1, physx::PxGeometryType::Enum::eSPHERE, 1, physx::PxVec4(0.5, 1.0, 0.5, 1.0));
+	AnchoredSpringFG* f3 = new AnchoredSpringFG(1, 10, Vector3D<>(0, 60, 0));
+	part3->AddForceGen(f3);
+	partList.push_back(part3);
+	forceGenList.push_back(f3);
+}
+
+
 
 void ParticleSystem::ParticlesGen()
 {
