@@ -12,8 +12,11 @@ class Particle
 {
 public:
 	Particle(PxVec3 pos, PxVec3 vel, PxVec3 acel);
-	Particle::Particle(Vector3D<> pos, Vector3D<> vel, float mass = 0.5, const PxGeometryType::Enum& geoType = PxGeometryType::Enum::eSPHERE,
+	Particle(Vector3D<> pos, Vector3D<> vel, float mass = 0.5, const PxGeometryType::Enum& geoType = PxGeometryType::Enum::eSPHERE,
 		float size = 0.5, const PxVec4& color = PxVec4(1.0, 1.0, 0.0, 1.0) );
+
+	//Crea un plano para el ej de muelles
+	Particle(Vector3D<> pos, float ladoX, float ladoZ, float masa, const physx::PxVec4& color = PxVec4(0.0f, 0.6f, 0.9f, 0.1f));
 	~Particle();
 
 	void semiIntegrate(double t);

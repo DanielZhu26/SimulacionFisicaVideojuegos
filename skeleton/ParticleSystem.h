@@ -11,6 +11,7 @@
 
 #include "SpringForceGenerator.h"
 #include "AnchoredSpringFG.h"
+#include "BuoyancyForceGenerator.h"
 
 
 using namespace std;
@@ -40,6 +41,7 @@ public:
 
 	void GenerateParticleSpring();
 	void GenerateAnchoredSpring();
+	void GenerateBuoyancy();
 
 private:
 

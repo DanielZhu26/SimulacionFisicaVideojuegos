@@ -27,11 +27,31 @@ Particle::Particle(Vector3D<> pos, Vector3D<> vel, float masa, const PxGeometryT
 
 	mass = masa;
 
-	shape = CreateShape(PxSphereGeometry(size));
+	if(geoType == PxGeometryType::Enum::eSPHERE)
+		shape = CreateShape(PxSphereGeometry(size));
+	else if(geoType == PxGeometryType::Enum::eBOX)
+		shape = CreateShape(PxBoxGeometry(size, size, size));
+
+
+	//shape = CreateShape(PxSphereGeometry(size));
 
 
 	renderItem = new RenderItem(shape, transform, color);
 }
+
+Particle::Particle(Vector3D<> pos, float ladoX, float ladoZ, float masa, const physx::PxVec4& color)
+{
+	transform = new PxTransform(PxVec3(pos.x, pos.y, pos.z));
+
+	velo = Vector3D<>();
+	acele = Vector3D<>();
+	mass = masa;
+	damping = 0;
+	lifeTime = -1000;
+
+	renderItem = new RenderItem(CreateShape(PxBoxGeometry(ladoX, 8, ladoZ)), transform, color);
+}
+
 
 Particle::~Particle()
 {

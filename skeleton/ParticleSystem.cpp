@@ -90,10 +90,10 @@ void ParticleSystem::Update(double t)
 void ParticleSystem::GenerateParticleSpring()
 {
 	Particle* part1 = new Particle(Vector3D<>(0, 20, 0), Vector3D<>(0, 0, 0), 1, physx::PxGeometryType::Enum::eSPHERE, 1, physx::PxVec4(0.5, 1.0, 0.5, 1.0));
-	Particle* part2 = new Particle(Vector3D<>(0, 0, 0), Vector3D<>(0, 0, 0), 1, physx::PxGeometryType::Enum::eSPHERE, 1, physx::PxVec4(1.0, 0.5, 1.0, 1.0));
+	Particle* part2 = new Particle(Vector3D<>(0, 0, 0), Vector3D<>(0, 0, 0), 2, physx::PxGeometryType::Enum::eSPHERE, 1, physx::PxVec4(1.0, 0.5, 1.0, 1.0));
 
-	SpringForceGenerator* fg1 = new SpringForceGenerator(1, 10, part2);
-	SpringForceGenerator* fg2 = new SpringForceGenerator(1, 10, part1);
+	SpringForceGenerator* fg1 = new SpringForceGenerator(0.5, 10, part2);
+	SpringForceGenerator* fg2 = new SpringForceGenerator(0.5, 10, part1);
 
 	part1->AddForceGen(fg1);
 	part2->AddForceGen(fg2);
@@ -106,11 +106,32 @@ void ParticleSystem::GenerateParticleSpring()
 
 void ParticleSystem::GenerateAnchoredSpring()
 {
-	Particle* part3 = new Particle(Vector3D<>(0, 40, 0), Vector3D<>(0, 0, 0), 1, physx::PxGeometryType::Enum::eSPHERE, 1, physx::PxVec4(0.5, 1.0, 0.5, 1.0));
-	AnchoredSpringFG* f3 = new AnchoredSpringFG(1, 10, Vector3D<>(0, 60, 0));
+	Particle* part3 = new Particle(Vector3D<>(0, 20, 0), Vector3D<>(0, 0, 0), 1, physx::PxGeometryType::Enum::eSPHERE, 1, physx::PxVec4(0.5, 1.0, 0.5, 1.0));
+	AnchoredSpringFG* f3 = new AnchoredSpringFG(0.5, 10, Vector3D<>(0, 40, 0));
 	part3->AddForceGen(f3);
 	partList.push_back(part3);
 	forceGenList.push_back(f3);
+}
+
+void ParticleSystem::GenerateBuoyancy()
+{
+	//Particle* floatingObject = new Particle(Vector3D<>(0, 12, 0), Vector3D<>(0, 0, 0), 0.8, physx::PxGeometryType::Enum::eBOX, 2, physx::PxVec4(0.0, 1.0, 1.0, 1.0));
+	Particle* partiallySubmerged = new Particle(Vector3D<>(0, 12, 0), Vector3D<>(0, 0, 0), 200, physx::PxGeometryType::Enum::eBOX, 2, physx::PxVec4(1.0, 0.0, 0.0, 1.0));
+	//Particle* sinkingObject = new Particle(Vector3D<>(0, 22, 0), Vector3D<>(0, 0, 0), 1102.0, physx::PxGeometryType::Enum::eBOX, 2, physx::PxVec4(0.5, 0.5, 1.0, 1.0));
+	Particle* plano = new Particle(Vector3D<>(0, 0, 0), 20, 20, -100);
+
+	//BuoyancyForceGenerator* fg1 = new BuoyancyForceGenerator(2, 1, 0.3, plano); // Líquido ligero (el objeto se hundirá fácilmente)
+	BuoyancyForceGenerator* fg2 = new BuoyancyForceGenerator(10, 100, 1, plano); // Agua (el objeto flotará si su densidad es <= 1)
+	//BuoyancyForceGenerator* fg3 = new BuoyancyForceGenerator(2, 1, 13.6, plano); // Mercurio (muy denso, cualquier objeto flotará)
+
+	Particle* part = partiallySubmerged;
+
+	part->AddForceGen(fg2);
+	part->AddForceGen(gravityGen);
+
+	partList.push_back(part);
+	partList.push_back(plano);
+	forceGenList.push_back(fg2);
 }
 
 

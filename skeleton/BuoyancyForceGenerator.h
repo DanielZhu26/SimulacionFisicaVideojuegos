@@ -5,9 +5,9 @@
 class BuoyancyForceGenerator : public ForceGen
 {
 public:
-	BuoyancyForceGenerator(float h, float V, float d);
+	BuoyancyForceGenerator(float h, float V, float d, Particle* liquid_particle);
 
-	virtual void updateF(Particle* p, double t);
+	virtual void updateF(Particle* p, double t) override;
 
 	virtual ~BuoyancyForceGenerator();
 

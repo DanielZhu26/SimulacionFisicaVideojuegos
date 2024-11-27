@@ -99,7 +99,8 @@ void initPhysics(bool interactive)
 
 	//Muelles
 	//partSys->GenerateParticleSpring();
-	partSys->GenerateAnchoredSpring();
+	//partSys->GenerateAnchoredSpring();
+	partSys->GenerateBuoyancy();
 
 	
 	}
