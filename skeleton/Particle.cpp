@@ -49,7 +49,7 @@ Particle::Particle(Vector3D<> pos, float ladoX, float ladoZ, float masa, const p
 	damping = 0;
 	lifeTime = -1000;
 
-	renderItem = new RenderItem(CreateShape(PxBoxGeometry(ladoX, 8, ladoZ)), transform, color);
+	renderItem = new RenderItem(CreateShape(PxBoxGeometry(ladoX, 1, ladoZ)), transform, color);
 }
 
 
