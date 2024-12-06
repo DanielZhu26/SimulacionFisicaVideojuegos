@@ -12,6 +12,7 @@
 #include "SpringForceGenerator.h"
 #include "AnchoredSpringFG.h"
 #include "BuoyancyForceGenerator.h"
+#include "RigidSolidGen.h"
 
 
 using namespace std;
@@ -35,6 +36,8 @@ public:
 	int addSmoke(Vector3D<> pos, int force);
 	int addSpark(Vector3D<> pos, int force);
 
+	//int addRigidSolidGen(PxPhysics* gPhysics, PxScene* gScene, PxMaterial* material, Vector3D<> pos, Vector3D<> dir, float density, Vector3D<> dim);
+
 
 	void Explosion();
 	void Update(double t);
@@ -45,6 +48,7 @@ public:
 
 private:
 
+	//void clearRigidSolids();
 	void ParticlesGen();
 	void DeleteParticles();
 	void UpdateParticles(double t);
@@ -52,6 +56,7 @@ private:
 	list<Fuente*> genList;
 	list<Particle*> partList;
 	list<ForceGen*> forceGenList;
+	//list<RigidSolidGen*> rigidGenList;
 
 	float max_lifeTime = 115;
 	float max_distance = 2000;
@@ -60,6 +65,10 @@ private:
 	WindForceGen* windGen;
 	TorbellinoGen* torbellinoGen;
 	ExplosionGen* explosionGen;
+
+	PxPhysics* physics;
+	PxScene* scene;
+	PxMaterial* mat;
 
 
 	

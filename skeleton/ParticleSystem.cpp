@@ -70,6 +70,22 @@ int ParticleSystem::addSpark(Vector3D<> pos, int force)
 	return sparkGen->getIndice();
 }
 
+//int ParticleSystem::addRigidSolidGen(PxPhysics* gPhysics, PxScene* gScene, PxMaterial* material, Vector3D<> pos, Vector3D<> dir, float density, Vector3D<> dim) {
+//	RigidSolidGen* rigidGen = new RigidSolidGen(gPhysics, gScene, material, pos, dir, density, dim, this);
+//	rigidGen->setIndice(genList.size());
+//	genList.push_back(rigidGen);
+//	rigidGenList.push_back(rigidGen);
+//	return rigidGen->getIndice();
+//}
+//
+//
+//void ParticleSystem::clearRigidSolids() {
+//	for (RigidSolidGen* gen : rigidGenList) {
+//		gen->clearSolids();
+//		delete gen;
+//	}
+//	rigidGenList.clear();
+//}
 
 
 void ParticleSystem::Explosion()

@@ -268,7 +268,9 @@
     <ClCompile Include="RenderUtils.cpp" />
     <ClCompile Include="Render\Camera.cpp" />
     <ClCompile Include="Render\Render.cpp" />
+    <ClCompile Include="RigidSolidGen.cpp" />
     <ClCompile Include="SmokeGen.cpp" />
+    <ClCompile Include="SolidRigid.cpp" />
     <ClCompile Include="SparkGen.cpp" />
     <ClCompile Include="SpringForceGenerator.cpp" />
     <ClCompile Include="TorbellinoGen.cpp" />
@@ -292,7 +294,9 @@
     <ClInclude Include="RenderUtils.hpp" />
     <ClInclude Include="Render\Camera.h" />
     <ClInclude Include="Render\Render.h" />
+    <ClInclude Include="RigidSolidGen.h" />
     <ClInclude Include="SmokeGen.h" />
+    <ClInclude Include="SolidRigid.h" />
     <ClInclude Include="SparkGen.h" />
     <ClInclude Include="SpringForceGenerator.h" />
     <ClInclude Include="TorbellinoGen.h" />
