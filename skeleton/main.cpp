@@ -106,8 +106,8 @@ void initPhysics(bool interactive)
 
 	//Solidos y rigidos
 	
-	 solid = new SolidRigid(gPhysics, gScene, gMaterial, Vector3D<>(0, 15.5, 0), 
-		Vector3D<>(4.0f, 4.0f, 4.0f), 10000.0f, 100, PxVec4(0.0, 0.0, 1.0, 1.0));
+	/* solid = new SolidRigid(gPhysics, gScene, gMaterial, Vector3D<>(0, 15.5, 0), 
+		Vector3D<>(4.0f, 4.0f, 4.0f), 10000.0f, 100, PxVec4(0.0, 0.0, 1.0, 1.0));*/
 
 	 // Crear suelo estático
 	 PxRigidStatic* ground = gPhysics->createRigidStatic(PxTransform(PxVec3(0.0f, 10.0f, 0.0f)));
@@ -117,13 +117,14 @@ void initPhysics(bool interactive)
 	 RenderItem* suelo = new RenderItem(groundShape, ground, PxVec4(0.1, 0.3, 0.4, 1.0));
 
 	 // Crear un obstáculo estático
-	 PxRigidStatic* obstacle = gPhysics->createRigidStatic(PxTransform(PxVec3(0.0f, 20.0f, 10.0f)));
+	 PxRigidStatic* obstacle = gPhysics->createRigidStatic(PxTransform(PxVec3(0.0f, 15.5f, 10.0f)));
 	 PxShape* obstacleShape = gPhysics->createShape(PxBoxGeometry(5.0f, 5.0f, 5.0f), *gMaterial);
 	 obstacle->attachShape(*obstacleShape);
 	 gScene->addActor(*obstacle);
 	 RenderItem* obs1 = new RenderItem(obstacleShape, obstacle, PxVec4(0.3, 0.5, 1.0, 1.0));
 
-	 //partSys->addRigidSolidGen(gPhysics, gScene, gMaterial, Vector3D<>(0, 20, 0), Vector3D<>(0, 0, 1), 10.0f, Vector3D<>(4.0f, 4.0f, 4.0f));
+	 partSys->addRigidSolidGen(gPhysics, gScene, gMaterial, Vector3D<>(0, 30, 0), Vector3D<>(0, 1, 0), 10.0f, 
+		 Vector3D<>(4.0f, 4.0f, 4.0f), 10, 5, PxVec4(0.1, 0.3, 0.4, 1.0), 1);
 
 
 	}
@@ -140,14 +141,14 @@ void stepPhysics(bool interactive, double t)
 	gScene->simulate(t);
 	gScene->fetchResults(true);
 
-	for each (Particle * particle in particlesVector)
+	for each (Particle* particle in particlesVector)
 	{
 		particle->Integrate(t);
 
 
 	}
 
-	solid->update(t);
+	//solid->update(t);
 
 	partSys->Update(t);
 

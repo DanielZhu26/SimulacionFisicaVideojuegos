@@ -4,6 +4,7 @@
 #include "RainGen.h"
 #include "SmokeGen.h"
 #include "SparkGen.h"
+#include "RigidSolidGen.h"
 
 ParticleSystem::ParticleSystem()
 {
@@ -30,6 +31,16 @@ void ParticleSystem::addParticle(Vector3D<> pos, Vector3D<> vel, float mass, con
 
 	partList.push_back(p);
 }
+
+void ParticleSystem::addSolidRigid(PxPhysics* gPhysics, PxScene* gScene, PxMaterial* material, Vector3D<> pos,
+	float density, Vector3D<> dimentions, float lifeTime, PxVec4 color)
+{
+	SolidRigid* solid = new SolidRigid(gPhysics, gScene, material, pos, dimentions, density, lifeTime, color);
+
+	solidList.push_back(solid);
+}
+
+
 
 
 int ParticleSystem::addUniPartGen(Vector3D<> pos, Vector3D<> dir, float vel, float deltAngle, float deltVel)
@@ -70,22 +81,16 @@ int ParticleSystem::addSpark(Vector3D<> pos, int force)
 	return sparkGen->getIndice();
 }
 
-//int ParticleSystem::addRigidSolidGen(PxPhysics* gPhysics, PxScene* gScene, PxMaterial* material, Vector3D<> pos, Vector3D<> dir, float density, Vector3D<> dim) {
-//	RigidSolidGen* rigidGen = new RigidSolidGen(gPhysics, gScene, material, pos, dir, density, dim, this);
-//	rigidGen->setIndice(genList.size());
-//	genList.push_back(rigidGen);
-//	rigidGenList.push_back(rigidGen);
-//	return rigidGen->getIndice();
-//}
-//
-//
-//void ParticleSystem::clearRigidSolids() {
-//	for (RigidSolidGen* gen : rigidGenList) {
-//		gen->clearSolids();
-//		delete gen;
-//	}
-//	rigidGenList.clear();
-//}
+int ParticleSystem::addRigidSolidGen(PxPhysics* gPhysics, PxScene* gScene, PxMaterial* material, Vector3D<> pos, Vector3D<> dir, float density, 
+	Vector3D<> dim, int cantidad, float lifeTime, PxVec4 color, float genTime) {
+	RigidSolidGen* rigidGen = new RigidSolidGen(gPhysics, gScene, material, pos, dir, density, dim, cantidad, lifeTime, color, this, genTime);
+	rigidGen->setIndice(genList.size());
+	rigidGenList.push_back(rigidGen);
+	return rigidGen->getIndice();
+}
+
+
+
 
 
 void ParticleSystem::Explosion()
@@ -99,8 +104,11 @@ void ParticleSystem::Update(double t)
 	explosionGen->updateGen(t);
 
 	ParticlesGen();
+
 	DeleteParticles();
 	UpdateParticles(t);
+	UpdateSolids(t);
+	SolidRigidGen(t);
 }
 
 void ParticleSystem::GenerateParticleSpring()
@@ -158,6 +166,34 @@ void ParticleSystem::ParticlesGen()
 	}
 }
 
+
+void ParticleSystem::SolidRigidGen(double t)
+{
+	for (RigidSolidGen* gen : rigidGenList)
+	{
+		gen->SolidGen(t);
+	}
+}
+
+void ParticleSystem::DeleteSolidRigids(double t)
+{
+	for (RigidSolidGen* gen : rigidGenList)
+	{
+		
+	}
+
+}
+
+void ParticleSystem::UpdateSolids(double t)
+{
+	for (SolidRigid* p : solidList) {
+		p->update(t);
+	}
+}
+
+
+
+
 void ParticleSystem::DeleteParticles()
 {
 	for (auto it = partList.begin(); it != partList.end(); ) {
@@ -170,6 +206,9 @@ void ParticleSystem::DeleteParticles()
 	}
 }
 
+
+
+
 void ParticleSystem::UpdateParticles(double t)
 {
 	for (Particle* p : partList) {
@@ -178,3 +217,4 @@ void ParticleSystem::UpdateParticles(double t)
 		p->updateForce(t);
 	}
 }
+
