@@ -5,13 +5,13 @@
 WindForceGen::WindForceGen(Vector3D<> dir, float force, float friction, Vector3D<> pos, float range):
 	ForceGen(), windVel(dir.GetNormalized() * force), windF(force), friction(friction), position(pos), range(range)
 {
-
+	type = 1;
 }
 
 WindForceGen::WindForceGen(float force, float friction, Vector3D<> pos, float range):
 	ForceGen(), windVel(Vector3D<>(0, 0, 0)), windF(force), friction(friction), position(pos), range(range)
 {
-
+	type = 1;
 }
 
 WindForceGen::~WindForceGen()

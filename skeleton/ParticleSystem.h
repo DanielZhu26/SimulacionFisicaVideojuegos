@@ -57,7 +57,7 @@ private:
 	void DeleteParticles();
 	void UpdateParticles(double t);
 	void SolidRigidGen(double t);
-	void DeleteSolidRigids(double t);
+	void DeleteSolidRigids();
 	void UpdateSolids(double t);
 
 	list<Fuente*> genList;
@@ -68,6 +68,8 @@ private:
 
 	float max_lifeTime = 115;
 	float max_distance = 2000;
+	float solidmaxlife = 10;
+	float maxsoliddistance = 30;
 
 	GravityForceGenerator* gravityGen;
 	WindForceGen* windGen;

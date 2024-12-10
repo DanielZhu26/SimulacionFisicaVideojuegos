@@ -4,7 +4,7 @@ GravityForceGenerator::GravityForceGenerator(Vector3D<> gravityacel) :
 	ForceGen(),
 	gravityAcel(gravityacel)
 {
-
+	type = 2;
 }
 
 GravityForceGenerator::~GravityForceGenerator()

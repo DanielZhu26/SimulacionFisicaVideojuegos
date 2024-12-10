@@ -36,8 +36,9 @@ void ParticleSystem::addSolidRigid(PxPhysics* gPhysics, PxScene* gScene, PxMater
 	float density, Vector3D<> dimentions, float lifeTime, PxVec4 color)
 {
 	SolidRigid* solid = new SolidRigid(gPhysics, gScene, material, pos, dimentions, density, lifeTime, color);
-
+	solid->AddForceGen(windGen);
 	solidList.push_back(solid);
+	
 }
 
 
@@ -109,6 +110,7 @@ void ParticleSystem::Update(double t)
 	UpdateParticles(t);
 	UpdateSolids(t);
 	SolidRigidGen(t);
+	DeleteSolidRigids();
 }
 
 void ParticleSystem::GenerateParticleSpring()
@@ -175,11 +177,17 @@ void ParticleSystem::SolidRigidGen(double t)
 	}
 }
 
-void ParticleSystem::DeleteSolidRigids(double t)
+void ParticleSystem::DeleteSolidRigids()
 {
-	for (RigidSolidGen* gen : rigidGenList)
-	{
-		
+	
+	for (auto it = solidList.begin(); it != solidList.end(); ) {
+
+		if ((*it)->getPos().getMagnitude() > max_distance || (*it)->getLifeTime() > solidmaxlife) {
+			delete* it;
+			it = solidList.erase(it);
+		}
+		else
+			++it;
 	}
 
 }
@@ -188,6 +196,7 @@ void ParticleSystem::UpdateSolids(double t)
 {
 	for (SolidRigid* p : solidList) {
 		p->update(t);
+		p->decreaseLife(t);
 	}
 }
 
@@ -196,8 +205,9 @@ void ParticleSystem::UpdateSolids(double t)
 
 void ParticleSystem::DeleteParticles()
 {
+
 	for (auto it = partList.begin(); it != partList.end(); ) {
-		if ((*it)->getPos().getMagnitude() > max_distance || (*it)->getLifeTime() > max_lifeTime) {
+		if ((*it)->getPos().getMagnitude() > maxsoliddistance || (*it)->getLifeTime() > max_lifeTime) {
 			delete* it;
 			it = partList.erase(it); 
 		}

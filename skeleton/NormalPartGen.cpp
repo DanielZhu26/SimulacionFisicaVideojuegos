@@ -28,6 +28,7 @@ NormalPartGen::~NormalPartGen()
 void NormalPartGen::ParticleGen()
 {
     systemRef->addParticle(position, CalculateRndDir() * CalcRndVel(), 1, PxGeometryType::Enum::eSPHERE, 0.5, PxVec4(1.0, 1.0, 0.0, 1.0));
+   
 }
 
 Vector3D<> NormalPartGen::CalculateRndDir()

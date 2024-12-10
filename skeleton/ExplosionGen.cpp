@@ -3,6 +3,7 @@
 ExplosionGen::ExplosionGen(float force, float range, Vector3D<> pos) :
 	ForceGen(), exploForce(force), exploRange(range), position(pos)
 {
+	type = 3;
 }
 
 ExplosionGen::~ExplosionGen()

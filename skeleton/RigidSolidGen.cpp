@@ -10,17 +10,16 @@ RigidSolidGen::~RigidSolidGen() {
 }
 
 void RigidSolidGen::SolidGen(float deltaTime) {
-    cout << deltaTime << endl;
+    timeSinceLastGen += deltaTime;
+
     // Verificar si ha pasado el intervalo para generar un nuevo sólido
-    if (deltaTime - timeSinceLastGen >= generationInterval && num > 0) {
+    if (timeSinceLastGen > generationInterval && num > 0) {
         // Generar un nuevo sólido
-        Vector3D<> spawnPosition = position;
-         spawnPosition = spawnPosition + direction * (1.0f - float(num) / 10.0f); // Variar ligeramente posición
 
         sys->addSolidRigid(physics, scene, mat, position, density, dim, lftime, col);
 
         // Reiniciar temporizador y reducir el número de sólidos restantes
-        timeSinceLastGen = deltaTime;
+        timeSinceLastGen = 0;
         num--;
     }
 }

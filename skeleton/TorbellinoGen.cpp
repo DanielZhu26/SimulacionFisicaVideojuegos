@@ -1,11 +1,14 @@
 #include "TorbellinoGen.h"
 
-TorbellinoGen::TorbellinoGen(float force, float friction, Vector3D<> pos, float range):
-	WindForceGen(force, friction, pos, range)
-{}
+TorbellinoGen::TorbellinoGen(float force, float friction, Vector3D<> pos, float range) :
+    WindForceGen(force, friction, pos, range)
+{
+    type = 4;
+}
 
 void TorbellinoGen::updateF(Particle* p, double t)
 {
+    
 	Vector3D<> partPOs = p->getPos();
 	if (onRange(partPOs)) 
 	{

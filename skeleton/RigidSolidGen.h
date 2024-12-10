@@ -35,6 +35,7 @@ public:
 
     void setIndice(int id) { this->id = id; };
     int getIndice() { return id; };
+   
 
     void SolidGen(float deltaTime); // Sobrescribir para generar sólidos
     //void clearSolids(float deltaTime);   // Limpiar sólidos generados

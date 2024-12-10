@@ -5,26 +5,28 @@ SolidRigid::SolidRigid(PxPhysics* gPhysics, PxScene* gScene, PxMaterial* materia
     Vector3D<> pos, Vector3D<> dimensions,float density, float lifetime, PxVec4 color)
     : lifetime(lifetime), position(pos), col(color)
 {
-    // Crear la forma del sólido 
-    PxShape* shape = gPhysics->createShape(PxBoxGeometry(dimensions.x, dimensions.y, dimensions.z), *material);
 
+    force = PxVec3(100, 0, 0);
+
+   
+    transform = new PxTransform(PxVec3(position.x, position.y, position.z));
     // Crear el actor dinamico
-    rigidDynamic = gPhysics->createRigidDynamic(PxTransform(PxVec3(position.x, position.y, position.z)));
+    rigidDynamic = gPhysics->createRigidDynamic(*transform);
+
+    // Crear la forma del sólido 
+    PxShape* shape = CreateShape(PxBoxGeometry(dimensions.x, dimensions.y, dimensions.z));
     rigidDynamic->attachShape(*shape);
 
-    // Calcular la masa y los momentos de inercia manualmente
-    PxVec3 inertiaTensor(
-        (1.0f / 12.0f) * density * (dimensions.y * dimensions.y + dimensions.z * dimensions.z), // Ixx
-        (1.0f / 12.0f) * density * (dimensions.x * dimensions.x + dimensions.z * dimensions.z), // Iyy
-        (1.0f / 12.0f) * density * (dimensions.x * dimensions.x + dimensions.y * dimensions.y)  // Izz
-    );
+
+    PxRigidBodyExt::updateMassAndInertia(*rigidDynamic, 0.15);
     rigidDynamic->setMass(density * dimensions.x * dimensions.y * dimensions.z);
-    rigidDynamic->setMassSpaceInertiaTensor(inertiaTensor);
+    
 
 
     gScene->addActor(*rigidDynamic);
 
     renderItem = new RenderItem(shape, rigidDynamic, col);
+    //RegisterRenderItem(renderItem);
 
 }
 
@@ -37,10 +39,37 @@ SolidRigid::~SolidRigid()
 
 
 void SolidRigid::update(float deltaTime) {
-    if (lifetime > 0) {
+
+    updateForce(deltaTime);
+
+ /*   if (lifetime > 0) {
         lifetime -= deltaTime;
         if (lifetime <= 0) {
             delete this;
         }
-    }
+    }*/
 }
+
+void SolidRigid::AddForceGen(ForceGen* forceGen)
+{
+    forceGens.push_back(forceGen);
+}
+
+void SolidRigid::updateForce(double t)
+{
+    for (auto forceGen : forceGens) {
+        if (forceGen->getType() == 1)
+            rigidDynamic->addForce(force, PxForceMode::eIMPULSE);
+    }
+
+}
+void SolidRigid::decreaseLife(double t)
+{
+    lifetime += t;
+
+}
+//
+//void Particle::ApplyForce(Vector3D<> force)
+//{
+//    velo = velo + force / mass;
+//}
