@@ -4,7 +4,7 @@
 BuoyancyForceGenerator::BuoyancyForceGenerator(float h, float V, float d, Particle* liquid_particle) :
 	_heigth(h), _volume(V), _liquid_density(d), _gravity(9.8), _liquid_particle(liquid_particle)
 {
-
+	type = 5;
 }
 
 

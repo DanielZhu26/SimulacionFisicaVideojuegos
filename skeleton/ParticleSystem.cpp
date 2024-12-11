@@ -35,10 +35,16 @@ void ParticleSystem::addParticle(Vector3D<> pos, Vector3D<> vel, float mass, con
 void ParticleSystem::addSolidRigid(PxPhysics* gPhysics, PxScene* gScene, PxMaterial* material, Vector3D<> pos,
 	float density, Vector3D<> dimentions, float lifeTime, PxVec4 color)
 {
+
 	SolidRigid* solid = new SolidRigid(gPhysics, gScene, material, pos, dimentions, density, lifeTime, color);
 	solid->AddForceGen(windGen);
+	//solid->AddForceGen(gravityGen);
+	
+	
 	solidList.push_back(solid);
 	
+
+
 }
 
 

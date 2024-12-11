@@ -6,7 +6,7 @@ SolidRigid::SolidRigid(PxPhysics* gPhysics, PxScene* gScene, PxMaterial* materia
     : lifetime(lifetime), position(pos), col(color)
 {
 
-    force = PxVec3(100, 0, 0);
+   
 
    
     transform = new PxTransform(PxVec3(position.x, position.y, position.z));
@@ -57,9 +57,25 @@ void SolidRigid::AddForceGen(ForceGen* forceGen)
 
 void SolidRigid::updateForce(double t)
 {
+    //wind 1, gravity 2, explosion 3, tornado 4, flotacion 5
     for (auto forceGen : forceGens) {
         if (forceGen->getType() == 1)
+        {
+            force = PxVec3(10, 0, 0);
             rigidDynamic->addForce(force, PxForceMode::eIMPULSE);
+        }
+        else if (forceGen->getType() == 2)
+        {
+            force = PxVec3(0, 2, 0);
+            rigidDynamic->addForce(force, PxForceMode::eIMPULSE);
+        }
+        else 
+        {
+            /*force = PxVec3(position.x, position.y, position.z);
+            rigidDynamic->addForce(force, PxForceMode::eIMPULSE);*/
+        }
+    
+
     }
 
 }
@@ -68,8 +84,4 @@ void SolidRigid::decreaseLife(double t)
     lifetime += t;
 
 }
-//
-//void Particle::ApplyForce(Vector3D<> force)
-//{
-//    velo = velo + force / mass;
-//}
+
