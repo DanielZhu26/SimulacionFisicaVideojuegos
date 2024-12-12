@@ -32,7 +32,7 @@ public:
 		float size = 1, const PxVec4& color = PxVec4(1.0, 1.0, 0.0, 1.0));
 
 	void addSolidRigid(PxPhysics* gPhysics, PxScene* gScene, PxMaterial* material, Vector3D<> pos,
-		float density, Vector3D<> dimentions, float lifeTime, PxVec4 color);
+		float density, Vector3D<> dimentions, float lifeTime, PxVec4 color, PxVec3 f);
 
 	int addUniPartGen(Vector3D<> pos, Vector3D<> dir, float vel, float deltAngle, float deltVel);
 	int addNormalPartGen(Vector3D<> pos, Vector3D<> dir, float vel, float deltAngle, float deltVel);
@@ -41,7 +41,7 @@ public:
 	int addSpark(Vector3D<> pos, int force);
 
 	int addRigidSolidGen(PxPhysics* gPhysics, PxScene* gScene, PxMaterial* material, Vector3D<> pos, Vector3D<> dir, float density,
-		Vector3D<> dim, int cantidad, float lifeTime, PxVec4 color, float genTime);
+		Vector3D<> dim, int cantidad, float lifeTime, PxVec4 color, float genTime, PxVec3 f);
 
 
 	void Explosion();
@@ -68,7 +68,7 @@ private:
 
 	float max_lifeTime = 115;
 	float max_distance = 2000;
-	float solidmaxlife = 10;
+	float solidmaxlife = 6;
 	float maxsoliddistance = 30;
 
 	GravityForceGenerator* gravityGen;

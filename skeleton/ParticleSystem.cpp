@@ -33,15 +33,19 @@ void ParticleSystem::addParticle(Vector3D<> pos, Vector3D<> vel, float mass, con
 }
 
 void ParticleSystem::addSolidRigid(PxPhysics* gPhysics, PxScene* gScene, PxMaterial* material, Vector3D<> pos,
-	float density, Vector3D<> dimentions, float lifeTime, PxVec4 color)
+	float density, Vector3D<> dimentions, float lifeTime, PxVec4 color, PxVec3 f)
 {
 
-	SolidRigid* solid = new SolidRigid(gPhysics, gScene, material, pos, dimentions, density, lifeTime, color);
+	SolidRigid* solid = new SolidRigid(gPhysics, gScene, material, pos, dimentions, density, lifeTime, color, f);
+
+
 	solid->AddForceGen(windGen);
+	
 	//solid->AddForceGen(gravityGen);
 	
 	
 	solidList.push_back(solid);
+	
 	
 
 
@@ -89,8 +93,8 @@ int ParticleSystem::addSpark(Vector3D<> pos, int force)
 }
 
 int ParticleSystem::addRigidSolidGen(PxPhysics* gPhysics, PxScene* gScene, PxMaterial* material, Vector3D<> pos, Vector3D<> dir, float density, 
-	Vector3D<> dim, int cantidad, float lifeTime, PxVec4 color, float genTime) {
-	RigidSolidGen* rigidGen = new RigidSolidGen(gPhysics, gScene, material, pos, dir, density, dim, cantidad, lifeTime, color, this, genTime);
+	Vector3D<> dim, int cantidad, float lifeTime, PxVec4 color, float genTime, PxVec3 f) {
+	RigidSolidGen* rigidGen = new RigidSolidGen(gPhysics, gScene, material, pos, dir, density, dim, cantidad, lifeTime, color, this, genTime, f);
 	rigidGen->setIndice(genList.size());
 	rigidGenList.push_back(rigidGen);
 	return rigidGen->getIndice();
@@ -213,7 +217,7 @@ void ParticleSystem::DeleteParticles()
 {
 
 	for (auto it = partList.begin(); it != partList.end(); ) {
-		if ((*it)->getPos().getMagnitude() > maxsoliddistance || (*it)->getLifeTime() > max_lifeTime) {
+		if ((*it)->getPos().getMagnitude() > max_distance || (*it)->getLifeTime() > max_lifeTime) {
 			delete* it;
 			it = partList.erase(it); 
 		}

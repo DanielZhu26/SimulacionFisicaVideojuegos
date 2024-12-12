@@ -87,7 +87,7 @@ void initPhysics(bool interactive)
 
 	//Sistemas de particulas
 
-	partSys = new ParticleSystem();
+	
 	//partSys->AddGaussianGenerator(Vector3D<>(20, -20, 10), Vector3D<>(1, 0, 0), 30, 5, 1);
 	//partSys->addUniPartGen(Vector3D<>(0, 20, 0), Vector3D<>(-0.4, 1, 0), 10, 5, 1);
 	// LLuvia viento y gravedad
@@ -109,9 +109,11 @@ void initPhysics(bool interactive)
 	/* solid = new SolidRigid(gPhysics, gScene, gMaterial, Vector3D<>(0, 15.5, 0), 
 		Vector3D<>(4.0f, 4.0f, 4.0f), 10000.0f, 100, PxVec4(0.0, 0.0, 1.0, 1.0));*/
 
+	 partSys = new ParticleSystem();
+
 	 // Crear suelo estático
 	 PxRigidStatic* ground = gPhysics->createRigidStatic(PxTransform(PxVec3(0.0f, 0.0f, 0.0f)));
-	 PxShape* groundShape = gPhysics->createShape(PxBoxGeometry(100.0f, 1.0f, 20.0f), *gMaterial);
+	 PxShape* groundShape = gPhysics->createShape(PxBoxGeometry(110.0f, 1.0f, 20.0f), *gMaterial);
 	 ground->attachShape(*groundShape);
 	 gScene->addActor(*ground);
 	 RenderItem* suelo = new RenderItem(groundShape, ground, PxVec4(0.0, 0.9, 0.9, 1.0));
@@ -123,8 +125,17 @@ void initPhysics(bool interactive)
 	 gScene->addActor(*obstacle);
 	 RenderItem* obs1 = new RenderItem(obstacleShape, obstacle, PxVec4(0.3, 0.5, 1.0, 1.0));*/
 
-	 partSys->addRigidSolidGen(gPhysics, gScene, gMaterial, Vector3D<>(-60, 5, 0), Vector3D<>(0, 1, 0), 0.5f, 
-		 Vector3D<>(4.0f, 4.0f, 4.0f), 10, 5, PxVec4(0.1, 0.3, 0.4, 1.0), 1);
+	 partSys->addRigidSolidGen(gPhysics, gScene, gMaterial, Vector3D<>(-100, 5, 0), Vector3D<>(0, 1, 0), 0.5f, 
+		 Vector3D<>(4.0f, 4.0f, 4.0f), 100, 3, PxVec4(255, 255, 0, 255), 1, PxVec3(8, 0.0, 0.0));
+
+	 PxRigidStatic* ground2 = gPhysics->createRigidStatic(PxTransform(PxVec3(0.0f, 50.0f, 0.0f)));
+	 PxShape* groundShape2 = gPhysics->createShape(PxBoxGeometry(120.0f, 1.0f, 20.0f), *gMaterial);
+	 ground2->attachShape(*groundShape2);
+	 gScene->addActor(*ground2);
+	 RenderItem* suelo2 = new RenderItem(groundShape, ground2, PxVec4(0.0, 0.9, 0.9, 1.0));
+
+	partSys->addRigidSolidGen(gPhysics, gScene, gMaterial, Vector3D<>(100, 55, 0), Vector3D<>(0, 1, 0), 0.5f,
+		 Vector3D<>(4.0f, 4.0f, 4.0f), 100, 3, PxVec4(255, 255, 0, 255), 1, PxVec3(-8, 0.0, 0.0));
 
 
 	}

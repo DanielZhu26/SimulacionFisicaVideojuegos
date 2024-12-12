@@ -2,8 +2,8 @@
 
 // Constructor
 SolidRigid::SolidRigid(PxPhysics* gPhysics, PxScene* gScene, PxMaterial* material,
-    Vector3D<> pos, Vector3D<> dimensions,float density, float lifetime, PxVec4 color)
-    : lifetime(lifetime), position(pos), col(color)
+    Vector3D<> pos, Vector3D<> dimensions,float density, float lifetime, PxVec4 color, PxVec3 f)
+    : lifetime(lifetime), position(pos), col(color), force(f)
 {
 
    
@@ -61,12 +61,12 @@ void SolidRigid::updateForce(double t)
     for (auto forceGen : forceGens) {
         if (forceGen->getType() == 1)
         {
-            force = PxVec3(10, 0, 0);
+            //force = PxVec3(8, 0, 0);
             rigidDynamic->addForce(force, PxForceMode::eIMPULSE);
         }
         else if (forceGen->getType() == 2)
         {
-            force = PxVec3(0, 2, 0);
+            force = PxVec3(0, -2, 0);
             rigidDynamic->addForce(force, PxForceMode::eIMPULSE);
         }
         else 

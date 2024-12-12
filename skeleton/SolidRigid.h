@@ -23,7 +23,7 @@ public:
 
     SolidRigid(PxPhysics* gPhysics, PxScene* gScene, PxMaterial* material,
         Vector3D<> pos, Vector3D<> dimensions,
-        float density, float lifetime, PxVec4 color);
+        float density, float lifetime, PxVec4 color, PxVec3 f);
 
     ~SolidRigid();
 
