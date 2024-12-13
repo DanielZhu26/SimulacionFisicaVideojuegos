@@ -46,7 +46,7 @@ Particle::Particle(Vector3D<> pos, float ladoX, float ladoZ, float masa, const p
 	velo = Vector3D<>();
 	acele = Vector3D<>();
 	mass = masa;
-	damping = 0;
+	damping = 0.99;
 	lifeTime = -1000;
 
 	renderItem = new RenderItem(CreateShape(PxBoxGeometry(ladoX, 1, ladoZ)), transform, color);

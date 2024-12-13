@@ -151,13 +151,13 @@ void ParticleSystem::GenerateAnchoredSpring()
 
 void ParticleSystem::GenerateBuoyancy()
 {
-	Particle* floatingObject = new Particle(Vector3D<>(0, 22, 0), Vector3D<>(0, 0, 0), 5, physx::PxGeometryType::Enum::eBOX, 2, physx::PxVec4(0.0, 1.0, 1.0, 1.0));
+	Particle* floatingObject = new Particle(Vector3D<>(0, 22, 0), Vector3D<>(0, 0, 0), 1500, physx::PxGeometryType::Enum::eBOX, 2, physx::PxVec4(0.0, 1.0, 1.0, 1.0));
 	//Particle* partiallySubmerged = new Particle(Vector3D<>(0, 22, 0), Vector3D<>(0, 0, 0), 20, physx::PxGeometryType::Enum::eBOX, 2, physx::PxVec4(1.0, 0.0, 0.0, 1.0));
 	//Particle* sinkingObject = new Particle(Vector3D<>(0, 22, 0), Vector3D<>(0, 0, 0), 40, physx::PxGeometryType::Enum::eBOX, 2, physx::PxVec4(0.5, 0.5, 1.0, 1.0));
 	Particle* plano = new Particle(Vector3D<>(0, 0, 0), 20, 20, -100);
 
 	//Cuando mas aumente la densidad mas flotara
-	BuoyancyForceGenerator* fg2 = new BuoyancyForceGenerator(2, 1, 1, plano); // Agua (el objeto flotará si su densidad es <= 1)
+	BuoyancyForceGenerator* fg2 = new BuoyancyForceGenerator(2, 1, 1000, plano); // Agua (el objeto flotará si su densidad es <= 1)
 
 	Particle* part = floatingObject;
 
