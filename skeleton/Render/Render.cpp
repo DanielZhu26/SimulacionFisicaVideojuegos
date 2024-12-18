@@ -253,6 +253,7 @@ void setupDefaultWindow(const char *name)
 	glutInitDisplayMode(GLUT_RGB|GLUT_DOUBLE|GLUT_DEPTH);
 	int mainHandle = glutCreateWindow(name);
 	glutSetWindow(mainHandle);
+	glutFullScreen(); // Activar pantalla completa
 	glutReshapeFunc(reshapeCallback);
 	
 	delete[] namestr;
@@ -404,6 +405,31 @@ void drawText(const std::string& text, int x, int y)
 		glutBitmapCharacter(GLUT_BITMAP_9_BY_15, (int)text[i]);
 	}
 	glPopMatrix();
+	glMatrixMode(GL_PROJECTION);
+	glLoadMatrixd(matrix);
+	glMatrixMode(GL_MODELVIEW);
+}
+
+void drawText2(const std::string& text, int x, int y, float r, float g, float b, float scale) {
+	glMatrixMode(GL_PROJECTION);
+	double matrix[16];
+	glGetDoublev(GL_PROJECTION_MATRIX, matrix);
+	glLoadIdentity();
+	glOrtho(0, 1920, 0, 1080, -1, 1); // Resolución de pantalla completa
+	glMatrixMode(GL_MODELVIEW);
+	glLoadIdentity();
+
+	glPushMatrix();
+	glColor3f(r, g, b); // Color del texto
+	glTranslatef(x, y, 0); // Posición del texto
+	glScalef(scale, scale, scale); // Escala del texto
+
+	for (char c : text) {
+		glutStrokeCharacter(GLUT_STROKE_ROMAN, c); // Dibuja cada carácter
+	}
+
+	glPopMatrix();
+
 	glMatrixMode(GL_PROJECTION);
 	glLoadMatrixd(matrix);
 	glMatrixMode(GL_MODELVIEW);

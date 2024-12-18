@@ -1,8 +1,8 @@
 #include "RainGen.h"
 
 
-RainGen::RainGen(Vector3D<> pos, float rad, int force, ParticleSystem* sysR) :
-	Fuente(pos, Vector3D<>(0, -1, 0), 0, 0, 0, sysR), rad(rad), force(force)
+RainGen::RainGen(Vector3D<> pos, float rad, int force, ParticleSystem* sysR, float lifetime) :
+	Fuente(pos, Vector3D<>(0, -1, 0), 0, 0, 0, sysR, lifetime), rad(rad), force(force)
 {
 
 }

@@ -14,7 +14,7 @@ SolidRigid::SolidRigid(PxPhysics* gPhysics, PxScene* gScene, PxMaterial* materia
     rigidDynamic = gPhysics->createRigidDynamic(*transform);
 
     // Crear la forma del sólido 
-    PxShape* shape = CreateShape(PxBoxGeometry(dimensions.x, dimensions.y, dimensions.z));
+    PxShape* shape = CreateShape(PxSphereGeometry(dimensions.x));
     rigidDynamic->attachShape(*shape);
 
 
@@ -83,5 +83,9 @@ void SolidRigid::decreaseLife(double t)
 {
     lifetime += t;
 
+}
+
+void SolidRigid::addForce(Vector3D<> force) {
+    rigidDynamic->addForce(PxVec3(force.x, force.y, force.z), PxForceMode::eIMPULSE);
 }
 

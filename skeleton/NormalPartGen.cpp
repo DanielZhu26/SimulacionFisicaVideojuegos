@@ -4,8 +4,8 @@
 
 using namespace std;
 
-NormalPartGen::NormalPartGen(Vector3D<> pos, Vector3D<> dir, float vel, float deltAngle, float deltVel, ParticleSystem* sysR) :
-    Fuente(pos, dir, vel, deltAngle, deltVel, sysR)
+NormalPartGen::NormalPartGen(Vector3D<> pos, Vector3D<> dir, float vel, float deltAngle, float deltVel, ParticleSystem* sysR, float lifetime) :
+    Fuente(pos, dir, vel, deltAngle, deltVel, sysR, lifetime)
 {
     if (deltAngle != 0.0)
         gaussianDistAngle = std::normal_distribution<>(0, deltAngle * (3.14 / 180));

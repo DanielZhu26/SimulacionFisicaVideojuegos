@@ -34,11 +34,11 @@ public:
 	void addSolidRigid(PxPhysics* gPhysics, PxScene* gScene, PxMaterial* material, Vector3D<> pos,
 		float density, Vector3D<> dimentions, float lifeTime, PxVec4 color, PxVec3 f);
 
-	int addUniPartGen(Vector3D<> pos, Vector3D<> dir, float vel, float deltAngle, float deltVel);
-	int addNormalPartGen(Vector3D<> pos, Vector3D<> dir, float vel, float deltAngle, float deltVel);
-	int addLluvia(Vector3D<> pos, float rad, int force);
-	int addSmoke(Vector3D<> pos, int force);
-	int addSpark(Vector3D<> pos, int force);
+	int addUniPartGen(Vector3D<> pos, Vector3D<> dir, float vel, float deltAngle, float deltVel, float lifetime);
+	int addNormalPartGen(Vector3D<> pos, Vector3D<> dir, float vel, float deltAngle, float deltVel, float lifetime);
+	int addLluvia(Vector3D<> pos, float rad, int force, float lifetime);
+	int addSmoke(Vector3D<> pos, int force, float lifetime);
+	int addSpark(Vector3D<> pos, int force, float lifetime);
 
 	int addRigidSolidGen(PxPhysics* gPhysics, PxScene* gScene, PxMaterial* material, Vector3D<> pos, Vector3D<> dir, float density,
 		Vector3D<> dim, int cantidad, float lifeTime, PxVec4 color, float genTime, PxVec3 f);
@@ -51,8 +51,17 @@ public:
 	void GenerateAnchoredSpring();
 	void GenerateBuoyancy();
 
+	 list<SolidRigid*>& getSolidList()  {
+		return solidList; 
+	}
+
+	const std::list<PxRigidDynamic*>& getGeneratedActors() const {
+		return generatedActors; // Método para obtener los actores generados
+	}
+
 private:
 
+	void DeleteExpiredGenerators(double deltaTime);
 	void ParticlesGen();
 	void DeleteParticles();
 	void UpdateParticles(double t);
@@ -66,9 +75,9 @@ private:
 	list<RigidSolidGen*> rigidGenList;
 	list<SolidRigid*> solidList; // Lista de sólidos generados
 
-	float max_lifeTime = 115;
+	float max_lifeTime = 0.05;
 	float max_distance = 2000;
-	float solidmaxlife = 6;
+	float solidmaxlife = 8;
 	float maxsoliddistance = 30;
 
 	GravityForceGenerator* gravityGen;
@@ -80,6 +89,6 @@ private:
 	PxScene* scene;
 	PxMaterial* mat;
 
-
+	std::list<PxRigidDynamic*> generatedActors;
 	
 };

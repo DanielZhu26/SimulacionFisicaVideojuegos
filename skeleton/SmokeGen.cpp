@@ -1,7 +1,7 @@
 #include "SmokeGen.h"
 
-SmokeGen::SmokeGen(Vector3D<> pos, int force, ParticleSystem* sysS) :
-    Fuente(pos, Vector3D<>(0, 1, 0), 0, 0, 0, sysS), force(force)
+SmokeGen::SmokeGen(Vector3D<> pos, int force, ParticleSystem* sysS, float lifetime) :
+    Fuente(pos, Vector3D<>(0, 1, 0), 0, 0, 0, sysS, lifetime), force(force)
 {
 }
 

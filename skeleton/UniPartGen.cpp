@@ -7,8 +7,8 @@
 using namespace std;
 using namespace physx;
 
-UniPartGen::UniPartGen(Vector3D<> pos, Vector3D<> dir, float vel, float deltAng, float deltVel, ParticleSystem* sys)
-    :Fuente(pos, dir, vel, deltAng, deltVel, sys)
+UniPartGen::UniPartGen(Vector3D<> pos, Vector3D<> dir, float vel, float deltAng, float deltVel, ParticleSystem* sys, float lifetime)
+    :Fuente(pos, dir, vel, deltAng, deltVel, sys, lifetime)
 {
 
 }

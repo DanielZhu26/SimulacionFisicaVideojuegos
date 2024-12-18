@@ -10,7 +10,7 @@ private:
     int force;
 
 public:
-    SmokeGen(Vector3D<> pos, int force, ParticleSystem* sysS);
+    SmokeGen(Vector3D<> pos, int force, ParticleSystem* sysS, float lifetime);
     ~SmokeGen();
 
     void ParticleGen() override;

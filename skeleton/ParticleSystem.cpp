@@ -24,8 +24,8 @@ void ParticleSystem::addParticle(Vector3D<> pos, Vector3D<> vel, float mass, con
 	//p->setAccel(Vector3D<>(0, -9.8, 0));
 
 	//Generadores de fuerzas
-	p->AddForceGen(gravityGen);
-	p->AddForceGen(windGen);
+	/*p->AddForceGen(gravityGen);
+	p->AddForceGen(windGen);*/
 	//p->AddForceGen(torbellinoGen);
 	//p->AddForceGen(explosionGen);
 
@@ -38,7 +38,7 @@ void ParticleSystem::addSolidRigid(PxPhysics* gPhysics, PxScene* gScene, PxMater
 
 	SolidRigid* solid = new SolidRigid(gPhysics, gScene, material, pos, dimentions, density, lifeTime, color, f);
 
-
+	generatedActors.push_back(solid->getActor());
 	solid->AddForceGen(windGen);
 	
 	//solid->AddForceGen(gravityGen);
@@ -54,39 +54,39 @@ void ParticleSystem::addSolidRigid(PxPhysics* gPhysics, PxScene* gScene, PxMater
 
 
 
-int ParticleSystem::addUniPartGen(Vector3D<> pos, Vector3D<> dir, float vel, float deltAngle, float deltVel)
+int ParticleSystem::addUniPartGen(Vector3D<> pos, Vector3D<> dir, float vel, float deltAngle, float deltVel, float lifetime)
 {
-	Fuente* unifGen = new UniPartGen(pos, dir, vel, deltAngle, deltVel, this);
+	Fuente* unifGen = new UniPartGen(pos, dir, vel, deltAngle, deltVel, this, lifetime);
 	unifGen->setIndice(genList.size());
 	genList.push_back(unifGen);
 	return unifGen->getIndice();
 }
 
-int ParticleSystem::addNormalPartGen(Vector3D<> pos, Vector3D<> dir, float vel, float deltAngle, float deltVel)
+int ParticleSystem::addNormalPartGen(Vector3D<> pos, Vector3D<> dir, float vel, float deltAngle, float deltVel, float lifetime)
 {
-	Fuente* generator = new NormalPartGen(pos, dir, vel, deltAngle, deltVel, this);
+	Fuente* generator = new NormalPartGen(pos, dir, vel, deltAngle, deltVel, this, lifetime);
 	generator->setIndice(genList.size());
 	genList.push_back(generator);
 	return generator->getIndice();
 }
-int ParticleSystem::addLluvia(Vector3D<> pos, float rad, int force)
+int ParticleSystem::addLluvia(Vector3D<> pos, float rad, int force, float lifetime)
 {
-	Fuente* rainGen = new RainGen(pos, rad, force, this);
+	Fuente* rainGen = new RainGen(pos, rad, force, this, lifetime);
 	rainGen->setIndice(genList.size());
 	genList.push_back(rainGen);
 	return rainGen->getIndice();
 }
-int ParticleSystem::addSmoke(Vector3D<> pos, int force)
+int ParticleSystem::addSmoke(Vector3D<> pos, int force, float lifetime)
 {
-	Fuente* smokeGen = new SmokeGen(pos, force, this);
+	Fuente* smokeGen = new SmokeGen(pos, force, this, lifetime);
 	smokeGen->setIndice(genList.size());
 	genList.push_back(smokeGen);
 	return smokeGen->getIndice();
 }
 
-int ParticleSystem::addSpark(Vector3D<> pos, int force)
+int ParticleSystem::addSpark(Vector3D<> pos, int force, float lifetime)
 {
-	Fuente* sparkGen = new SparkGen(pos, force, this);
+	Fuente* sparkGen = new SparkGen(pos, force, this, lifetime);
 	sparkGen->setIndice(genList.size());
 	genList.push_back(sparkGen);
 	return sparkGen->getIndice();
@@ -121,6 +121,7 @@ void ParticleSystem::Update(double t)
 	UpdateSolids(t);
 	SolidRigidGen(t);
 	DeleteSolidRigids();
+	DeleteExpiredGenerators(t);
 }
 
 void ParticleSystem::GenerateParticleSpring()
@@ -175,6 +176,20 @@ void ParticleSystem::ParticlesGen()
 {
 	for (Fuente* gen : genList) {
 		gen->ParticleGen();
+	}
+}
+
+void ParticleSystem::DeleteExpiredGenerators(double deltaTime)
+{
+	for (auto it = genList.begin(); it != genList.end(); ) {
+		(*it)->updateLifetime(deltaTime);
+		if ((*it)->isExpired()) {
+			delete* it;
+			it = genList.erase(it);
+		}
+		else {
+			++it;
+		}
 	}
 }
 

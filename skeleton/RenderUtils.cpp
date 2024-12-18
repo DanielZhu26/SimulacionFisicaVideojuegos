@@ -1,9 +1,30 @@
+
+
 #include <vector>
 
 #include "PxPhysicsAPI.h"
 
 #include "core.hpp"
 #include "RenderUtils.hpp"
+#include <iostream>
+#include <string>
+enum class GameState {
+	MainMenu,
+	Playing,
+	FinalScreen
+};
+
+GameState currentState = GameState::MainMenu;
+std::string gameTitle = "HIT THE CUBE";
+std::string pressEnterText = "Pulsa Enter para empezar";
+std::string pressEnterText2 = "Pulsa Enter para volver al inicio";
+
+
+float colorR = 1.0f, colorG = 0.0f, colorB = 0.0f;
+float colorChangeSpeed = 0.5f;
+
+float timeRemaining = 10.0f; // 90 segundos
+
 
 
 using namespace physx;
@@ -20,6 +41,9 @@ std::vector<const RenderItem*> gRenderItems;
 double PCFreq = 0.0;
 __int64 CounterStart = 0;
 __int64 CounterLast = 0;
+
+
+
 
 void StartCounter()
 {
@@ -49,7 +73,9 @@ namespace
 
 void motionCallback(int x, int y)
 {
-	sCamera->handleMotion(x, y);
+	if (currentState == GameState::Playing) {
+		sCamera->handleMotion(x, y);
+	}
 }
 
 void keyboardCallback(unsigned char key, int x, int y)
@@ -57,13 +83,32 @@ void keyboardCallback(unsigned char key, int x, int y)
 	if(key==27)
 		exit(0);
 
-	if(!sCamera->handleKey(key, x, y))
-		keyPress(key, sCamera->getTransform());
+	//if(!sCamera->handleKey(key, x, y))
+	//	keyPress(key, sCamera->getTransform());
+
+	if (key == 13) 
+	{ 
+		if (currentState == GameState::MainMenu) {
+			currentState = GameState::Playing;
+			score = 0;          // Reiniciar puntuación
+			timeRemaining = 90; // Reiniciar tiempo
+		}
+		else if (currentState == GameState::FinalScreen) {
+			currentState = GameState::MainMenu; // Volver al menú principal
+		}
+	}
+	else if (currentState == GameState::Playing) 
+	{
+		keyPress(key, GetCamera()->getTransform());
+	}
+
 }
 
 void mouseCallback(int button, int state, int x, int y)
 {
-	sCamera->handleMouse(button, state, x, y);
+	if (currentState == GameState::Playing) {
+		sCamera->handleMouse(button, state, x, y);
+	}
 }
 
 void idleCallback()
@@ -73,6 +118,12 @@ void idleCallback()
 
 float stepTime = 0.0f;
 //#define FIXED_STEP
+
+void updateColor(double time) {
+	colorR = (sin(colorChangeSpeed * time) + 1.0f) / 2.0f;
+	colorG = (sin(colorChangeSpeed * time + 2.0f) + 1.0f) / 2.0f;
+	colorB = (sin(colorChangeSpeed * time + 4.0f) + 1.0f) / 2.0f;
+}
 
 void renderCallback()
 {
@@ -96,24 +147,51 @@ void renderCallback()
 #endif
 
 	startRender(sCamera->getEye(), sCamera->getDir());
-
-	//fprintf(stderr, "Num Render Items: %d\n", static_cast<int>(gRenderItems.size()));
-	for (auto it = gRenderItems.begin(); it != gRenderItems.end(); ++it)
+	updateColor(t);
+	if (currentState == GameState::MainMenu) {
+		// Renderizar el menú principal
+		drawText2(gameTitle, 750, 600, colorR, colorG, colorB, 0.5); // Título más grande y verde
+		drawText2(pressEnterText, 650, 450, colorR, colorG, colorB, 0.4);
+	}
+	else if (currentState == GameState::Playing)
 	{
-		const RenderItem* obj = (*it);
-		auto objTransform = obj->transform;
-		if (!objTransform)
-		{
-			auto actor = obj->actor;
-			if (actor)
-			{
-				renderShape(*obj->shape, actor->getGlobalPose(), obj->color);
-				continue;
-			}
+
+		// Actualizar tiempo restante
+		timeRemaining -= t;
+		if (timeRemaining <= 0.0f) {
+			currentState = GameState::FinalScreen; // Ir a la pantalla final
+			timeRemaining = 0.0f; // Asegurar que no sea negativo
 		}
-		renderShape(*obj->shape, objTransform ? *objTransform : physx::PxTransform(PxIdentity), obj->color);
+
+		
+		//fprintf(stderr, "Num Render Items: %d\n", static_cast<int>(gRenderItems.size()));
+		for (auto it = gRenderItems.begin(); it != gRenderItems.end(); ++it)
+		{
+			const RenderItem* obj = (*it);
+			auto objTransform = obj->transform;
+			if (!objTransform)
+			{
+				auto actor = obj->actor;
+				if (actor)
+				{
+					renderShape(*obj->shape, actor->getGlobalPose(), obj->color);
+					continue;
+				}
+			}
+			renderShape(*obj->shape, objTransform ? *objTransform : physx::PxTransform(PxIdentity), obj->color);
+		}
+		// Renderizar el tiempo y los puntos
+		drawText2("Tiempo: " + std::to_string((int)timeRemaining), 50, 1000, 255, 255, 0, 0.2);
+		drawText2("Puntos: " + std::to_string(score), 50, 900, 255, 255, 0, 0.2);
+
+	}
+	else if (currentState == GameState::FinalScreen) {
+		drawText2("GAME OVER", 750, 600, colorR, colorG, colorB, 0.5); 
+		drawText2("SCORE: " + std::to_string(score), 800, 450, colorR, colorG, colorB, 0.4);
+		drawText2(pressEnterText2, 750, 300, colorR, colorG, colorB, 0.2);
 	}
 
+	
 	//PxScene* scene;
 	//PxGetPhysics().getScenes(&scene, 1);
 	//PxU32 nbActors = scene->getNbActors(PxActorTypeFlag::eRIGID_DYNAMIC | PxActorTypeFlag::eRIGID_STATIC);
@@ -137,7 +215,7 @@ void exitCallback(void)
 void renderLoop()
 {
 	StartCounter();
-	sCamera = new Camera(PxVec3(50.0f, 50.0f, 50.0f), PxVec3(-0.6f,-0.2f,-0.7f));
+	sCamera = new Camera(PxVec3(0, 70, -150), PxVec3(0, 0, 1));
 
 	setupDefaultWindow("Simulacion Fisica Videojuegos");
 	setupDefaultRenderState();
@@ -185,3 +263,4 @@ PxShape* CreateShape(const PxGeometry& geo, const PxMaterial* mat)
 	PxShape* shape = gPhysics->createShape(geo, *mat);
 	return shape;
 }
+

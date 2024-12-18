@@ -3,7 +3,7 @@
 class NormalPartGen : public Fuente
 {
 public:
-	NormalPartGen(Vector3D<> position, Vector3D<> direction, float vel, float angleDelta, float speedDelta, ParticleSystem* systemRef);
+	NormalPartGen(Vector3D<> position, Vector3D<> direction, float vel, float angleDelta, float speedDelta, ParticleSystem* systemRef, float lifetime);
 	~NormalPartGen();
 
 private:

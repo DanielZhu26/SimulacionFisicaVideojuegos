@@ -59,6 +59,7 @@ void renderShape(const physx::PxShape& shape, const physx::PxTransform& transfor
 void renderActors(physx::PxRigidActor** actors, const physx::PxU32 numActors, bool shadows = false, const physx::PxVec4 & color = physx::PxVec4(0.0f, 0.75f, 0.0f, 1.0f));
 void finishRender();
 void drawText(const std::string& text, int x, int y);
+void drawText2(const std::string& text, int x, int y, float r = 1.0f, float g = 1.0f, float b = 1.0f, float scale = 20);
 }
 
 #define MAX_NUM_ACTOR_SHAPES 128

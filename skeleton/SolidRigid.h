@@ -37,7 +37,14 @@ public:
 
     float getLifeTime() { return lifetime; }
     Vector3D<> getPos() { return position; }
+   
     void decreaseLife(double t);
+
+    PxRigidDynamic* getActor() {
+        return rigidDynamic;
+    }
+
+    void addForce(Vector3D<> force);
 };
 
 #endif // SOLID_RIGID_H

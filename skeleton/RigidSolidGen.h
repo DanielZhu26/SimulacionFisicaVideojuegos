@@ -28,6 +28,7 @@ protected:
 
     float generationInterval;   // Tiempo entre generaciones
     float timeSinceLastGen = 0;     // Tiempo acumulado desde la última generación
+   
 
 public:
     RigidSolidGen(PxPhysics* gPhysics, PxScene* gScene, PxMaterial* material, Vector3D<> pos, Vector3D<> dir, float density,
@@ -41,6 +42,7 @@ public:
     void SolidGen(float deltaTime); // Sobrescribir para generar sólidos
     //void clearSolids(float deltaTime);   // Limpiar sólidos generados
 
+ 
   
 };
 

@@ -8,7 +8,7 @@
 class Fuente
 {
 public:
-	Fuente(Vector3D<> pos, Vector3D<> dir, float vel, float deltAngle, float deltVel, ParticleSystem* sysR);
+	Fuente(Vector3D<> pos, Vector3D<> dir, float vel, float deltAngle, float deltVel, ParticleSystem* sysR, float lifetime);
 	~Fuente();
 
 	void setIndice(int id) { this->id = id; };
@@ -17,7 +17,13 @@ public:
 	virtual void ParticleGen() = 0;
 
 	//void SetParticleModel(Particle* p) { partRef = p; };
+	void Fuente::updateLifetime(float deltaTime) {
+		life -= deltaTime;
+	}
 
+	bool Fuente::isExpired() const {
+		return life <= 0.0f;
+	}
 protected:
 
 	int id;
@@ -29,6 +35,6 @@ protected:
 
 	Particle* partRef;
 	ParticleSystem* systemRef;
-
+	float life;
 	std::mt19937 rnd;
 };
