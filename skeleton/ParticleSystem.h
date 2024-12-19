@@ -39,6 +39,7 @@ public:
 	int addLluvia(Vector3D<> pos, float rad, int force, float lifetime);
 	int addSmoke(Vector3D<> pos, int force, float lifetime);
 	int addSpark(Vector3D<> pos, int force, float lifetime);
+	int addSpark2(Vector3D<> pos, int force, float lifetime);
 
 	int addRigidSolidGen(PxPhysics* gPhysics, PxScene* gScene, PxMaterial* material, Vector3D<> pos, Vector3D<> dir, float density,
 		Vector3D<> dim, int cantidad, float lifeTime, PxVec4 color, float genTime, PxVec3 f);
@@ -48,7 +49,7 @@ public:
 	void Update(double t);
 
 	void GenerateParticleSpring();
-	void GenerateAnchoredSpring();
+	void GenerateAnchoredSpring(Vector3D<> po);
 	void GenerateBuoyancy();
 
 	 list<SolidRigid*>& getSolidList()  {
@@ -71,10 +72,12 @@ private:
 
 	list<Fuente*> genList;
 	list<Particle*> partList;
+	list<Particle*> partList2;
 	list<ForceGen*> forceGenList;
 	list<RigidSolidGen*> rigidGenList;
-	list<SolidRigid*> solidList; // Lista de sólidos generados
+	list<SolidRigid*> solidList; 
 
+	float max_lifeTime2 = 1000;
 	float max_lifeTime = 0.05;
 	float max_distance = 2000;
 	float solidmaxlife = 8;

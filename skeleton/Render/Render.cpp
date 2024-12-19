@@ -415,17 +415,17 @@ void drawText2(const std::string& text, int x, int y, float r, float g, float b,
 	double matrix[16];
 	glGetDoublev(GL_PROJECTION_MATRIX, matrix);
 	glLoadIdentity();
-	glOrtho(0, 1920, 0, 1080, -1, 1); // Resolución de pantalla completa
+	glOrtho(0, 1920, 0, 1080, -1, 1); 
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
 
 	glPushMatrix();
-	glColor3f(r, g, b); // Color del texto
-	glTranslatef(x, y, 0); // Posición del texto
-	glScalef(scale, scale, scale); // Escala del texto
+	glColor3f(r, g, b); 
+	glTranslatef(x, y, 0); 
+	glScalef(scale, scale, scale); 
 
 	for (char c : text) {
-		glutStrokeCharacter(GLUT_STROKE_ROMAN, c); // Dibuja cada carácter
+		glutStrokeCharacter(GLUT_STROKE_ROMAN, c);
 	}
 
 	glPopMatrix();

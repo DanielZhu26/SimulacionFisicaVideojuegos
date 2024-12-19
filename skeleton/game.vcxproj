@@ -272,6 +272,7 @@
     <ClCompile Include="SmokeGen.cpp" />
     <ClCompile Include="SolidRigid.cpp" />
     <ClCompile Include="SparkGen.cpp" />
+    <ClCompile Include="SparkGen2.cpp" />
     <ClCompile Include="SpringForceGenerator.cpp" />
     <ClCompile Include="TorbellinoGen.cpp" />
     <ClCompile Include="UniPartGen.cpp" />
@@ -298,6 +299,7 @@
     <ClInclude Include="SmokeGen.h" />
     <ClInclude Include="SolidRigid.h" />
     <ClInclude Include="SparkGen.h" />
+    <ClInclude Include="SparkGen2.h" />
     <ClInclude Include="SpringForceGenerator.h" />
     <ClInclude Include="TorbellinoGen.h" />
     <ClInclude Include="UniPartGen.h" />

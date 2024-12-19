@@ -15,6 +15,8 @@
 #include "ParticleSystem.h"
 #include "SolidRigid.h"
 
+
+
 std::string display_text = "This is a test";
 
 using namespace std;
@@ -50,7 +52,8 @@ PxTransform* x, y, z, origin;
 ParticleSystem* partSys = nullptr;
 SolidRigid* solid = nullptr;
 PxRigidDynamic* bulletActor = nullptr;
-SolidRigid* ball = nullptr;
+SolidRigid* bullet = nullptr;
+list<SolidRigid*> balaList;
 
 int score = 0;
 
@@ -87,18 +90,16 @@ void initPhysics(bool interactive)
 	//partSys->GenerateBuoyancy();
 
 	//Create cabaña
-		//// Crear un obstáculo estático
+		// Crear un obstáculo estático
 	PxRigidStatic* obstacle = gPhysics->createRigidStatic(PxTransform(PxVec3(-120.0f, 15.5f, 0.0f)));
 	PxShape* obstacleShape = gPhysics->createShape(PxBoxGeometry(5.0f, 100.0f, 250.0f), *gMaterial);
 	obstacle->attachShape(*obstacleShape);
-	//gScene->addActor(*obstacle);
 	RenderItem* obs1 = new RenderItem(obstacleShape, obstacle, PxVec4(Vector4(0.824, 0.412, 0.118, 1.0)));
 
 	//// Crear un obstáculo estático
 	PxRigidStatic* obstacle2 = gPhysics->createRigidStatic(PxTransform(PxVec3(120.0f, 15.5f, 0.0f)));
 	PxShape* obstacleShape2 = gPhysics->createShape(PxBoxGeometry(5.0f, 110.0f, 250.0f), *gMaterial);
 	obstacle->attachShape(*obstacleShape2);
-	//gScene->addActor(*obstacle);
 	RenderItem* obs2 = new RenderItem(obstacleShape2, obstacle2, PxVec4(Vector4(0.824, 0.412, 0.118, 1.0)));
 
 
@@ -106,33 +107,27 @@ void initPhysics(bool interactive)
 	PxRigidStatic* obstacle3 = gPhysics->createRigidStatic(PxTransform(PxVec3(50.0f, 15.5f, 150.0f)));
 	PxShape* obstacleShape3 = gPhysics->createShape(PxBoxGeometry(200.0f, 180.0f, 50.0f), *gMaterial);
 	obstacle->attachShape(*obstacleShape3);
-	//gScene->addActor(*obstacle);
 	RenderItem* obs3 = new RenderItem(obstacleShape3, obstacle3, PxVec4(Vector4(0.824, 0.412, 0.118, 1.0)));
 
 	PxRigidStatic* obstacle4 = gPhysics->createRigidStatic(PxTransform(PxVec3(50.0f, 15.5f, -250.0f)));
 	PxShape* obstacleShape4 = gPhysics->createShape(PxBoxGeometry(200.0f, 100.0f, 50.0f), *gMaterial);
 	obstacle->attachShape(*obstacleShape4);
-	//gScene->addActor(*obstacle);
 	RenderItem* obs4 = new RenderItem(obstacleShape4, obstacle4, PxVec4(Vector4(0.824, 0.412, 0.118, 1.0)));
 
 	//Suelo
 	PxRigidStatic* obstacle5 = gPhysics->createRigidStatic(PxTransform(PxVec3(50.0f, -100.5f, 0.0f)));
 	PxShape* obstacleShape5 = gPhysics->createShape(PxBoxGeometry(300.0f, 20.0f, 300.0f), *gMaterial);
 	obstacle->attachShape(*obstacleShape5);
-	//gScene->addActor(*obstacle);
 	RenderItem* obs5 = new RenderItem(obstacleShape5, obstacle5, PxVec4(Vector4(0.565, 0.933, 0.565, 1.0)));
 
 
 	PxRigidStatic* obstacle6 = gPhysics->createRigidStatic(PxTransform(PxVec3(0, 0, -80.0f)));
 	PxShape* obstacleShape6 = gPhysics->createShape(PxBoxGeometry(200.0f, 2.0f, 30.0f), *gMaterial);
 	obstacle->attachShape(*obstacleShape6);
-	//gScene->addActor(*obstacle);
 	RenderItem* obs6 = new RenderItem(obstacleShape6, obstacle6, PxVec4(Vector4(0.545, 0.271, 0.075, 1.0)));
 
 	PxRigidStatic* obstacle7 = gPhysics->createRigidStatic(PxTransform(PxVec3(50.0f, -50.5f, -80.0f)));
 	PxShape* obstacleShape7 = gPhysics->createShape(PxBoxGeometry(200, 50.0f, 2), *gMaterial);
-	obstacle->attachShape(*obstacleShape7);
-	//gScene->addActor(*obstacle);
 	RenderItem* obs7 = new RenderItem(obstacleShape7, obstacle7, PxVec4(Vector4(0.545, 0.271, 0.075, 1.0)));
 
 
@@ -150,16 +145,22 @@ void initPhysics(bool interactive)
 	obstacle9->attachShape(*obstacleShape9);
 	RenderItem* obs9 = new RenderItem(obstacleShape9, obstacle9, PxVec4(Vector4(0.25f, 0.12f, 0.03f, 1.0f)));
 
-	//PxRigidStatic* obstacle10 = gPhysics->createRigidStatic(PxTransform(PxVec3(50.0f, 50.5f, -80.0f)));
-	//PxShape* obstacleShape10 = gPhysics->createShape(PxBoxGeometry(200, 50.0f, 2), *gMaterial);
-	//obstacle->attachShape(*obstacleShape10);
-	////gScene->addActor(*obstacle);
-	//RenderItem* obs10 = new RenderItem(obstacleShape10, obstacle10, PxVec4(Vector4(0.545, 0.271, 0.075, 1.0)));
+	PxRigidStatic* obstacle10 = gPhysics->createRigidStatic(PxTransform(PxVec3(50.0f, 200.5f, 0.0f)));
+	PxShape* obstacleShape10 = gPhysics->createShape(PxBoxGeometry(300.0f, 20.0f, 300.0f), *gMaterial);
+	obstacle->attachShape(*obstacleShape10);
+	RenderItem* obs10 = new RenderItem(obstacleShape10, obstacle10, PxVec4(Vector4(0.25f, 0.12f, 0.03f, 1.0f)));
 
-
-
-	
 	partSys = new ParticleSystem();
+
+	partSys->GenerateAnchoredSpring(Vector3D<>(4.5, 150, 0));
+	partSys->GenerateAnchoredSpring(Vector3D<>(4.5, 150, -20));
+	partSys->GenerateAnchoredSpring(Vector3D<>(4.5, 150, -60));
+	partSys->GenerateAnchoredSpring(Vector3D<>(4.5, 150, -100));
+	partSys->GenerateAnchoredSpring(Vector3D<>(4.5, 150, -140));
+	partSys->GenerateAnchoredSpring(Vector3D<>(4.5, 150, -180));
+	
+
+
 	 // Crear suelo estático
 	 PxRigidStatic* ground = gPhysics->createRigidStatic(PxTransform(PxVec3(0.0f, 0.0f, 0.0f)));
 	 PxShape* groundShape = gPhysics->createShape(PxBoxGeometry(110.0f, 1.0f, 20.0f), *gMaterial);
@@ -170,7 +171,7 @@ void initPhysics(bool interactive)
 	
 
 	 partSys->addRigidSolidGen(gPhysics, gScene, gMaterial, Vector3D<>(-100, 5, 0), Vector3D<>(0, 1, 0), 1.0f, 
-		 Vector3D<>(4.0f, 4.0f, 4.0f), 1000, 4, PxVec4(255, 255, 0, 255), 1, PxVec3(8, 0.0, 0.0));
+		 Vector3D<>(4.0f, 4.0f, 4.0f), 1000, 4, PxVec4(Vector4(1.0f, 0.412f, 0.706f, 1.0f)), 1, PxVec3(8, 0.0, 0.0));
 
 	 PxRigidStatic* ground2 = gPhysics->createRigidStatic(PxTransform(PxVec3(0.0f, 50.0f, 0.0f)));
 	 PxShape* groundShape2 = gPhysics->createShape(PxBoxGeometry(120.0f, 1.0f, 20.0f), *gMaterial);
@@ -255,7 +256,7 @@ void keyPress(unsigned char key, const PxTransform& camera)
 		PxVec3 direction = GetCamera()->getDir();
 
 		// Crear el sólido (bola) con los parámetros deseados
-			ball = new SolidRigid(
+			bullet = new SolidRigid(
 			gPhysics, gScene, gMaterial,
 			Vector3D<>(position.x, position.y, position.z), // Posición inicial
 			Vector3D<>(1.0f, 1.0f, 1.0f),                  // Dimensiones (radio de la esfera)
@@ -264,40 +265,41 @@ void keyPress(unsigned char key, const PxTransform& camera)
 			PxVec4(1.0f, 0.0f, 0.0f, 1.0f),                // Color (rojo)
 			PxVec3(direction.x * 50, direction.y * 50, direction.z * 50) // Fuerza inicial
 		);
-
-		bulletActor = ball->getActor();
+			
+		bulletActor = bullet->getActor();
+		balaList.push_back(bullet);
 		
 		// Añadir una fuerza inicial para darle velocidad a la bola
-		ball->addForce(Vector3D<>(direction.x * 500, direction.y * 500, direction.z * 500));
+		bullet->addForce(Vector3D<>(direction.x * 500, direction.y * 500, direction.z * 500));
 
-		//partSys->getSolidList().push_back(ball);
-		break;
-	}
-	case 'G':
-	{
-		cout << "Particle" << endl;
-		//Gun
-		Particle* particle = new Particle(GetCamera()->getTransform().p, 100 * GetCamera()->getDir(), PxVec3(0, 0, 0));
-		particle->setAcel(PxVec3(0, -2, 0));
-		particlesVector.push_back(particle);
-		break;
-	}
-	case 'H':
-	{
-		cout << "Particle" << endl;
-		//Laser?
-		Particle* particle = new Particle(GetCamera()->getTransform().p, 10000 * GetCamera()->getDir(), PxVec3(0, 0, 0));
 		
-		particle->setAcel(PxVec3(0, -2, 0));
-		particlesVector.push_back(particle);
 		break;
 	}
-	case 'J':
-	{
-		
-		partSys->Explosion();
-		break;
-	}
+	//case 'G':
+	//{
+	//	cout << "Particle" << endl;
+	//	//Gun
+	//	Particle* particle = new Particle(GetCamera()->getTransform().p, 100 * GetCamera()->getDir(), PxVec3(0, 0, 0));
+	//	particle->setAcel(PxVec3(0, -2, 0));
+	//	particlesVector.push_back(particle);
+	//	break;
+	//}
+	//case 'H':
+	//{
+	//	cout << "Particle" << endl;
+	//	//Laser?
+	//	Particle* particle = new Particle(GetCamera()->getTransform().p, 10000 * GetCamera()->getDir(), PxVec3(0, 0, 0));
+	//	
+	//	particle->setAcel(PxVec3(0, -2, 0));
+	//	particlesVector.push_back(particle);
+	//	break;
+	//}
+	//case 'J':
+	//{
+	//	
+	//	partSys->Explosion();
+	//	break;
+	//}
 	default:
 		break;
 	}
@@ -326,6 +328,16 @@ void onCollision(physx::PxActor* actor1, physx::PxActor* actor2)
 				score += 10;
 			
 			}
+			for (auto it = balaList.begin(); it != balaList.end(); ) {
+
+				if ((*it)->getActor() == bulletActor) {
+					delete* it;
+					it = balaList.erase(it);
+				}
+				else
+					++it;
+			}
+
 
 			for (auto it = partSys->getSolidList().begin(); it != partSys->getSolidList().end(); ) {
 

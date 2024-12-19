@@ -91,7 +91,7 @@ void keyboardCallback(unsigned char key, int x, int y)
 		if (currentState == GameState::MainMenu) {
 			currentState = GameState::Playing;
 			score = 0;          // Reiniciar puntuación
-			timeRemaining = 90; // Reiniciar tiempo
+			timeRemaining = 15; // Reiniciar tiempo
 		}
 		else if (currentState == GameState::FinalScreen) {
 			currentState = GameState::MainMenu; // Volver al menú principal
@@ -146,17 +146,19 @@ void renderCallback()
 	stepPhysics(true, t);
 #endif
 
-	startRender(sCamera->getEye(), sCamera->getDir());
+	startRender(sCamera->getEye(), PxVec3(0, 0, 1));
 	updateColor(t);
 	if (currentState == GameState::MainMenu) {
 		// Renderizar el menú principal
+		//startRender(sCamera->getEye(), PxVec3(0, 0, 1));
 		drawRectangle(-200, -100, 1920, 1080, 0.2f, 0.2f, 0.2f);
 		drawText2(gameTitle, 850, 600, 204, 0, 204, 0.5); // Título más grande y verde
 		drawText2(pressEnterText, 825, 450, 204, 0, 204, 0.2);
+		
 	}
 	else if (currentState == GameState::Playing)
 	{
-
+		startRender(sCamera->getEye(), sCamera->getDir());
 		// Actualizar tiempo restante
 		timeRemaining -= t;
 		if (timeRemaining <= 0.0f) {
@@ -187,6 +189,7 @@ void renderCallback()
 
 	}
 	else if (currentState == GameState::FinalScreen) {
+	//	startRender(sCamera->getEye(), PxVec3(0, 0, 1));
 		drawRectangle(-200, -100, 1920, 1080, 0.2f, 0.2f, 0.2f);
 		drawText2("GAME OVER", 750, 600, 255, 255, 0, 0.5);
 		drawText2("SCORE: " + std::to_string(score), 800, 450, 255, 255, 0, 0.4);
@@ -217,7 +220,7 @@ void exitCallback(void)
 void renderLoop()
 {
 	StartCounter();
-	sCamera = new Camera(PxVec3(0, 70, -150), PxVec3(0, 0, 1));
+	sCamera = new Camera(PxVec3(3, 70, -150), PxVec3(0, 0, 1));
 
 	setupDefaultWindow("Simulacion Fisica Videojuegos");
 	setupDefaultRenderState();

@@ -5,6 +5,7 @@
 #include "SmokeGen.h"
 #include "SparkGen.h"
 #include "RigidSolidGen.h"
+#include "SparkGen2.h"
 
 ParticleSystem::ParticleSystem()
 {
@@ -92,6 +93,14 @@ int ParticleSystem::addSpark(Vector3D<> pos, int force, float lifetime)
 	return sparkGen->getIndice();
 }
 
+int ParticleSystem::addSpark2(Vector3D<> pos, int force, float lifetime)
+{
+	Fuente* sparkGen2 = new SparkGen2(pos, force, this, lifetime);
+	sparkGen2->setIndice(genList.size());
+	genList.push_back(sparkGen2);
+	return sparkGen2->getIndice();
+}
+
 int ParticleSystem::addRigidSolidGen(PxPhysics* gPhysics, PxScene* gScene, PxMaterial* material, Vector3D<> pos, Vector3D<> dir, float density, 
 	Vector3D<> dim, int cantidad, float lifeTime, PxVec4 color, float genTime, PxVec3 f) {
 	RigidSolidGen* rigidGen = new RigidSolidGen(gPhysics, gScene, material, pos, dir, density, dim, cantidad, lifeTime, color, this, genTime, f);
@@ -135,19 +144,22 @@ void ParticleSystem::GenerateParticleSpring()
 	part1->AddForceGen(fg1);
 	part2->AddForceGen(fg2);
 
-	partList.push_back(part1);
-	partList.push_back(part2);
+	partList2.push_back(part1);
+	partList2.push_back(part2);
 	forceGenList.push_back(fg1);
 	forceGenList.push_back(fg2);
 }
 
-void ParticleSystem::GenerateAnchoredSpring()
+void ParticleSystem::GenerateAnchoredSpring(Vector3D<> pos)
 {
-	Particle* part3 = new Particle(Vector3D<>(0, 20, 0), Vector3D<>(0, 0, 0), 1, physx::PxGeometryType::Enum::eSPHERE, 1, physx::PxVec4(0.5, 1.0, 0.5, 1.0));
-	AnchoredSpringFG* f3 = new AnchoredSpringFG(2, 10, Vector3D<>(0, 40, 0));
+	Particle* part3 = new Particle(Vector3D<>(pos.x, pos.y - 20, pos.z), Vector3D<>(0, 0, 0), 1, physx::PxGeometryType::Enum::eSPHERE, 1, physx::PxVec4(200, 200, 0, 100));
+	AnchoredSpringFG* f3 = new AnchoredSpringFG(0.5, 10, pos);
 	part3->AddForceGen(f3);
-	partList.push_back(part3);
+	partList2.push_back(part3);
 	forceGenList.push_back(f3);
+
+	//addLluvia(Vector3D<>(0, pos.y - 20, 0), 5, 5, 1000);
+	addSpark2(Vector3D<>(pos.x, pos.y - 20, pos.z), 5, 1000);
 }
 
 void ParticleSystem::GenerateBuoyancy()
@@ -165,8 +177,8 @@ void ParticleSystem::GenerateBuoyancy()
 	part->AddForceGen(fg2);
 	part->AddForceGen(gravityGen);
 
-	partList.push_back(part);
-	partList.push_back(plano);
+	partList2.push_back(part);
+	partList2.push_back(plano);
 	forceGenList.push_back(fg2);
 }
 
@@ -239,6 +251,15 @@ void ParticleSystem::DeleteParticles()
 		else  
 			++it; 
 	}
+
+	for (auto it = partList2.begin(); it != partList2.end(); ) {
+		if ((*it)->getPos().getMagnitude() > max_distance || (*it)->getLifeTime() > max_lifeTime2) {
+			delete* it;
+			it = partList2.erase(it);
+		}
+		else
+			++it;
+	}
 }
 
 
@@ -247,6 +268,12 @@ void ParticleSystem::DeleteParticles()
 void ParticleSystem::UpdateParticles(double t)
 {
 	for (Particle* p : partList) {
+		p->semiIntegrate(t);
+		p->decreaseLife(t);
+		p->updateForce(t);
+	}
+
+	for (Particle* p : partList2) {
 		p->semiIntegrate(t);
 		p->decreaseLife(t);
 		p->updateForce(t);
