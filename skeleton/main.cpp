@@ -79,40 +79,84 @@ void initPhysics(bool interactive)
 	sceneDesc.simulationEventCallback = &gContactReportCallback;
 	gScene = gPhysics->createScene(sceneDesc);
 
-	 //xRenderItem = new RenderItem(CreateShape(PxSphereGeometry(1)), new PxTransform(0.0, 0.0, 0.0), Vector4(0.5, 0.9, 0.9, 1));
-	 //yRenderItem = new RenderItem(CreateShape(PxSphereGeometry(1)), new PxTransform(0.0, 10.0, 0.0), Vector4(0.0, 0.0, 1, 1));
-	 //zRenderItem = new RenderItem(CreateShape(PxSphereGeometry(1)), new PxTransform(10.0, -5.0, 0.0), Vector4(1.0, 1.0, 0.0, 1));
-	 //aRenderItem = new RenderItem(CreateShape(PxSphereGeometry(1)), new PxTransform(0.0, -5.0, 10.0), Vector4(1, 0.0, 0.0, 1));
 
-	//Particula MRU
-	
-	//Particle* particle = new Particle(PxVec3(0,0,0), PxVec3(-1, 10, 0), PxVec3(0, 0, 0));
-	//particle->setAcel(PxVec3(0, 10, 0));
-	//particlesVector.push_back(particle);
-
-	//Sistemas de particulas
-	
-	
-	//partSys->AddGaussianGenerator(Vector3D<>(20, -20, 10), Vector3D<>(1, 0, 0), 30, 5, 1);
-	//partSys->addUniPartGen(Vector3D<>(0, 20, 0), Vector3D<>(-0.4, 1, 0), 10, 5, 1);
-	// LLuvia viento y gravedad
-	//partSys->addLluvia(Vector3D<>(0, 70, 0), 40, 10);
-
-	// Humo
-	//partSys->addSmoke(Vector3D<>(5, 0, 5), 10);
-	
-	// Chispas torbellino
-	//partSys->addSpark(Vector3D<>(10, 0, 10), 20, 0.5);
 
 	//Muelles
 	//partSys->GenerateParticleSpring();
 	//partSys->GenerateAnchoredSpring();
 	//partSys->GenerateBuoyancy();
 
-	//Solidos y rigidos
-	
-	/* solid = new SolidRigid(gPhysics, gScene, gMaterial, Vector3D<>(0, 15.5, 0), 
-		Vector3D<>(4.0f, 4.0f, 4.0f), 10000.0f, 100, PxVec4(0.0, 0.0, 1.0, 1.0));*/
+	//Create cabaña
+		//// Crear un obstáculo estático
+	PxRigidStatic* obstacle = gPhysics->createRigidStatic(PxTransform(PxVec3(-120.0f, 15.5f, 0.0f)));
+	PxShape* obstacleShape = gPhysics->createShape(PxBoxGeometry(5.0f, 100.0f, 250.0f), *gMaterial);
+	obstacle->attachShape(*obstacleShape);
+	//gScene->addActor(*obstacle);
+	RenderItem* obs1 = new RenderItem(obstacleShape, obstacle, PxVec4(Vector4(0.824, 0.412, 0.118, 1.0)));
+
+	//// Crear un obstáculo estático
+	PxRigidStatic* obstacle2 = gPhysics->createRigidStatic(PxTransform(PxVec3(120.0f, 15.5f, 0.0f)));
+	PxShape* obstacleShape2 = gPhysics->createShape(PxBoxGeometry(5.0f, 110.0f, 250.0f), *gMaterial);
+	obstacle->attachShape(*obstacleShape2);
+	//gScene->addActor(*obstacle);
+	RenderItem* obs2 = new RenderItem(obstacleShape2, obstacle2, PxVec4(Vector4(0.824, 0.412, 0.118, 1.0)));
+
+
+	//// Crear un obstáculo estático
+	PxRigidStatic* obstacle3 = gPhysics->createRigidStatic(PxTransform(PxVec3(50.0f, 15.5f, 150.0f)));
+	PxShape* obstacleShape3 = gPhysics->createShape(PxBoxGeometry(200.0f, 180.0f, 50.0f), *gMaterial);
+	obstacle->attachShape(*obstacleShape3);
+	//gScene->addActor(*obstacle);
+	RenderItem* obs3 = new RenderItem(obstacleShape3, obstacle3, PxVec4(Vector4(0.824, 0.412, 0.118, 1.0)));
+
+	PxRigidStatic* obstacle4 = gPhysics->createRigidStatic(PxTransform(PxVec3(50.0f, 15.5f, -250.0f)));
+	PxShape* obstacleShape4 = gPhysics->createShape(PxBoxGeometry(200.0f, 100.0f, 50.0f), *gMaterial);
+	obstacle->attachShape(*obstacleShape4);
+	//gScene->addActor(*obstacle);
+	RenderItem* obs4 = new RenderItem(obstacleShape4, obstacle4, PxVec4(Vector4(0.824, 0.412, 0.118, 1.0)));
+
+	//Suelo
+	PxRigidStatic* obstacle5 = gPhysics->createRigidStatic(PxTransform(PxVec3(50.0f, -100.5f, 0.0f)));
+	PxShape* obstacleShape5 = gPhysics->createShape(PxBoxGeometry(300.0f, 20.0f, 300.0f), *gMaterial);
+	obstacle->attachShape(*obstacleShape5);
+	//gScene->addActor(*obstacle);
+	RenderItem* obs5 = new RenderItem(obstacleShape5, obstacle5, PxVec4(Vector4(0.565, 0.933, 0.565, 1.0)));
+
+
+	PxRigidStatic* obstacle6 = gPhysics->createRigidStatic(PxTransform(PxVec3(0, 0, -80.0f)));
+	PxShape* obstacleShape6 = gPhysics->createShape(PxBoxGeometry(200.0f, 2.0f, 30.0f), *gMaterial);
+	obstacle->attachShape(*obstacleShape6);
+	//gScene->addActor(*obstacle);
+	RenderItem* obs6 = new RenderItem(obstacleShape6, obstacle6, PxVec4(Vector4(0.545, 0.271, 0.075, 1.0)));
+
+	PxRigidStatic* obstacle7 = gPhysics->createRigidStatic(PxTransform(PxVec3(50.0f, -50.5f, -80.0f)));
+	PxShape* obstacleShape7 = gPhysics->createShape(PxBoxGeometry(200, 50.0f, 2), *gMaterial);
+	obstacle->attachShape(*obstacleShape7);
+	//gScene->addActor(*obstacle);
+	RenderItem* obs7 = new RenderItem(obstacleShape7, obstacle7, PxVec4(Vector4(0.545, 0.271, 0.075, 1.0)));
+
+
+	PxQuat rotation(-(PxPi / 6), PxVec3(0, 0, 1)); 
+	PxTransform transform(PxVec3(70.0f, 150.5f, -80.0f), rotation);
+	PxRigidStatic* obstacle8 = gPhysics->createRigidStatic(transform);
+	PxShape* obstacleShape8 = gPhysics->createShape(PxBoxGeometry(85.0f, 2.0f, 300.0f), *gMaterial);
+	obstacle8->attachShape(*obstacleShape8);
+	RenderItem* obs8 = new RenderItem(obstacleShape8, obstacle8, PxVec4(Vector4(0.25f, 0.12f, 0.03f, 1.0f)));
+
+	PxQuat rotation2(PxPi / 6, PxVec3(0, 0, 1));
+	PxTransform transform2(PxVec3(-60, 150, -80), rotation2);
+	PxRigidStatic* obstacle9 = gPhysics->createRigidStatic(transform2);
+	PxShape* obstacleShape9 = gPhysics->createShape(PxBoxGeometry(85.0f, 2.0f, 300.0f), *gMaterial);
+	obstacle9->attachShape(*obstacleShape9);
+	RenderItem* obs9 = new RenderItem(obstacleShape9, obstacle9, PxVec4(Vector4(0.25f, 0.12f, 0.03f, 1.0f)));
+
+	//PxRigidStatic* obstacle10 = gPhysics->createRigidStatic(PxTransform(PxVec3(50.0f, 50.5f, -80.0f)));
+	//PxShape* obstacleShape10 = gPhysics->createShape(PxBoxGeometry(200, 50.0f, 2), *gMaterial);
+	//obstacle->attachShape(*obstacleShape10);
+	////gScene->addActor(*obstacle);
+	//RenderItem* obs10 = new RenderItem(obstacleShape10, obstacle10, PxVec4(Vector4(0.545, 0.271, 0.075, 1.0)));
+
+
 
 	
 	partSys = new ParticleSystem();
@@ -123,15 +167,10 @@ void initPhysics(bool interactive)
 	 gScene->addActor(*ground);
 	 RenderItem* suelo = new RenderItem(groundShape, ground, PxVec4(0.0, 0.9, 0.9, 1.0));
 
-	 //// Crear un obstáculo estático
-	 //PxRigidStatic* obstacle = gPhysics->createRigidStatic(PxTransform(PxVec3(0.0f, 15.5f, 10.0f)));
-	 //PxShape* obstacleShape = gPhysics->createShape(PxBoxGeometry(5.0f, 5.0f, 5.0f), *gMaterial);
-	 //obstacle->attachShape(*obstacleShape);
-	 //gScene->addActor(*obstacle);
-	 //RenderItem* obs1 = new RenderItem(obstacleShape, obstacle, PxVec4(0.3, 0.5, 1.0, 1.0));
+	
 
 	 partSys->addRigidSolidGen(gPhysics, gScene, gMaterial, Vector3D<>(-100, 5, 0), Vector3D<>(0, 1, 0), 1.0f, 
-		 Vector3D<>(4.0f, 4.0f, 4.0f), 100, 4, PxVec4(255, 255, 0, 255), 1, PxVec3(8, 0.0, 0.0));
+		 Vector3D<>(4.0f, 4.0f, 4.0f), 1000, 4, PxVec4(255, 255, 0, 255), 1, PxVec3(8, 0.0, 0.0));
 
 	 PxRigidStatic* ground2 = gPhysics->createRigidStatic(PxTransform(PxVec3(0.0f, 50.0f, 0.0f)));
 	 PxShape* groundShape2 = gPhysics->createShape(PxBoxGeometry(120.0f, 1.0f, 20.0f), *gMaterial);
@@ -140,10 +179,14 @@ void initPhysics(bool interactive)
 	 RenderItem* suelo2 = new RenderItem(groundShape, ground2, PxVec4(0.0, 0.9, 0.9, 1.0));
 
 	partSys->addRigidSolidGen(gPhysics, gScene, gMaterial, Vector3D<>(100, 55, 0), Vector3D<>(0, 1, 0), 0.5f,
-		 Vector3D<>(4.0f, 4.0f, 4.0f), 100, 5.25, PxVec4(255, 255, 0, 255), 1, PxVec3(-8, 0.0, 0.0));
+		 Vector3D<>(4.0f, 4.0f, 4.0f), 1000, 5.25, PxVec4(255, 255, 0, 255), 1, PxVec3(-8, 0.0, 0.0));
 
 
 	}
+
+
+
+
 
 
 // Function to configure what happens in each step of physics
@@ -265,33 +308,7 @@ void onCollision(physx::PxActor* actor1, physx::PxActor* actor2)
 	PX_UNUSED(actor1);
 	PX_UNUSED(actor2);
 
-	//PxRigidDynamic* bullet = nullptr;
-	//PxRigidDynamic* target = nullptr;
 
-	//// Determinar si uno de los actores es la bala disparada
-	//if (std::find(partSys->getGeneratedActors().begin(), partSys->getGeneratedActors().end(), actor1) 
-	//	!= partSys->getGeneratedActors().end() &&
-	//	actor2->is<PxRigidDynamic>()) {
-	//	bullet = static_cast<PxRigidDynamic*>(actor2);
-	//	target = static_cast<PxRigidDynamic*>(actor1);
-	//}
-	//else if (std::find(partSys->getGeneratedActors().begin(), partSys->getGeneratedActors().end(), actor2)
-	//	!= partSys->getGeneratedActors().end() &&
-	//	actor1->is<PxRigidDynamic>()) {
-	//	bullet = static_cast<PxRigidDynamic*>(actor1);
-	//	target = static_cast<PxRigidDynamic*>(actor2);
-	//}
-
-	//if (bullet && target) {
-	//	// Destruir la bala
-	//	gScene->removeActor(*bullet);
-	//	bullet->release();
-
-	//	Vector3D<> pos = Vector3D<>(target->getGlobalPose().p.x, target->getGlobalPose().p.y, target->getGlobalPose().p.z);
-
-	//	// Crear el sistema de partículas
-	//	//partSys->addSpark(pos, 20); // Asumiendo que tienes este método
-	//}
 
 	  // Verifica si actor1 o actor2 es la bala
 	if (actor1 == bulletActor || actor2 == bulletActor) {

@@ -15,7 +15,7 @@ enum class GameState {
 };
 
 GameState currentState = GameState::MainMenu;
-std::string gameTitle = "HIT THE CUBE";
+std::string gameTitle = "HIT BALL";
 std::string pressEnterText = "Pulsa Enter para empezar";
 std::string pressEnterText2 = "Pulsa Enter para volver al inicio";
 
@@ -150,8 +150,9 @@ void renderCallback()
 	updateColor(t);
 	if (currentState == GameState::MainMenu) {
 		// Renderizar el menú principal
-		drawText2(gameTitle, 750, 600, colorR, colorG, colorB, 0.5); // Título más grande y verde
-		drawText2(pressEnterText, 650, 450, colorR, colorG, colorB, 0.4);
+		drawRectangle(-200, -100, 1920, 1080, 0.2f, 0.2f, 0.2f);
+		drawText2(gameTitle, 850, 600, 204, 0, 204, 0.5); // Título más grande y verde
+		drawText2(pressEnterText, 825, 450, 204, 0, 204, 0.2);
 	}
 	else if (currentState == GameState::Playing)
 	{
@@ -186,9 +187,10 @@ void renderCallback()
 
 	}
 	else if (currentState == GameState::FinalScreen) {
-		drawText2("GAME OVER", 750, 600, colorR, colorG, colorB, 0.5); 
-		drawText2("SCORE: " + std::to_string(score), 800, 450, colorR, colorG, colorB, 0.4);
-		drawText2(pressEnterText2, 750, 300, colorR, colorG, colorB, 0.2);
+		drawRectangle(-200, -100, 1920, 1080, 0.2f, 0.2f, 0.2f);
+		drawText2("GAME OVER", 750, 600, 255, 255, 0, 0.5);
+		drawText2("SCORE: " + std::to_string(score), 800, 450, 255, 255, 0, 0.4);
+		drawText2(pressEnterText2, 750, 300, 200, 200, 0, 0.2);
 	}
 
 	

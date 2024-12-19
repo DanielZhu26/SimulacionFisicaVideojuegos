@@ -289,7 +289,7 @@ void startRender(const PxVec3& cameraEye, const PxVec3& cameraDir, PxReal clipNe
 
 	// Display text
 	glColor4f(1.0f, 0.2f, 0.2f, 1.0f);
-	drawText(display_text, 0, 0);
+	//drawText(display_text, 0, 0);
 
 	
 
@@ -433,6 +433,18 @@ void drawText2(const std::string& text, int x, int y, float r, float g, float b,
 	glMatrixMode(GL_PROJECTION);
 	glLoadMatrixd(matrix);
 	glMatrixMode(GL_MODELVIEW);
+}
+
+void drawRectangle(float x, float y, float width, float height, float r, float g, float b)
+{
+
+	glColor3f(r, g, b);
+	glBegin(GL_QUADS);
+	glVertex2f(x, y);
+	glVertex2f(x + width, y);
+	glVertex2f(x + width, y + height);
+	glVertex2f(x, y + height);
+	glEnd();
 }
 
 
