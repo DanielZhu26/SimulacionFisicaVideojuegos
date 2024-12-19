@@ -61,6 +61,7 @@ void finishRender();
 void drawText(const std::string& text, int x, int y);
 void drawText2(const std::string& text, int x, int y, float r = 1.0f, float g = 1.0f, float b = 1.0f, float scale = 20);
 void drawRectangle(float x, float y, float width, float height, float r = 1.0f, float g = 1.0f, float b = 1.0f);
+void drawCrosshair(float size, float r, float g, float b);
 }
 
 #define MAX_NUM_ACTOR_SHAPES 128

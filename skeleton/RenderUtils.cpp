@@ -85,13 +85,13 @@ void keyboardCallback(unsigned char key, int x, int y)
 
 	//if(!sCamera->handleKey(key, x, y))
 	//	keyPress(key, sCamera->getTransform());
-
+	glutSetCursor(GLUT_CURSOR_NONE);
 	if (key == 13) 
 	{ 
 		if (currentState == GameState::MainMenu) {
 			currentState = GameState::Playing;
 			score = 0;          // Reiniciar puntuación
-			timeRemaining = 15; // Reiniciar tiempo
+			timeRemaining = 30; // Reiniciar tiempo
 		}
 		else if (currentState == GameState::FinalScreen) {
 			currentState = GameState::MainMenu; // Volver al menú principal
@@ -183,9 +183,21 @@ void renderCallback()
 			}
 			renderShape(*obj->shape, objTransform ? *objTransform : physx::PxTransform(PxIdentity), obj->color);
 		}
+
+		// Mostrar el tiempo restante para disparar 
+		if (cooldownRemaining <= 0.0)
+		{
+			drawText2("Shoot!", 50, 800, 0, 255, 0, 0.2); // Texto "Shoot" en verde
+		}
+		else
+		{
+			drawText2("Cooldown: " + std::to_string((int)cooldownRemaining) + " s", 50, 800, 255, 0, 0, 0.2); // Cooldown en rojo
+		}
+
 		// Renderizar el tiempo y los puntos
 		drawText2("Tiempo: " + std::to_string((int)timeRemaining), 50, 1000, 255, 255, 0, 0.2);
 		drawText2("Puntos: " + std::to_string(score), 50, 900, 255, 255, 0, 0.2);
+		drawCrosshair(20.0f, 255.0f, 0.0f, 0.0f);
 
 	}
 	else if (currentState == GameState::FinalScreen) {

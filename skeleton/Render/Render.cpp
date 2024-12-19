@@ -447,6 +447,35 @@ void drawRectangle(float x, float y, float width, float height, float r, float g
 	glEnd();
 }
 
+void drawCrosshair(float size, float r, float g, float b)
+{
+	glMatrixMode(GL_PROJECTION);
+	double matrix[16];
+	glGetDoublev(GL_PROJECTION_MATRIX, matrix); // Guardar la proyección actual
+	glLoadIdentity();
+	glOrtho(0, 1920, 0, 1080, -1, 1);           // Configurar coordenadas 2D
+	glMatrixMode(GL_MODELVIEW);
+	glLoadIdentity();
+
+	glColor3f(r, g, b); // Establecer color
+	glLineWidth(2.0f);  // Ancho de línea
+	glBegin(GL_LINES);
+
+	// Línea horizontal
+	glVertex2f(960 - size, 540); // Centro menos el tamaño de la línea
+	glVertex2f(960 + size, 540); // Centro más el tamaño de la línea
+
+	// Línea vertical
+	glVertex2f(960, 540 - size);
+	glVertex2f(960, 540 + size);
+
+	glEnd();
+
+	glMatrixMode(GL_PROJECTION);
+	glLoadMatrixd(matrix); // Restaurar la proyección original
+	glMatrixMode(GL_MODELVIEW);
+}
+
 
 
 } //namespace Snippets
