@@ -91,7 +91,7 @@ void keyboardCallback(unsigned char key, int x, int y)
 		if (currentState == GameState::MainMenu) {
 			currentState = GameState::Playing;
 			score = 0;          // Reiniciar puntuación
-			timeRemaining = 30; // Reiniciar tiempo
+			timeRemaining = 60; // Reiniciar tiempo
 		}
 		else if (currentState == GameState::FinalScreen) {
 			currentState = GameState::MainMenu; // Volver al menú principal
@@ -203,7 +203,7 @@ void renderCallback()
 	else if (currentState == GameState::FinalScreen) {
 	//	startRender(sCamera->getEye(), PxVec3(0, 0, 1));
 		drawRectangle(-200, -100, 1920, 1080, 0.2f, 0.2f, 0.2f);
-		drawText2("GAME OVER", 750, 600, 255, 255, 0, 0.5);
+		drawText2("GAME OVER", 750, 600, 255, 0, 0, 0.5);
 		drawText2("SCORE: " + std::to_string(score), 800, 450, 255, 255, 0, 0.4);
 		drawText2(pressEnterText2, 750, 300, 200, 200, 0, 0.2);
 	}

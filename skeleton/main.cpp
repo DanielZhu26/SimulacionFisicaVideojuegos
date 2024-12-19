@@ -56,7 +56,7 @@ SolidRigid* bullet = nullptr;
 list<SolidRigid*> balaList;
 
 double lastShootTime = -2.0; // Inicializarlo como un valor negativo para permitir disparar al inicio
-const double shootCooldown = 3.0;
+const double shootCooldown = 2.0;
 
 int score = 0;
 double cooldownRemaining = 0.0;
